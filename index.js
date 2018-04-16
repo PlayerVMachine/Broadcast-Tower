@@ -68,7 +68,7 @@ edit.registerSubcommand ("tagline", async (msg, args) => {
 		//response.replace(/"/g, "\\\"")
 		console.log(response);
 
-		let res = await bot.createMessage(msg.channel, response);
+		bot.createMessage(msg.channel.id, response);
 
 	} catch (e) {
 		console.log(e);
