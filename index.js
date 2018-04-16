@@ -55,7 +55,22 @@ const create = bot.registerCommand("create", async (msg, args) => {
 });
 
 //Edit profile + subcommands
+const edit = bot.registerCommand("edit", (msg, args) => {
 
+}, {
+	description: "edit",
+	fullDescription: "Edit your profile! Subcommands: `tagline`, `profile`"
+});
+
+edit.registerSubcommand ("tagline", (msg, args) => {
+	let tagline = await db.get("Tagline", msg.author.id, "Users");
+
+	print("Your tagline is: " + );
+
+}, {
+	description: "Edit your tagline",
+	fullDescription: "Edit your tagline"
+});
 
 //Set Status
 
