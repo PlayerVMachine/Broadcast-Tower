@@ -39,25 +39,22 @@ function disconnect (connection) {
 //#######################################################################
 
 //Test queries through discord 
-exports.test_query = async function (query) {
-	//return new Promise ( (resolve, reject) => {
+exports.test_query = function (query) {
+	return new Promise ( (resolve, reject) => {
 		connection = connect();
 
-		const res = await connection.query(query, (error, results, fields) => {
+		connection.query(query, (error, results, fields) => {
 			if (error) {
 				console.log(error);
-				//reject(error);
+				reject(error);
 			}
 
 			console.log(query);
 			console.log('#####################');
 			disconnect(connection);
-			//resolve(results);
-			return results;
+			resolve(results);
 		});
-		console.log(res)
-		return res
-	//});
+	});
 }
 
 //create a 'user'
