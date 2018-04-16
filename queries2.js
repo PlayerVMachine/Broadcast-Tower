@@ -97,7 +97,7 @@ exports.get = function (column, user, db) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log("Error: " error.code);
+				console.log("Error: " + error.code);
 				reject(error);
 			}
 
