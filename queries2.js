@@ -115,7 +115,7 @@ exports.set = function (column, user, db, value) {
 	return new Promise ( (resolve, reject) => {
 		connection = connect();
 
-		sql = "UPDATE " + db + " SET " + column + "= " + value + " WHERE User=" + user;
+		sql = "UPDATE " + db + " SET " + column + "= '" + value + "' WHERE User=" + user;
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
