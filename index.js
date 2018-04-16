@@ -25,7 +25,6 @@ const qeval = bot.registerCommand("qeval", async (msg, args) => {
 			return "```\n The promise was rejected: " + error + "\n```";
 		}
 
-		
 	} else {
 		return "Unathorized! :angry:"
 	}
@@ -34,13 +33,13 @@ const qeval = bot.registerCommand("qeval", async (msg, args) => {
 //Create User
 const create = bot.registerCommand("create", async (msg, args) => {
 	let check = await db.get("User", msg.author.id, "Users"); //Check if user exists
-	
+
 	if (!Object.keys(check).length) {
-		
+
 		let dmChan = await msg.author.getDMChannel();
 
 		let res = await db.new_user(msg.author.id, dmChan.id);
-		if (res === 1) 
+		if (res === 1)
 			return "```\nAccount created successfully! \nCustomize your tagline and profile using b.edit tagline or b.edit profile \nFollow people using b.follow userid/mention\n```";
 		else
 			return "There was an error creating your account. " + res;
@@ -65,7 +64,12 @@ const edit = bot.registerCommand("edit", (msg, args) => {
 edit.registerSubcommand ("tagline", async (msg, args) => {
 	let tagline = await db.get("Tagline", msg.author.id, "Users");
 
-	print("Your tagline is: " + tagline);
+	bot.createMessage(msg.channel, "Your tagline is: " + tagline);
+	bot.createMessage(msg.channel, "Enter a new tagline:");
+
+ 	bot.on('messageCreate', (msg) => {
+ 		console.log(msg);
+ 	});
 
 }, {
 	description: "Edit your tagline",

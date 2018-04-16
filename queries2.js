@@ -50,8 +50,9 @@ exports.test_query = function (query) {
 			}
 
 			console.log(query);
-			console.log('#####################');
 			disconnect(connection);
+			console.log('#####################');
+			
 			resolve(results);
 		});
 	});
@@ -76,9 +77,8 @@ exports.new_user = function (user, sendTo) {
 			}
 
 			console.log(sql);
-			console.log('#####################');
-
 			disconnect(connection); //close connections
+			console.log('#####################');
 
 			resolve(results.affectedRows); //return number of affected rows (expects 1)
 		});
@@ -102,9 +102,9 @@ exports.get = function (column, user, db) {
 			}
 
 			console.log(sql);
+			disconnect(connection);
 			console.log('###################');
 
-			disconnect(connection);
 			resolve(results);
 		});
 	});
@@ -124,8 +124,8 @@ exports.set = function (column, user, db, value) {
 			}
 
 			console.log(sql);
-			console.log('#####################');
 			disconnect(connection);
+			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
@@ -146,9 +146,9 @@ exports.del_user = function(user) {
 			}
 
 			console.log(sql);
-			console.log('#####################');
 			disconnect(connection);
-
+			console.log('#####################');
+			
 			resolve(results.affectedRows);			
 		});
 	});
@@ -168,8 +168,8 @@ exports.log_post = function (user, post) {
 			}
 
 			console.log(sql);
-			console.log('#####################');
 			disconnect(connection);
+			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
@@ -190,9 +190,9 @@ exports.del_post = function (post) {
 			}
 
 			console.log(sql);
-			console.log('#####################');
 			disconnect(connection);
-
+			console.log('#####################');
+			
 			resolve(results.affectedRows);
 		});
 	});
