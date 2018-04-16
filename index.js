@@ -19,7 +19,7 @@ const ping = bot.registerCommand("ping", "Pong!", {
 const qeval = bot.registerCommand("qeval", async (msg, args) => {
 	if (msg.author.id === config.creator) {
 		try {
-			let res = await db.test_query(args.join(" "));
+			res = db.test_query(args.join(" "));
 			return "```\n" + JSON.stringify(res) + "\n```";
 		} catch (error) {
 			return "```\n The promise was rejected: " + error + "\n```";
