@@ -65,7 +65,8 @@ edit.registerSubcommand ("tagline", async (msg, args) => {
 	try {
 		let tagline = await db.get("Tagline", msg.author.id, "Users");
 		response = "Your tagline is: " + tagline
-		bot.createMessage(msg.channel, response);
+
+		let res = await bot.createMessage(msg.channel, response);
 
 	} catch (e) {
 		console.log(e);
