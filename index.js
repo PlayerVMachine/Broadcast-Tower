@@ -1,5 +1,5 @@
 var Eris = require('eris');
-var db = require('./queries.js');
+var db = require('./queries2.js');
 var config = require('./config.json');
 
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {}, {
