@@ -65,7 +65,7 @@ const edit = bot.registerCommand("edit", (msg, args) => {
 edit.registerSubcommand ("tagline", async (msg, args) => {
 	let tagline = await db.get("Tagline", msg.author.id, "Users");
 
-	print("Your tagline is: " + );
+	print("Your tagline is: " + tagline);
 
 }, {
 	description: "Edit your tagline",
