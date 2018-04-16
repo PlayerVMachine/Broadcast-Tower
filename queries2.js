@@ -40,22 +40,21 @@ function disconnect (connection) {
 
 //Test queries through discord 
 exports.test_query = function (query) {
-	//return new Promise ( (resolve, reject) => {
+	return new Promise ( (resolve, reject) => {
 		connection = connect();
 
-		return connection.query(query, (error, results, fields) => {
+		connection.query(query, (error, results, fields) => {
 			if (error) {
 				console.log(error);
-				//reject(error);
+				reject(error);
 			}
 
 			console.log(query);
 			console.log('#####################');
 			disconnect(connection);
-			return(results)
-			//resolve(results);
+			resolve(results);
 		});
-	//});
+	});
 }
 
 //create a 'user'
