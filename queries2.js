@@ -49,7 +49,7 @@ exports.test_query = function (query) {
 				//reject(error);
 			}
 
-			console.log(sql);
+			console.log(query);
 			console.log('#####################');
 			disconnect(connection);
 			return(results)
