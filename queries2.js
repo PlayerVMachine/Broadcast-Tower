@@ -30,7 +30,7 @@ function disconnect (connection) {
 			return;
 		}
 
-		console.log('connection to db closed.'); 
+		console.log('connection to db closed.');
 	});
 }
 
@@ -38,7 +38,7 @@ function disconnect (connection) {
 //Exported Functions
 //#######################################################################
 
-//Test queries through discord 
+//Test queries through discord
 exports.test_query = function (query) {
 	return new Promise ( (resolve, reject) => {
 		connection = connect();
@@ -52,7 +52,7 @@ exports.test_query = function (query) {
 			console.log(query);
 			disconnect(connection);
 			console.log('#####################');
-			
+
 			resolve(results);
 		});
 	});
@@ -71,7 +71,7 @@ exports.new_user = function (user, sendTo) {
 
 		//make query
 		connection.query(sql, (error, results, fields) => {
-			if (error) { 
+			if (error) {
 				console.log(error.code);
 				reject(error)
 			}
@@ -93,7 +93,7 @@ exports.get = function (column, user, db) {
 		if (column === 'all')
 			sql = "SELECT * FROM " + db + " WHERE User=" + user;
 		else
-			sql = "SELECT " + column + " FROM " + db + " WHERE User=" + user;
+			sql = "SELECT `" + column + "` FROM `" + db + "` WHERE User=" + user;
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
@@ -148,8 +148,8 @@ exports.del_user = function(user) {
 			console.log(sql);
 			disconnect(connection);
 			console.log('#####################');
-			
-			resolve(results.affectedRows);			
+
+			resolve(results.affectedRows);
 		});
 	});
 }
@@ -192,7 +192,7 @@ exports.del_post = function (post) {
 			console.log(sql);
 			disconnect(connection);
 			console.log('#####################');
-			
+
 			resolve(results.affectedRows);
 		});
 	});

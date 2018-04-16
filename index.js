@@ -68,7 +68,7 @@ edit.registerSubcommand ("tagline", async (msg, args) => {
 	bot.createMessage(msg.channel, "Enter a new tagline:");
 
  	bot.on('messageCreate', (msg) => {
- 		console.log(msg);
+ 		console.log(msg.content);
  	});
 
 }, {
