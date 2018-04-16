@@ -64,23 +64,22 @@ const edit = bot.registerCommand("edit", (msg, args) => {
 edit.registerSubcommand ("tagline", async (msg, args) => {
 	try {
 		let tagline = await db.get("Tagline", msg.author.id, "Users");
-		response = "Your tagline is: " + tagline.Tagline;
-		//response.replace(/"/g, "\\\"")
-		console.log(response);
 
-		bot.createMessage(msg.channel.id, response);
+		bot.createMessage(msg.channel.id, "Your tagline is: " + tagline.Tagline);
+		bot.createMessage(msg.channel.id, "Enter a new tagline:");
+
+		bot.on('messageCreate', (newmsg) => {
+			if (newmsg.author.id === msg.author.id)
+ 			let res = await db.set("Tagline", newmsg.author.id, "Users", newmsg.content);
+ 			if (res === 1)
+ 				return "Tagline updated successfully"
+ 			else
+ 				return "An error occured setting your tagline please try again."
+ 		});
 
 	} catch (e) {
 		console.log(e);
 	}
-
-
-	//bot.createMessage(msg.channel, "Enter a new tagline:");
-
- 	//bot.on('messageCreate', (msg) => {
- 	//	console.log(msg.content);
- 	//});
-
 }, {
 	description: "Edit your tagline",
 	fullDescription: "Edit your tagline"
