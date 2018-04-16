@@ -93,11 +93,11 @@ exports.get = function (column, user, db) {
 		if (column === 'all')
 			sql = "SELECT * FROM " + db + " WHERE User=" + user;
 		else
-			sql = "SELECT " + connection.escape(column) + " FROM " + db + " WHERE User=" + user;
+			sql = "SELECT " + column + " FROM " + db + " WHERE User=" + user;
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error.code);
+				console.log("Error: " error.code);
 				reject(error);
 			}
 
