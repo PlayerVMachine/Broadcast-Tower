@@ -71,6 +71,7 @@ edit.registerSubcommand ("tagline", async (msg, args) => {
 		bot.on('messageCreate', async (newmsg) => {
 			if (newmsg.author.id === msg.author.id) {
  				let res = await db.set("Tagline", newmsg.author.id, "Users", newmsg.content);
+ 				console.log(res)
  				if (res === 1)
  					return "Tagline updated successfully"
  				else
