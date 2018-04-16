@@ -68,7 +68,7 @@ edit.registerSubcommand ("tagline", async (msg, args) => {
 		bot.createMessage(msg.channel.id, "Your tagline is: " + tagline.Tagline);
 		bot.createMessage(msg.channel.id, "Enter a new tagline:");
 
-		bot.on('messageCreate', (newmsg) => {
+		bot.on('messageCreate', async (newmsg) => {
 			if (newmsg.author.id === msg.author.id) {
  				let res = await db.set("Tagline", newmsg.author.id, "Users", newmsg.content);
  				if (res === 1)
