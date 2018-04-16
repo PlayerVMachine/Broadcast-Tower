@@ -1,0 +1,23 @@
+{
+  "name": "broadcast-tower",
+  "version": "1.0.0",
+  "description": "Discord bot providing some social media features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PlayerVMachine/Broadcast-Tower.git"
+  },
+  "author": "PlayerVMachine#6223",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PlayerVMachine/Broadcast-Tower/issues"
+  },
+  "homepage": "https://github.com/PlayerVMachine/Broadcast-Tower#readme",
+  "dependencies": {
+    "eris": "^0.8.5",
+    "mysql": "^2.15.0"
+  }
+}
