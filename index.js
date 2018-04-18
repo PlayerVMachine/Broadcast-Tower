@@ -143,7 +143,7 @@ edit.registerSubcommand ("status", async (msg,args) => {
 });
 
 //follow a user
-const follow = registerCommand ("follow", async (msg, args) => {
+const follow = bot.registerCommand ("follow", async (msg, args) => {
 	try {
 		let following = await db.get("Following", msg.author.id, "Users");
 
