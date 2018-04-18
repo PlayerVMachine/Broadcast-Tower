@@ -33,8 +33,8 @@ const qeval = bot.registerCommand("qeval", async (msg, args) => {
 const eval = bot.registerCommand("eval", (msg, args) => {
 	if (msg.author.id === config.creator) {
 		try {
-			res = parseJSON(args.join(" "));
-			return "```\n" + res + "\n```";
+
+			return "```\n" + args + '\n' + typeof(args[0]) + "\n```";
 		} catch (error) {
 			return "```\n The promise was rejected: " + error + "\n```";
 		}
