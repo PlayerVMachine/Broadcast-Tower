@@ -34,7 +34,7 @@ const eval = bot.registerCommand("eval", (msg, args) => {
 	if (msg.author.id === config.creator) {
 		try {
 			res = parseJSON(args.join(" "));
-			return "```\n" + JSON.stringify(res) + "\n```";
+			return "```\n" + res + "\n```";
 		} catch (error) {
 			return "```\n The promise was rejected: " + error + "\n```";
 		}
