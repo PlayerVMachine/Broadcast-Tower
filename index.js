@@ -1,178 +1,173 @@
-var Eris = require('eris');
-var db = require('./queries2.js');
-var config = require('./config.json');
+const Eris = require('eris');
 
+const config = require('./config.json');	//secrets
+const bcast = require('./broadcast.js');	//broadcast tower functions
+const db = require('./queries.js');		//database queries
+const util = require('./helper.js');		//useful functions
+
+
+//Create the bot with a few basic options
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {}, {
 	description: "Broadcast Tower adds a social media component to your Discord experience",
 	owner: "PlayerVM",
 	prefix: "b."
 });
 
+
+//###########################################
+//Testing commands
+//###########################################
+
 //ping
-const ping = bot.registerCommand("ping", "Pong!", {
+const ping = bot.registerCommand('ping', 'Pong!', {
 	//responds with "Pong!" when someone says "b.ping"
 	description: "Pong!",
-	fullDescription: "Use this to check if the bot is up or you're bored"
+	fullDescription: "Use this to check if the bot is up or you're bored",
 });
 
 //Query Tester
-const qeval = bot.registerCommand("qeval", async (msg, args) => {
-	if (msg.author.id === config.creator) {
-		try {
-			let res = await db.test_query(args.join(" "));
-			return "```\n" + JSON.stringify(res) + "\n```";
-		} catch (error) {
-			return "```\n The promise was rejected: " + error + "\n```";
-		}
+const qeval = bot.registerCommand('qeval', async (msg, args) => {
+	
+	//evaluates the sql query contained in args
+	let res = await bcast.qeval(args, bot);
 
-	} else {
-		return "Unathorized! :angry:"
-	}
+	bot.createMessage(msg.channel.id, res);
+
+}, {
+	argsRequired: true,
+	descritpion:"Evaluate a SQL query",
+	invalidUsageMessage:"That's not how this command works",
+	permissionMessage:"I'm sorry you don't have permission to use this command",
+	requirements:{userIDs:[config.creator]}
 });
 
-const eval = bot.registerCommand("eval", (msg, args) => {
-	if (msg.author.id === config.creator) {
-		try {
 
-			return "```\n" + args + '\n' + typeof(args[0]) + "\n```";
-		} catch (error) {
-			return "```\n The promise was rejected: " + error + "\n```";
-		}
+//###########################################
+//User CRUD commands
+//###########################################
 
-	} else {
-		return "Unathorized! :angry:"
-	}
-});
+//Create a user account with the tower
+const create = bot.registerCommand('create', async (msg, args) => {
+	
+	let res = await bcast.create(msg, args, bot);
 
-//Create User
-const create = bot.registerCommand("create", async (msg, args) => {
-	let check = await db.get("User", msg.author.id, "Users"); //Check if user exists
-
-	if (!Object.keys(check).length) {
-
-		let dmChan = await msg.author.getDMChannel();
-
-		let res = await db.new_user(msg.author.id, dmChan.id);
-		if (res === 1)
-			return "```\nAccount created successfully! \nCustomize your tagline and profile using b.edit tagline or b.edit profile \nFollow people using b.follow userid/mention\n```";
-		else
-			return "There was an error creating your account. " + res;
-	} else {
-		return "Looks like you already have an account!";
-	}
-
+	bot.createMessage(msg.channel.id, res);
 
 } , {
-	description: "create",
-	fullDescription: "Create an account to send/recieve broadcasts"
+	argsRequired: false,
+	aliases:["register", "reg"],
+	description: "Create an account with the Tower",
+	invalidUsageMessage:"That's not how this command works",
+	fullDescription: "Create an account with the Tower to send/recieve broadcasts",
+	usage:"b.create"
 });
 
-//Edit profile + subcommands
-const edit = bot.registerCommand("edit", (msg, args) => {
+//Edit account profile information
+const edit = bot.registerCommand('edit', async (msg, args) => {
+
+	bot.createMessage(msg.channel.id, "Use this command to edit your tagline or profile");
 
 }, {
-	description: "edit",
-	fullDescription: "Edit your profile! Subcommands: `tagline`, `profile`"
+	aliases:["update"],
+	description: "Edit your account information",
+	invalidUsageMessage:"That's not how this command works",
+	fullDescription: "Edit your account information: profile, tagline",
+	usage:"b.edit [option]"
 });
 
-edit.registerSubcommand ("tagline", async (msg, args) => {
-	try {
-		let tagline = await db.get("Tagline", msg.author.id, "Users");
+edit.registerSubcommand('tagline', async (msg, args) => {
 
-		bot.createMessage(msg.channel.id, "Your tagline is: " + tagline[0].Tagline);
-		bot.createMessage(msg.channel.id, "Enter a new tagline:");
+	let res = await db.is_user(msg.author.id);
 
-		bot.on('messageCreate', async (newmsg) => {
-			if (newmsg.author.id === msg.author.id) {
- 				let res = await db.set("Tagline", newmsg.author.id, "Users", newmsg.content);
- 				if (res === 1)
- 					bot.createMessage(msg.channel.id, "Tagline updated successfully: " + newmsg.content);
- 				else
- 					bot.createMessage(msg.channel.id, "An error occured setting your tagline please try again.");
- 			}
- 		});
+	if (res)
+		bcast.editAccount(msg, args, bot, 'Tagline');
+	else
+		bot.createMessage(msg.channel.id, "Sorry you need an account to use this command.");
 
-	} catch (e) {
-		console.log(e);
+}, {
+	aliases:['tag'],
+	description: 'Change your tagline',
+	invalidUsageMessage: `That's not how this command works`,
+	fullDescription: 'Change your tagline maximum 140 characters',
+	usage: 'b.edit tagline or b.edit tagline text'
+});
+
+edit.registerSubcommand('profile', async (msg, args) => {
+
+	let res = await db.is_user(msg.author.id);
+
+	if (res)
+		bcast.editAccount(msg, args, bot, 'Profile');
+	else
+		bot.createMessage(msg.channel.id, "Sorry you need an account to use this command.");
+
+}, {
+	description: 'Change your profile',
+	invalidUsageMessage: `That's not how this command works`,
+	fullDescription: 'Change your tagline maximum 500 characters',
+	usage: 'b.edit profile or b.edit profile text'
+});
+
+const follow = bot.registerCommand('follow', async (msg, args) => {
+
+	let res = await db.is_user(msg.author.id);
+	userid = util.isID(args[0]);
+
+	if (res && (userid != -1)) {
+		bcast.follow(msg, userid, bot);
+	} else if (!res) {
+		bot.createMessage(msg.channel.id, 'Sorry you need an account to use this command.');	
+	} else {
+		bot.createMessage(msg.channel.id, 'Please enter a valid mention or user id.');
 	}
 }, {
-	description: "Edit your tagline",
-	fullDescription: "Edit your tagline, maximum 140 characters"
+	aliases:['fol'],
+	description: 'Follow a user',
+	invalidUsageMessage: `That's not how this command works`,
+	fullDescription: 'Follow a user, use their mention or id',
+	usage: 'b.follow `@user` or user id'
 });
 
-edit.registerSubcommand ("profile", async (msg, args) => {
-	try {
-		let tagline = await db.get("Profile", msg.author.id, "Users");
+const unfollow = bot.registerCommand('unfollow', async (msg, args) => {
 
-		bot.createMessage(msg.channel.id, "Your Profile is: " + tagline[0].Profile);
-		bot.createMessage(msg.channel.id, "Enter a new profile:");
+});
 
-		bot.on('messageCreate', async (newmsg) => {
-			if (newmsg.author.id === msg.author.id) {
- 				let res = await db.set("Profile", newmsg.author.id, "Users", newmsg.content);
- 				if (res === 1)
- 					bot.createMessage(msg.channel.id, "Profile updated successfully: " + newmsg.content);
- 				else
- 					bot.createMessage(msg.channel.id, "An error occured setting your profile please try again.");
- 			}
- 		});
+const block = bot.registerCommand('block', async (msg, args) => {
 
-	} catch (e) {
-		console.log(e);
-	}
+});
+
+const clearDMs = bot.registerCommand('clear', async (msg, args) => {
+
+});
+
+const broadcast = bot.registerCommand('cast', async (msg, args) => {
+
+	let res = await db.is_user(msg.author.id);
+
+	//check contents of post for inapporopriate content
+	profane = util.isProfane(msg, bot);
+	len = msg.content.length;
+
+	if (res && !profane && len <= 2000)
+		bcast.send(msg, args, bot);
+	else if (!res)
+		bot.createMessage(msg.channel.id, 'Sorry you need an account to use this command.');
+	else if (len > 2000)
+		bot.createMessage(msg.channel.id, 'Sorry cannot send messages that are over 2000 characters');
+
 }, {
-	description: "Edit your tagline",
-	fullDescription: "Edit your tagline, maximum 500 characters"
+	aliases:['send', 'broadcast'],
+	argsRequired: true,
+	description: 'Broadcast a message to your followers',
+	invalidUsageMessage: `That's not how this command works`,
+	fullDescription: 'Broadcast a message to your followers, must be less than 2000 characters and not profane.',
+	usage: 'b.send message to send'
 });
 
-//Get Status, possible statuses: actvie, banned, disabled,
-edit.registerSubcommand ("status", async (msg,args) => {
-	try {
-		let status = await db.get("State", msg.author.id, "Users");
+//###########################################
+//Startup
+//###########################################
 
-		bot.createMessage(msg.channel.id, "Your account status is: " + status[0].State);
-
-		if (status[0].State === 'Banned')
-			bot.createMessage(msg.channel.id, "To appeal your ban head to <discord.gg/something> ");
-
-	} catch(e) {
-		console.log(e)
-	}
-}, {
-	description: "View your accout status",
-	fullDescription: "View your account status"
-});
-
-//follow a user
-const follow = bot.registerCommand ("follow", async (msg, args) => {
-	try {
-		let following = await db.get("Following", msg.author.id, "Users");
-
-		list = parseJSON(following[0].Following);
-		list.indexOf(args[0])
-
-
-	} catch (e) {
-		console.log(e);
-	}
-}, {
-	description: "Follow a user",
-	fullDescription: "Follow a user, allows you to receive their posts"
-});
-
-//Send post
-
-
-//Delete post
-
-
-
-
-function parseJSON(obj) {
-    return Function('"use strict";return (' + obj + ')')();
-}
-
-//start
 bot.on("ready", () => {
 	console.log("The Tower of Power is online.");
 });

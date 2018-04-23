@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var config = require('./config.json');
+const util = require('./helper.js');		//useful functions
 
 //Connect to the db to make queries
 function connect () {
@@ -12,11 +13,11 @@ function connect () {
 
 	connection.connect((err) => {
 		if (err) {
-			console.error('error connecting to db: ' + err.stack);
+			util.logging('error connecting to db: ' + err.stack);
 			return;
 		}
 
-		console.log('connected as id: ' + connection.threadId);
+		util.logging('connected as id: ' + connection.threadId);
 	});
 
 	return connection;
@@ -26,11 +27,12 @@ function connect () {
 function disconnect (connection) {
 	connection.end ((err) => {
 		if (err) {
-			console.error('error disconnecting from db: ' + err.stack);
+			util.logging('error disconnecting from db: ' + err.stack);
 			return;
 		}
 
-		console.log('connection to db closed.');
+		util.logging('connection to db closed.');
+		util.log_break();
 	});
 }
 
@@ -45,13 +47,12 @@ exports.test_query = function (query) {
 
 		connection.query(query, (error, results, fields) => {
 			if (error) {
-				console.log(error);
+				util.logging(error);
 				reject(error);
 			}
 
-			console.log(query);
+			util.logging(query);
 			disconnect(connection);
-			console.log('#####################');
 
 			resolve(results);
 		});
@@ -65,20 +66,19 @@ exports.new_user = function (user, sendTo) {
 
 		state = "active";	//defualt user state on creation
 		date = new Date().toISOString().slice(0, 19).replace('T', ' '); //matches SQL DATETIME Format
-
+		people = JSON.stringify({'Following':[],'Followers':[],'Blocked':[]});
 		//Query string to add a user
-		sql = "INSERT INTO Users VALUES ('" + user + "', '" + state + "', '', '', '{}', '{}','" + sendTo + "', '" + date +"')";
+		sql = "INSERT INTO Users VALUES ('" + user + "', '" + state + "', '', '', '" + people + "', '" + sendTo + "', '" + date +"')";
 
 		//make query
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error.code);
+				util.logging(error.code);
 				reject(error)
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection); //close connections
-			console.log('#####################');
 
 			resolve(results.affectedRows); //return number of affected rows (expects 1)
 		});
@@ -97,13 +97,12 @@ exports.get = function (column, user, db) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log("Error: " + error.code);
+				util.logging("Error: " + error.code);
 				reject(error);
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection);
-			console.log('###################');
 
 			resolve(results);
 		});
@@ -119,13 +118,12 @@ exports.set = function (column, user, db, value) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error);
+				util.logging(error);
 				reject(error);
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection);
-			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
@@ -141,16 +139,36 @@ exports.del_user = function(user) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error);
+				util.logging(error);
 				reject(error);
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection);
-			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
+	});
+}
+
+//check if user exists
+exports.is_user = function (user) {
+	return new Promise ( (resolve, reject) => {
+		connection = connect();
+
+		sql = "SELECT 1 FROM Users WHERE User ='" + user + "'";
+
+		connection.query(sql, (error, results, fields) => {
+			if (error) {
+				util.logging(error);
+				reject(error);
+			}
+
+			util.logging(sql);
+			disconnect(connection);
+
+			resolve(results.length);
+		});		
 	});
 }
 
@@ -163,13 +181,12 @@ exports.log_post = function (user, post) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error);
+				util.logging(error);
 				reject(error)
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection);
-			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
@@ -185,13 +202,12 @@ exports.del_post = function (post) {
 
 		connection.query(sql, (error, results, fields) => {
 			if (error) {
-				console.log(error);
+				util.logging(error);
 				reject(error)
 			}
 
-			console.log(sql);
+			util.logging(sql);
 			disconnect(connection);
-			console.log('#####################');
 
 			resolve(results.affectedRows);
 		});
