@@ -59,15 +59,6 @@ noBadLinks = (message) => {
 	return 0;
 }
 
-exports.logging = (message) => {
-	date = new Date();
-	console.log('[' + date.toLocaleDateString() + ':' + date.toLocaleTimeString() + '] ' + message);
-}
-
-exports.log_break = () => {
-	console.log('-------------------------------------------');
-}
-
 exports.makeEmbed = (title, description, msg, color) => {
 	embed =  {
             embed: {
@@ -78,18 +69,6 @@ exports.makeEmbed = (title, description, msg, color) => {
                     icon_url: msg.author.avatarURL
                 },
                 color: 0x008000, // Color, either in hex (show), or a base-10 integer
-                fields: [ // Array of field objects
-                    {
-                        name: "Some extra info.", // Field title
-                        value: "Some extra value.", // Field
-                        inline: true // Whether you want multiple fields in same line
-                    },
-                    {
-                        name: "Some more extra info.",
-                        value: "Another extra value.",
-                        inline: true
-                    }
-                ],
                 footer: { // Footer text
                     text: "Sent through the Broadcast Tower."
                 }

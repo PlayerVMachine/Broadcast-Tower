@@ -18,8 +18,10 @@
   "homepage": "https://github.com/PlayerVMachine/Broadcast-Tower#readme",
   "dependencies": {
     "eris": "^0.8.5",
+    "mongodb": "^3.0.7",
     "mysql": "^2.15.0",
     "npm": "^5.8.0",
-    "swearjar": "^0.2.0"
+    "swearjar": "^0.2.0",
+    "winston": "^2.4.2"
   }
 }
