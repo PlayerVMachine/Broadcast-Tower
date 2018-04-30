@@ -216,7 +216,5 @@ exports.addToFollowing = async (msg, user, bot) => {
 }
 
 exports.blockUser = async (msg, user, bot) => {
-	MongoClient.connect(url, async (err, client) => {
-		
-	});
+	MongoClient.connect(url, async (err, client) => {});
 }
