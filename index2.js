@@ -2,7 +2,7 @@ const Eris = require('eris');
 
 const config = require('./config.json');	//secrets
 const bcast = require('./broadcast.js');	//broadcast tower functions
-const db = require('./mongo_queries.js');		//database queries
+const db = require('./queries2.js');		//database queries
 const util = require('./helper.js');		//useful functions
 
 
@@ -18,7 +18,8 @@ const create = bot.registerCommand('create', async (msg, args) => {
 	
 	let dmChan = await msg.author.getDMChannel();
 
-	db.newUser(msg, dmChan.id, bot)
+	let res = await db.createUser(msg.author.id, dmChan.id);
+	bot.createMessage(msg.channel.id, 'res: ' + res);
 
 } , {
 	argsRequired: false,

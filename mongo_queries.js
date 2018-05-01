@@ -1,4 +1,4 @@
-//npm/node requires
+//npm requires
 const MongoClient = require('mongodb').MongoClient;
 const f = require('util').format;
 const assert = require('assert');
@@ -14,7 +14,7 @@ const password = encodeURIComponent(config.pass);
 const authMechanism = 'DEFAULT';
 
 // Connection URL
-const url = f('mongodb://%s:%s@localhost:27017/broadcast_tower?authMechanism=%s', user, password, authMechanism);
+const url = f('mongodb://%s:%s@192.168.1.210:27017/broadcast_tower?authMechanism=%s', user, password, authMechanism);
 
 //new user query
 exports.newUser = (msg, dmChan, bot) => {
@@ -189,25 +189,41 @@ exports.addToFollowing = async (msg, user, bot) => {
 
 			const col = client.db(config.db).collection('Users');
 
-			let res = await col.find({user:msg.author.id}).project({following:1, _id:0}).next();
-			list = res.following;
-			
-			if(list.indexOf(user) === -1) {
-				list.push(user);
+			let followed = await col.findOneAndUpdate({user:msg.author.id}, {$addToSet: {following:user}});
+			assert.equal(1, followed.ok);
 
-				let res = await col.updateOne({user:msg.author.id}, {$set: {following:list}});
-				assert.equal(1, res.modifiedCount);
+			let added = await col.findOneAndUpdate({user:user}, {$addToSet: {followers:msg.author.id}});
+			assert.equal(1, added.ok);
 
-				let res2 = await col.findOneAndUpdate({user:user}, {$push: {followers:msg.author.id}});
-				assert.equal(1, res2.ok);
-
-				bot.createMessage(msg.channel.id, 'Followed user successfully');
-				logger.info(msg.author.id + ' followed ' + user);
-			} else {
-				b.createMessage(msg.channel.id, 'You are already following that user!');
-			}
+			bot.createMessage(msg.channel.id, 'Followed user successfully');
+			logger.info(msg.author.id + ' followed ' + user);
 		} catch (e) {
-			logger.error(e.stack);
+			logger.error(e);
+		}
+
+		client.close();
+		logger.info('Connection closed');
+	});
+}
+
+exports.unfollow = async (msg, user, bot) => {
+	ongoClient.connect(url, async (err, client) => {
+		try {
+			assert.equal(null, err);
+			logger.info('Connected to database');
+
+			const col = client.db(config.db).collection('Users');
+
+			let followed = await col.findOneAndUpdate({user:msg.author.id}, {$pull: {following:user}});
+			assert.equal(1, followed.ok);
+
+			let added = await col.findOneAndUpdate({user:user}, {$pull: {followers:msg.author.id}});
+			assert.equal(1, added.ok);
+
+			bot.createMessage(msg.channel.id, 'Followed user successfully');
+			logger.info(msg.author.id + ' followed ' + user);
+		} catch (e) {
+			logger.error(e);
 		}
 
 		client.close();
@@ -216,5 +232,18 @@ exports.addToFollowing = async (msg, user, bot) => {
 }
 
 exports.blockUser = async (msg, user, bot) => {
-	MongoClient.connect(url, async (err, client) => {});
+	MongoClient.connect(url, async (err, client) => {
+		try {
+			assert.equal(null, error);
+			logger.info('Connected to database');
+
+			const col = client.db(config.db).collection('Users');
+
+			let blocked = await col.findOneAndUpdate({user:msg.author.id}, {$addToSet: {blocked:user}});
+			assert.equal(1, blocked.ok);
+
+		} catch (e) {
+			logger.error(e);
+		}
+	});
 }
