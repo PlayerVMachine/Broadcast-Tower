@@ -4,6 +4,7 @@
   "description": "Discord bot providing social media like functions",
   "main": "index.js",
   "dependencies": {
+    "better-queue": "^3.8.7",
     "eris": "^0.8.5",
     "mongodb": "^3.0.7",
     "npm": "^6.0.0",

@@ -1,6 +1,5 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
-const ObjectID = require('mongodb').ObjectID
 const f = require('util').format
 const log = require('winston')
 
@@ -15,7 +14,7 @@ const authMechanism = 'DEFAULT'
 // Connection URL
 const url = f('mongodb://%s:%s@127.0.0.1:27017/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-exports.createUser = async (userid, dmChannel) => {
+exports.createUser = async (userid, dmChannelid) => {
 	try {
 		let client = await MongoClient.connect(url)
 		log.info('Connected to database')
@@ -23,7 +22,6 @@ exports.createUser = async (userid, dmChannel) => {
 		const col = client.db(config.db).collection('Users')
 
 		const userdata = {
-			_id: ObjectID.createFromTime(new Date()),
 			user: userid,
 			status: 'active',
 			tagline: '',
@@ -31,7 +29,7 @@ exports.createUser = async (userid, dmChannel) => {
 			following: [],
 			followers: [],
 			blocked: [],
-			sendTo: dmChannel,
+			sendTo: dmChannelid,
 			mature: false,
 			dnd: false,
 			joined: new Date(),
@@ -82,7 +80,7 @@ exports.deleteUser = async (userid) => {
 // works for status, tagline, bio, sendTo, mature, dnd, eColor, premium
 exports.setField = async (userid, field, value) => {
 	try {
-		let client = MongoClient.connect(url)
+		let client = await MongoClient.connect(url)
 		log.info('Connected to database')
 
 		const col = client.db(config.db).collection('Users')
@@ -106,7 +104,7 @@ exports.setField = async (userid, field, value) => {
 // append to followers, following, blocked
 exports.pushUserToList = async (userid, list, value) => {
 	try {
-		let client = MongoClient.connect(url)
+		let client = await MongoClient.connect(url)
 		log.info('Connected to database')
 
 		const col = client.db(config.db).collection('Users')
@@ -187,14 +185,14 @@ exports.userInList = async (userid, list, value) => {
 		const col = client.db(config.db).collection('Users')
 
 		let found = await col.findOne({user: userid, [list]: value})
-		if (userid === found.user) {
-			client.close()
-			log.info('Connection closed')
-			return 1
-		} else {
+		if (found === null) {
 			client.close()
 			log.info('Connection closed')
 			return 0
+		} else {
+			client.close()
+			log.info('Connection closed')
+			return 1
 		}
 	} catch (e) {
 		log.error(e)

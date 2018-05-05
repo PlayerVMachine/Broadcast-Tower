@@ -19,27 +19,34 @@ exports.getUserObj = async (userid, bot) => {
   return user
 }
 
+exports.isUserBot = async (userid, bot) => {
+  let user = await bot.users.get(userid)
+  return user.bot
+}
+
 exports.sleep = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-exports.profileEmbed = (doc) => {
-  let user = module.exports.getUserObj(doc.user)
+exports.profileEmbed = async (doc, bot) => {
+  let user = await module.exports.getUserObj(doc.user, bot)
+
+  if(doc.tagline === '')
+    doc.tagline = 'not set'
 
   var embed = {
     embed: {
-      title: user.username, // Title of the embed
       description: doc.bio,
       author: { // Author property
         name: user.username,
         icon_url: user.avatarURL
       },
-      color: doc.eColor, // Color, either in hex (show), or a base-10 integer
+      color: doc.eColor, // Color, a base-10 integer
       fields: [ // Array of field objects
         {
           name: 'Tagline: ', // Field title
           value: doc.tagline, // Field
-          inline: true // Whether you want multiple fields in same line
+          inline: false // Whether you want multiple fields in same line
         },
         {
           name: 'Followers: ',
@@ -64,7 +71,7 @@ exports.profileEmbed = (doc) => {
 exports.postEmbed = (msg, user) => {
   var embed = {
     embed: {
-      title: user.username, // Title of the embed
+      title: 'New broadcast from: ' + user.username, // Title of the embed
       description: msg,
       author: { // Author property
         name: user.username,
