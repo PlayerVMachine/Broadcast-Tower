@@ -17,6 +17,7 @@ const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	defaultImageSize:256
 }, {
+	defaultHelpCommand: false,
 	description:'Discord bot providing social media functions',
 	name:'Broadcast Tower',
 	owner:'PlayerVMachine#6223',
