@@ -140,7 +140,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 	argsRequired:true,
 	cooldown: 2000,
 	description: reply.unblock.description,
-	fullDescription: reply.unblock.fullDescription
+	fullDescription: reply.unblock.fullDescription,
 	usage:reply.unblock.usage
 })
 
@@ -185,7 +185,7 @@ const editMature = bot.registerCommand('mature', async (msg, args) => {
 	aliases: ['rating', 'm'],
 	cooldown: 5000,
 	description: reply.mature.description,
-	fullDescription: reply.mature.fullDescription
+	fullDescription: reply.mature.fullDescription,
 	usage: reply.mature.usage
 })
 
@@ -205,7 +205,7 @@ const seeProfile = bot.registerCommand('profile', async (msg, args) => {
 	aliases: ['prof', 'pf'],
 	cooldown: 20000,
 	description: reply.profile.description,
-	fullDescription: reply.profile.fullDescription
+	fullDescription: reply.profile.fullDescription,
 	usage: reply.profile.usage
 })
 
@@ -228,7 +228,7 @@ const list = bot.registerCommand('list', async (msg, args) => {
 	aliases: ['ls', 'li'],
 	cooldown: 5000,
 	description: reply.list.description,
-	fullDescription: reply.list.fullDescription
+	fullDescription: reply.list.fullDescription,
 	usage: reply.list.usage
 })
 
@@ -250,7 +250,7 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 	aliases: ['cls', 'clear'],
 	cooldown: 20000,
 	description: reply.clearDMs.description,
-	fullDescription: reply.clearDMs.fullDescription
+	fullDescription: reply.clearDMs.fullDescription,
 	usage: reply.clearDMs.usage
 })
 
@@ -260,7 +260,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 
 	let followers = await db.getFields(msg.author.id, 'followers')
 	let resChannel = await db.getFields(msg.author.id, 'sendTo')
-	
+
 	var message = args.join(' ')
 	if (nonPrintingChars.test(message))
 		return util.format(reply.post.noNonPrinting, msg.author.id)
@@ -281,7 +281,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	aliases: ['cast', 'send'],
 	cooldown: 10000,
 	description: reply.post.description,
-	fullDescription: reply.post.fullDescription
+	fullDescription: reply.post.fullDescription,
 	usage: reply.post.usage
 })
 
