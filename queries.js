@@ -12,7 +12,7 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 
 // Connection URL
-const url = f('mongodb://%s:%s@127.0.0.1:27017/broadcast_tower?authMechanism=%s', user, password, authMechanism)
+const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
 exports.createUser = async (userid, dmChannelid) => {
 	try {
