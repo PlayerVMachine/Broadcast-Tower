@@ -93,7 +93,7 @@
 	"profile" : {
 		"description":"View your profile or a users profile.",
 		"fullDescription":"View your profile or a users profile.",
-		"usage":"`b.profile` or `b.profile @user`",
+		"usage":"`b.profile` or `b.profile @user`"
 	},
 	"clearDMs" : {
 		"description":"Clears up to 50 posts from the bot in DMs",
