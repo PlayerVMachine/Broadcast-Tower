@@ -171,8 +171,6 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 	if (blockeeHasAccount === 0)
 		return args[0] + ' does not have a broadcast station!'
 
-	let hasAccount = await db.userExists(msg.author.id);
-
 	if (hasAccount === 1 && blockeeHasAccount === 1)
 		commands.block(msg, blockid ,bot)
 	else
