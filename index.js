@@ -17,7 +17,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	description:'Discord bot providing social media functions',
 	name:'Broadcast Tower',
 	owner:'PlayerVMachine#6223',
-	prefix: 'b.'
+	prefix: ['b.', '🅱']
 })
 
 //Define Message queue
@@ -84,6 +84,10 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 })
 
 const followUser = bot.registerCommand('follow', async (msg, args) => {
+	let hasAccount = await db.userExists(msg.author.id);
+	if (hasAccount === 0)
+		return `Woah you don't have a broadcast station!`
+
 	var followid = fns.isID(args[0])
 	if (followid === -1)
 		return 'Please enter a valid user mention or user id'
@@ -91,24 +95,18 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 	if (followid === msg.author.id)
 		return 'Cannot tune into your own boradcasts!'
 
-	let followeeHasAccount = await db.userExists(followid);
-	if (followeeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
 	let isBot = await fns.isUserBot(followid, bot)
 	if (isBot)
 		return 'Cannot tune into broadcasts from bots!'
 
-	let hasAccount = await db.userExists(msg.author.id);
-	
+	let followeeHasAccount = await db.userExists(followid);
+	if (followeeHasAccount === 0)
+		return args[0] + ' does not have a broadcast station!'	
 
-	if (hasAccount === 1 && followeeHasAccount) {
+	if (hasAccount === 1 && followeeHasAccount)
 		commands.follow(msg, followid ,bot)
-	} else if (hasAccount === 0) {
-		return `Woah you don't have a broadcast station!`
-	} else {
+	else
 		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-	}
 
 }, {
 	aliases: ['fol'],
@@ -120,6 +118,10 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 })
 
 const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
+	let hasAccount = await db.userExists(msg.author.id);
+	if (hasAccount === 0)
+		return `Woah you don't have a broadcast station!`
+
 	var unfollowid = fns.isID(args[0])
 	if (unfollowid === -1)
 		return 'Please enter a valid user mention or user id'
@@ -127,23 +129,18 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 	if (unfollowid === msg.author.id)
 		return 'Cannot unfollow your self!'
 
-	let unfolloweeHasAccount = await db.userExists(unfollowid);
-	if (unfolloweeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
 	let isBot = await fns.isUserBot(unfollowid, bot)
 	if (isBot)
 		return 'Cannot follow/unfollow bots!'
 
-	let hasAccount = await db.userExists(msg.author.id);
+	let unfolloweeHasAccount = await db.userExists(unfollowid);
+	if (unfolloweeHasAccount === 0)
+		return args[0] + ' does not have a broadcast station!'
 
-	if (hasAccount === 1 && unfolloweeHasAccount === 1) {
+	if (hasAccount === 1 && unfolloweeHasAccount === 1)
 		commands.unfollow(msg, unfollowid ,bot)
-	} else if (hasAccount === 0) {
-		return `Woah you don't have a broadcast station!`
-	} else {
+	else
 		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-	}
 
 }, {
 	aliases: ['unfol', 'uf'],
@@ -155,6 +152,10 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 })
 
 const blockUser = bot.registerCommand('block', async (msg, args) => {
+	let hasAccount = await db.userExists(msg.author.id);
+	if (hasAccount === 0)
+		return `Woah you don't have a broadcast station!`
+
 	var blockid = fns.isID(args[0])
 	if (blockid === -1)
 		return 'Please enter a valid user mention or user id'
@@ -162,23 +163,20 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 	if (blockid === msg.author.id)
 		return 'Cannot block your self! Just like your shadow'
 
-	let blockeeHasAccount = await db.userExists(blockid);
-	if (blockeeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
 	let isBot = await fns.isUserBot(blockid, bot)
 	if (isBot)
 		return 'Cannot block bots!'
 
+	let blockeeHasAccount = await db.userExists(blockid);
+	if (blockeeHasAccount === 0)
+		return args[0] + ' does not have a broadcast station!'
+
 	let hasAccount = await db.userExists(msg.author.id);
 
-	if (hasAccount === 1 && blockeeHasAccount === 1) {
+	if (hasAccount === 1 && blockeeHasAccount === 1)
 		commands.block(msg, blockid ,bot)
-	} else if (hasAccount === 0) {
-		return `Woah you don't have a broadcast station!`
-	} else {
+	else
 		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-	}
 
 }, {
 	aliases: ['bl'],

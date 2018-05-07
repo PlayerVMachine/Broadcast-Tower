@@ -6,6 +6,7 @@ const setTimeoutPromise = util.promisify(setTimeout)
 const config = require('./config.json')   // secrets
 const fns = require('./utilities.js') // useful functions
 const db = require('./queries.js') // database queries
+const reply = require('./proto_messages.json')
 
 /// ///////////////////////////////
 // Eval Functions               //
@@ -45,7 +46,7 @@ exports.create = async (msg, bot) => {
     let res = await db.createUser(msg.author.id, dmChannel.id)
 
     if (res === 1) { 
-        bot.createMessage(msg.channel.id, msg.author.username + ', your account has been created! You are ready to broadcast!')
+        bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
     } else if (res === 0) { 
         bot.createMessage(msg.channel.id, msg.author.username + ', there was an error creating your account, please try again later.') 
     } else if (res === -1) { 
