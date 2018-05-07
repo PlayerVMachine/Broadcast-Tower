@@ -94,12 +94,12 @@ exports.follow = async (msg, followid, bot) => {
     // check if user is already follwing the other user
     let isInList = await db.userInList(msg.author.id, 'following', followid)
     let isBlocked = await db.userInList(msg.author.id, 'blocked', followid)
-    if (isBlocked === 1) {
+    if (isBlocked) {
         bot.createMessage(msg.channel.id, 'You blocked that user! Cannot follow them')
         return
     }
     let theyBlocked = await db.userInList(followid, 'blocked', msg.author.id)
-    if (theyBlocked === 1) {
+    if (theyBlocked) {
         bot.createMessage(msg.channel.id, 'They have blocked you! Cannot follow them')
         return
     }

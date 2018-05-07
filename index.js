@@ -1,12 +1,15 @@
 //module imports
-const Eris = require('eris');
-const Queue = require('better-queue');
+const Eris = require('eris')
+const Queue = require('better-queue')
+const util = require('util')
 
 //project module imports
 const config = require('./config.json')
 const fns = require('./utilities.js') // useful functions
 const db = require('./queries.js') // database queries
 const commands = require('./commands.js'); //actual bot commands moduled for tidiness
+const reply = require('./proto_messages.json')
+
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 
@@ -17,13 +20,16 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	description:'Discord bot providing social media functions',
 	name:'Broadcast Tower',
 	owner:'PlayerVMachine#6223',
-	prefix: ['b.', '🅱']
+	prefix: ['b.', '🅱'],
+	defaultCommandOptions: {
+		cooldownMessage:reply.generic.cooldownMessage
+	}
 })
 
 //Define Message queue
 var q = new Queue(function (data, cb) {
-  bot.createMessage(data.channelID, data.msg)
-  cb(null, data.fin)
+	bot.createMessage(data.channelID, data.msg)
+	cb(null, data.fin)
 }, {
 	afterProcessDelay:1000
 })
@@ -38,30 +44,29 @@ bot.on("ready", () => { // When the bot is ready
 //////////////////////
 
 const ping = bot.registerCommand('ping', 'Pong!', {
-	caseInsensitive:true,
+	caseInsensitive: true,
 	cooldown: 5000,
-	cooldownMessage: 'The Signal is strong, patience is key.',
-	description:'No one asks how the bot is only ping',
-	usage:'duh'
+	description: reply.ping.description,
+	fullDescription: reply.ping.fullDescription,
+	usage: reply.ping.usage
 })
 
 const createAccount = bot.registerCommand('create', async (msg, args) => {
 	let hasAccount = await db.userExists(msg.author.id);
 
-	if (hasAccount === 0 ) {	
+	if (hasAccount === 0 )	
 		commands.create(msg, bot)
-	} else if (hasAccount === 1) {
-		return 'Woah you already have a broadcast station!'
-	} else {
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-	}
+	else if (hasAccount === 1)
+		return util.format(reply.create.alreadyHasAccount, msg.author.username)
+	else
+		return util.format(reply.generic.failure, msg.author.username)
 
 }, {
 	aliases: ['signup', 'join', 'register'],
 	cooldown: 10000,
-	cooldownMessage: 'The Signal is strong, patience is key.',
-	description:'Create an account with the Tower to start broadcasting',
-	usage:'b.create'
+	description: reply.create.description,
+	fullDescription: reply.create.fullDescription,
+	usage: reply.create.description
 })
 
 const deleteAccount = bot.registerCommand('close', async (msg, args) => {
@@ -70,209 +75,138 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 	if (hasAccount === 1 ) {	
 		commands.delete(msg, bot)
 	} else if (hasAccount === 0) {
-		return `Woah you don't have a broadcast station to close!`
+		return util.format(reply.generic.useeNoAccount, msg.author.username)
 	} else {
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
+		return util.format(reply.generic.failure, msg.author.username)
 	}
 
 }, {
 	aliases: ['delete', 'rm', 'del'],
 	cooldown: 10000,
-	cooldownMessage: 'The Signal is strong, patience is key.',
-	description:'Close your account and end your transmissions',
-	usage:'b.close'
+	description: reply.close.description,
+	fullDescription: reply.close.fullDescription,
+	usage: reply.close.usage
 })
 
 const followUser = bot.registerCommand('follow', async (msg, args) => {
-	let hasAccount = await db.userExists(msg.author.id);
-	if (hasAccount === 0)
-		return `Woah you don't have a broadcast station!`
+	let res = await fns.safetyChecks(msg, bot)
 
-	var followid = fns.isID(args[0])
-	if (followid === -1)
-		return 'Please enter a valid user mention or user id'
-
-	if (followid === msg.author.id)
-		return 'Cannot tune into your own boradcasts!'
-
-	let isBot = await fns.isUserBot(followid, bot)
-	if (isBot)
-		return 'Cannot tune into broadcasts from bots!'
-
-	let followeeHasAccount = await db.userExists(followid);
-	if (followeeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'	
-
-	if (hasAccount === 1 && followeeHasAccount)
+	if (res)
 		commands.follow(msg, followid ,bot)
-	else
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-
 }, {
 	aliases: ['fol'],
 	argsRequired: true,
 	cooldown: 2000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Follow a user to recieve their broadcasts',
-	usage:'b.follow `@user` or b.follow `userid`'
+	description: reply.follow.description,
+	fullDescription: reply.follow.fullDescription,
+	usage: reply.follow.usage
 })
 
 const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
-	let hasAccount = await db.userExists(msg.author.id);
-	if (hasAccount === 0)
-		return `Woah you don't have a broadcast station!`
+	let res = await fns.safetyChecks(msg, bot)
 
-	var unfollowid = fns.isID(args[0])
-	if (unfollowid === -1)
-		return 'Please enter a valid user mention or user id'
-
-	if (unfollowid === msg.author.id)
-		return 'Cannot unfollow your self!'
-
-	let isBot = await fns.isUserBot(unfollowid, bot)
-	if (isBot)
-		return 'Cannot follow/unfollow bots!'
-
-	let unfolloweeHasAccount = await db.userExists(unfollowid);
-	if (unfolloweeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
-	if (hasAccount === 1 && unfolloweeHasAccount === 1)
-		commands.unfollow(msg, unfollowid ,bot)
-	else
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-
+	if (res)
+		commands.unfollow(msg, args[0] ,bot)
 }, {
 	aliases: ['unfol', 'uf'],
 	argsRequired: true,
 	cooldown: 2000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Unfollow a user to stop recieving their broadcasts',
-	usage:'b.unfollow `@user` or b.unfollow `userid`'
+	description: reply.unfollow.description,
+	fullDescription: reply.unfollow.fullDescription,
+	usage: reply.unfollow.usage
 })
 
 const blockUser = bot.registerCommand('block', async (msg, args) => {
-	let hasAccount = await db.userExists(msg.author.id);
-	if (hasAccount === 0)
-		return `Woah you don't have a broadcast station!`
+	let res = await fns.safetyChecks(msg, bot)
 
-	var blockid = fns.isID(args[0])
-	if (blockid === -1)
-		return 'Please enter a valid user mention or user id'
-
-	if (blockid === msg.author.id)
-		return 'Cannot block your self! Just like your shadow'
-
-	let isBot = await fns.isUserBot(blockid, bot)
-	if (isBot)
-		return 'Cannot block bots!'
-
-	let blockeeHasAccount = await db.userExists(blockid);
-	if (blockeeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
-	if (hasAccount === 1 && blockeeHasAccount === 1)
-		commands.block(msg, blockid ,bot)
-	else
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-
+	if (res)
+		commands.block(msg, args[0] ,bot)
 }, {
 	aliases: ['bl'],
 	argsRequired: true,
 	cooldown: 2000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Block a user to prevent the from recieving your broadcasts and you recieving theirs broadcasts',
-	usage:'b.block `@user` or b.block `userid`'
+	description: reply.block.description,
+	fullDescription: reply.block.fullDescription,
+	usage: reply.block.usage
 })
 
 const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
-	var unblockid = fns.isID(args[0])
-	if (unblockid === -1)
-		return 'Please enter a valid user mention or user id'
+	let res = await fns.safetyChecks(msg, bot)
 
-	if (unblockid === msg.author.id)
-		return 'Cannot unblock your self! Just like your shadow'
-
-	let unblockeeHasAccount = await db.userExists(unblockid);
-	if (unblockeeHasAccount === 0)
-		return args[0] + ' does not have a broadcast station!'
-
-	let isBot = await fns.isUserBot(unblockid, bot)
-	if (isBot)
-		return 'Cannot unblock bots!'
-
-	let hasAccount = await db.userExists(msg.author.id);
-
-	if (hasAccount === 1 && unblockeeHasAccount === 1) {
-		commands.unblock(msg, unblockid ,bot)
-	} else if (hasAccount === 0) {
-		return `Woah you don't have a broadcast station!`
-	} else {
-		return msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.'
-	}
-
+	if (res)
+		commands.unblock(msg, args[0] ,bot)
 }, {
 	aliases: ['unb'],
 	argsRequired:true,
 	cooldown: 2000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'unblock a user to follow them/let them follow you',
-	usage:'b.block `@user` or b.block `userid`'
+	description: reply.unblock.description,
+	fullDescription: reply.unblock.fullDescription
+	usage:reply.unblock.usage
 })
 
 const editTagline = bot.registerCommand('tagline', async (msg, args) => {
-	var text = args.join(' ')
-	if (text.length < 140) {
-		let setTagline = await commands.setTagline(msg, text, bot)
-	} else {
-		bot.createMessage(msg.channel.id, 'Sorry your tagline is too long (maximum is 140 characters)')
+	let isUser = await fns.userHasAccount(msg, bot)
+	if (res) {
+		var text = args.join(' ')
+		if (text.length < 140)
+			let setTagline = await commands.setTagline(msg, text, bot)
+		else
+			return util.format(reply.tagline.isTooLong, msg.author.id)
 	}
 }, {
 	aliases: ['tl'],
 	cooldown: 5000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Allows you to set your profile tagline (maximum 140 characters)',
-	usage:'b.tagline text'
+	description: reply.tagline.description,
+	fullDescription: reply.tagline.fullDescription,
+	usage: reply.tagline.usage
 })
 
 const editBio = bot.registerCommand('bio', async (msg, args) => {
-	var text = args.join(' ')
-	if (text.length < 400) {
-		let setBio = await commands.setBio(msg, text, bot)
-	} else {
-		bot.createMessage(msg.channel.id, 'Sorry your bio is too long (maximum is 400 characters)')
+	let isUser = await fns.userHasAccount(msg, bot)
+	if (res) {
+		var text = args.join(' ')
+		if (text.length < 400)
+			let setBio = await commands.setBio(msg, text, bot)
+		else
+			return util.format(reply.bio.isTooLong, msg.author.id)
 	}
 }, {
-	aliases: ['b'],
 	cooldown: 5000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Allows you to set your profile bio (maximum 400 characters)',
-	usage:'b.bio text'
+	description: reply.bio.description,
+	fullDescription: reply.bio.fullDescription,
+	usage: reply.bio.usage
 })
 
 const editMature = bot.registerCommand('mature', async (msg, args) => {
-	let setMature = await commands.toggleMature(msg, bot)
+	let isUser = await fns.userHasAccount(msg, bot
+		if (res)
+			let setMature = await commands.toggleMature(msg, bot)
 }, {
 	aliases: ['rating', 'm'],
 	cooldown: 5000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Toggle mature setting (off disables most profanity checking)',
-	usage:'b.mature'
+	description: reply.mature.description,
+	fullDescription: reply.mature.fullDescription
+	usage: reply.mature.usage
 })
 
 const seeProfile = bot.registerCommand('profile', async (msg, args) => {
-	if (args.length === 0)
-		var profileID = msg.author.id 
-	else
-		var profileID = fns.isID(args[0])
+	if (args.length === 0) {
+		let isUser = await fns.userHasAccount(msg, bot
+			if (res)
+				var profileID = msg.author.id 
+	} else {
+		let res = await fns.safetyChecks(msg, bot)
+		if (res)
+			var profileID = fns.isID(args[0])
+	}
 
 	let profile = await commands.viewProfile(msg, profileID, bot)
 }, {
 	aliases: ['prof', 'pf'],
 	cooldown: 20000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'View a users profile or your own',
-	usage:'b.profile or b.profile `@user` or `userid`'
+	description: reply.profile.description,
+	fullDescription: reply.profile.fullDescription
+	usage: reply.profile.usage
 })
 
 const list = bot.registerCommand('list', async (msg, args) => {
@@ -286,11 +220,16 @@ const list = bot.registerCommand('list', async (msg, args) => {
 	} else if (list === 'following') {
 		let userList = await commands.listUsers(msg, list, bot)
 		bot.createMessage(msg.channel.id, userList)
-	} else
-		return 'List must be one of: followers, following, blocked'
+	} else {
+		return util.format(reply.list.notAList, msg.author.username)
+	}
 
 }, {
-
+	aliases: ['ls', 'li'],
+	cooldown: 5000,
+	description: reply.list.description,
+	fullDescription: reply.list.fullDescription
+	usage: reply.list.usage
 })
 
 const clearDMs = bot.registerCommand('clean', async (msg, args) => {
@@ -308,18 +247,23 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 			console.log(e.message)
 		}
 }, {
-
+	aliases: ['cls', 'clear'],
+	cooldown: 20000,
+	description: reply.clearDMs.description,
+	fullDescription: reply.clearDMs.fullDescription
+	usage: reply.clearDMs.usage
 })
 
 const post = bot.registerCommand('post', async (msg, args) => {
 	if(args.length === 0)
-		return 'No blank posts plskthx'
+		return util.format(reply.post.noBlankPosts, msg.author.id)
 
 	let followers = await db.getFields(msg.author.id, 'followers')
 	let resChannel = await db.getFields(msg.author.id, 'sendTo')
+	
 	var message = args.join(' ')
 	if (nonPrintingChars.test(message))
-		return 'Heck off with your non printing characters'
+		return util.format(reply.post.noNonPrinting, msg.author.id)
 
 	var post = fns.postEmbed(message, msg.author)
 
@@ -329,16 +273,16 @@ const post = bot.registerCommand('post', async (msg, args) => {
 			q.push({channelID:channelID, msg:post, fin:''})
 		} else {
 			q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-				bot.createMessage(resChannel, 'Sent the following post to your followers: ' + message)
+				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message)
 			})
 		}
 	}
 }, {
-	aliases: ['cast', 'c'],
+	aliases: ['cast', 'send'],
 	cooldown: 10000,
-	cooldownMessage:'The Signal is strong, patience is key.',
-	description:'Broadcast a message to your followers.',
-	usage:'b.post Follow the signal'
+	description: reply.post.description,
+	fullDescription: reply.post.fullDescription
+	usage: reply.post.usage
 })
 
 //actually connect

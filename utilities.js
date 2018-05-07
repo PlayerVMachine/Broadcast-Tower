@@ -1,5 +1,7 @@
 // const filter = require('swearjar')
 const config = require('./config.json')
+const config = require('./queries.js')
+const reply = require('./proto_messages.json')
 
 // match user mentions and id strings
 const matchUserMention = new RegExp('<@[0-9]{18}>')
@@ -19,9 +21,58 @@ exports.getUserObj = async (userid, bot) => {
   return user
 }
 
+exports.getUsername = async (userid, bot) => {
+  let user = await bot.users.get(userid)
+  return user.username 
+}
+
 exports.isUserBot = async (userid, bot) => {
   let user = await bot.users.get(userid)
   return user.bot
+}
+
+exports.userHasAccount = async (msg, bot) => {
+  let hasAccount = await db.userExists(msg.author.id);
+  if (hasAccount === 0) {
+    bot.createMessage(msg.channel.id, util.format(reply.generic.useeNoAccount, msg.author.username))
+    return false
+  }
+  return true
+}
+
+exports.safetyChecks = async (msg, bot) => {
+  let hasAccount = await db.userExists(msg.author.id);
+  if (hasAccount === 0) {
+    bot.createMessage(msg.channel.id, util.format(reply.generic.useeNoAccount, msg.author.username))
+    return false
+  }
+
+  var secondID = module.exports.isID(msg.content.split(' ')[1])
+  if (followid === -1) {
+    bot.createMessage(msg.channel.id, util.format(reply.generic.invalidID, msg.author.username, msg.content.split(' ')[1]))
+    return false
+  }
+
+  if (secondID === msg.author.id) {
+    bot.createMessage(msg.channel.id, util.format(reply.generic.cannotDoToSelf, msg.author.username))
+    return false
+  }
+
+  let isBot = await module.exports.isUserBot(secondID, bot)
+  if (isBot){
+    bot.createMessage(msg.channel.id, util.format(reply.generic.cannotDoToBots, msg.author.username))
+    return false
+  }
+
+  let followeeHasAccount = await db.userExists(secondID)
+  let secondUsername = await module.exports.getUsername(secondID, bot)
+  if (followeeHasAccount === 0) {
+    bot.createMessage(msg.channel.id, util.format(reply.generic.UserNoAccount, msg.author.username, secondUsername))
+    return false
+  }
+
+  //checks passed
+  return true
 }
 
 exports.sleep = async (ms) => {

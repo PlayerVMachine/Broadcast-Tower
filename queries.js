@@ -188,11 +188,11 @@ exports.userInList = async (userid, list, value) => {
 		if (found === null) {
 			client.close()
 			log.info('Connection closed')
-			return 0
+			return false
 		} else {
 			client.close()
 			log.info('Connection closed')
-			return 1
+			return true
 		}
 	} catch (e) {
 		log.error(e)
