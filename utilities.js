@@ -148,6 +148,6 @@ exports.rand4Digit = () => {
 
 exports.log = (bot, message) => {
   let date = new Date().toLocaleString('en-GB', { timeZone: 'America/New_York' })
-  comsole.log(util.format(date, message))
+  console.log(util.format(date, message))
   bot.createMessage(config.logChannelID, util.format(date, message))
 }
