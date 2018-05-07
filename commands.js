@@ -47,11 +47,13 @@ exports.create = async (msg, bot) => {
 
     if (res === 1) { 
         bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
-        fns.log(bot, 'account created for ' + msg.author.username)
+        fns.log(bot, util.format(reply.create.logSuccess, msg.author.mention))
     } else if (res === 0) { 
-        bot.createMessage(msg.channel.id, msg.author.username + ', there was an error creating your account, please try again later.') 
+        bot.createMessage(msg.channel.id, util.format(reply.create.accountNotCreated, msg.author.username))
+        fns.log(bot, util.format(reply.create.logError, msg.author.mention)) 
     } else if (res === -1) { 
-        bot.createMessage(msg.channel.id, msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.') 
+        bot.createMessage(msg.channel.id, util.format(reply.generic.failure, msg.author.username))
+        fns.log(bot, util.format(reply.create.logFailure, 'create', msg.author.mention))
     }
 }
 

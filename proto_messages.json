@@ -1,6 +1,7 @@
 {
 	"generic" : {
 		"failure":"%s, sorry an antenna broke somewhere! If this message persists contact Hal.",
+		"logFailure":"Failure occured in %s for %s",
 		"useeNoAccount":"%s, you do not have a broadcast station!",
 		"userNoAccount":"%s, %s does not have a broadcast station.",
 		"invalidID":"%s, %s is not a valid user id or mention.",
@@ -14,14 +15,18 @@
 		"usage":"`b.ping`"
 	},
 	"create" : {
+		"logSuccess":": Account created for %s",
+		"logError":": Account could not be created for %s",
 		"accountCreated":"%s, your account has been created! You are ready to broadcast!",
-		"accountCreationError":"%s, there was an error creating your account, please try again later.",
+		"accountNotCreated":"%s, there was an error creating your account, please try again later.",
 		"alreadyHasAccount":"s, you already have an account!",
 		"description":"Create a station with the Tower to start broadcasting.",
 		"fullDescription":"Create an account to use the bot's features.",
 		"usage":"`b.create`"
 	},
 	"close" : {
+		"logSuccess":": Account deleted for %s",
+		"logError":": Error occured deleting account for %s",
 		"accountClosed":"%s, your account has been closed! The airwaves will miss your broadcasts.",
 		"accountClosedError":"%s, there was an error closing your account, please try again later.",
 		"closeConfirmation":"%s, are you sure you want to close your account? Confirm with: `%d`, cancel with `cancel`",
