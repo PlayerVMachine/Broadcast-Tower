@@ -290,5 +290,9 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	usage: reply.post.usage
 })
 
+const help = bot.registerCommand('help', (msg, args) => {
+	
+})
+
 //actually connect
 bot.connect()

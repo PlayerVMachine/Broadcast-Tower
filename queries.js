@@ -17,7 +17,6 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 exports.createUser = async (userid, dmChannelid) => {
 	try {
 		let client = await MongoClient.connect(url)
-		log.info('Connected to database')
 
 		const col = client.db(config.db).collection('Users')
 

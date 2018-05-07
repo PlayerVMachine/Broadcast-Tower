@@ -1,3 +1,5 @@
+const util = require('util')
+
 // const filter = require('swearjar')
 const config = require('./config.json')
 const db = require('./queries.js')
@@ -142,4 +144,10 @@ exports.rand4Digit = () => {
   var min = Math.ceil(1000)
   var max = Math.floor(9999)
   return Math.floor(Math.random() * (max - min)) + min // The maximum is exclusive and the minimum is inclusive
+}
+
+exports.log = (bot, message) => {
+  let date = new Date().toLocaleString('en-GB', { timeZone: 'America/New_York' })
+  comsole.log(util.format(date, message)
+  bot.createMessage(config.logChannelID, util.format(date, message))
 }

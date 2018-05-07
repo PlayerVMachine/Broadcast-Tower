@@ -47,6 +47,7 @@ exports.create = async (msg, bot) => {
 
     if (res === 1) { 
         bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
+        fns.log(bot, 'account created for ' + msg.author.username)
     } else if (res === 0) { 
         bot.createMessage(msg.channel.id, msg.author.username + ', there was an error creating your account, please try again later.') 
     } else if (res === -1) { 
