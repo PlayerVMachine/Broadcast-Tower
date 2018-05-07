@@ -277,7 +277,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 			q.push({channelID:channelID, msg:post, fin:''})
 		} else {
 			q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message)
+				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
 			})
 		}
 	}
