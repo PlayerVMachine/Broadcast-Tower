@@ -98,7 +98,7 @@
 	"clearDMs" : {
 		"description":"Clears up to 50 posts from the bot in DMs",
 		"fullDescription":"Clears up to 50 posts from the bot in DMs",
-		"usage":"`b.clean`",
+		"usage":"`b.clean`"
 	},
 	"list" : {
 		"notAlist":"%s, list must be one of following, followers, blocked",
