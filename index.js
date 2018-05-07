@@ -148,10 +148,11 @@ const editTagline = bot.registerCommand('tagline', async (msg, args) => {
 	let isUser = await fns.userHasAccount(msg, bot)
 	if (res) {
 		var text = args.join(' ')
-		if (text.length < 140)
+		if (text.length < 140) {
 			let setTagline = await commands.setTagline(msg, text, bot)
-		else
+		} else {
 			return util.format(reply.tagline.isTooLong, msg.author.id)
+		}
 	}
 }, {
 	aliases: ['tl'],
@@ -165,10 +166,12 @@ const editBio = bot.registerCommand('bio', async (msg, args) => {
 	let isUser = await fns.userHasAccount(msg, bot)
 	if (res) {
 		var text = args.join(' ')
-		if (text.length < 400)
+		if (text.length < 400) {
 			let setBio = await commands.setBio(msg, text, bot)
-		else
+		}
+		else {
 			return util.format(reply.bio.isTooLong, msg.author.id)
+		}
 	}
 }, {
 	cooldown: 5000,
@@ -178,9 +181,10 @@ const editBio = bot.registerCommand('bio', async (msg, args) => {
 })
 
 const editMature = bot.registerCommand('mature', async (msg, args) => {
-	let isUser = await fns.userHasAccount(msg, bot
-		if (res)
+	let isUser = await fns.userHasAccount(msg, bot)
+		if (res) {
 			let setMature = await commands.toggleMature(msg, bot)
+		}
 }, {
 	aliases: ['rating', 'm'],
 	cooldown: 5000,
@@ -191,7 +195,7 @@ const editMature = bot.registerCommand('mature', async (msg, args) => {
 
 const seeProfile = bot.registerCommand('profile', async (msg, args) => {
 	if (args.length === 0) {
-		let isUser = await fns.userHasAccount(msg, bot
+		let isUser = await fns.userHasAccount(msg, bot)
 			if (res)
 				var profileID = msg.author.id 
 	} else {
