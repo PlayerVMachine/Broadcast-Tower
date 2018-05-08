@@ -157,8 +157,8 @@ const loopCmd = async (bot) => {
   for (var command in bot.commands) {
     if (!bot.commands[command].hidden)
       helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
-    return helpString
   }
+  return helpString
 }
 
 
