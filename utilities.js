@@ -158,7 +158,7 @@ exports.help = async (msg, cmd, bot) => {
     var helpTitle = 'Broadcast Tower Command List'
     var helpString = ''
     for (var command in bot.commands)
-      if (!commands[command].hidden)
+      if (!bot.commands[command].hidden)
         helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
