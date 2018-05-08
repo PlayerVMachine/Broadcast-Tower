@@ -298,7 +298,7 @@ const bEval = bot.registerCommand('eval', (msg, args) => {
 	}
 })
 
-const help = bot.registerCommand('help', (msg, args) => {
+const help = bot.registerCommand('help', async (msg, args) => {
 	if (bot.commands[args[0]] !== undefined) {
 		fns.help(msg, args[0], bot)
 	}
