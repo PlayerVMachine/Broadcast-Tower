@@ -162,7 +162,7 @@ exports.help = async (msg, cmd, bot) => {
         helpString.concat('**' + command.label + ':** ' + command.description +'\n')
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
-    var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands.[cmd].cooldown/10, bot.commands[cmd].usage)
+    var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/10, bot.commands[cmd].usage)
   }
 
   var embed = {
