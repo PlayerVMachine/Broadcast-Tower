@@ -302,7 +302,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 	if (bot.commands[args[0]] !== undefined)
 		fns.help(msg, args[0], bot)
 	else
-		fns.help(msg, 'all', bot)
+		let test = await fns.help(msg, 'all', bot)
 })
 
 //actually connect
