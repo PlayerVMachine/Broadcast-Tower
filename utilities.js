@@ -152,21 +152,15 @@ exports.log = (bot, message) => {
   bot.createMessage(config.logChannelID, util.format(date, message))
 }
 
-const loopCmd = async (bot) => {
-  var helpString = ''
-  for (var command in bot.commands) {
-    if (!bot.commands[command].hidden)
-      helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
-  }
-  return helpString
-}
-
-
 exports.help = async (msg, cmd, bot) => {
   let botUser = await bot.getSelf()
+  var helpString = ''
   if (cmd === 'all') {
     var helpTitle = 'Broadcast Tower Command List'
-    let helpString = await loopCmd(bot)
+    for (var command in bot.commands) {
+      if (!bot.commands[command].hidden)
+       helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
+    }
     var embed = {
       embed: {
         title: helpTitle,

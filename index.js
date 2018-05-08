@@ -298,13 +298,11 @@ const bEval = bot.registerCommand('eval', (msg, args) => {
 	}
 })
 
-const help = bot.registerCommand('help', async (msg, args) => {
-	if (bot.commands[args[0]] !== undefined) {
+const help = bot.registerCommand('help', (msg, args) => {
+	if (bot.commands[args[0]] !== undefined)
 		fns.help(msg, args[0], bot)
-	}
-	else {
-		let test = await fns.help(msg, 'all', bot)
-	}
+	else
+		fns.help(msg, 'all', bot)
 })
 
 //actually connect
