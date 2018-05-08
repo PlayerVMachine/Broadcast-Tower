@@ -179,4 +179,6 @@ exports.help = async (msg, cmd, bot) => {
       }
     }
   }
+
+  bot.createMessage(msg.channel.id, embed)
 }
