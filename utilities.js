@@ -165,6 +165,8 @@ exports.help = async (msg, cmd, bot) => {
     var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/1000, bot.commands[cmd].usage)
   }
 
+  module.exports.log(helpString)
+
   var embed = {
     embed: {
       title: helpTitle,
