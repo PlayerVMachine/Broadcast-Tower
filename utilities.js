@@ -159,13 +159,12 @@ exports.help = async (msg, cmd, bot) => {
     var helpString = ''
     for (var command in bot.commands)
       if (!bot.commands[command].hidden)
+        module.exports.log(bot, 'reached')
         helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
     var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/1000, bot.commands[cmd].usage)
   }
-
-  module.exports.log(bot, helpString)
 
   var embed = {
     embed: {
