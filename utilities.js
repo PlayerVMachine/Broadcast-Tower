@@ -96,7 +96,7 @@ exports.profileEmbed = async (doc, bot) => {
       },
       color: doc.eColor, // Color, a base-10 integer
       fields: [ // Array of field objects
-        {
+      {
           name: 'Tagline: ', // Field title
           value: doc.tagline, // Field
           inline: false // Whether you want multiple fields in same line
@@ -111,7 +111,7 @@ exports.profileEmbed = async (doc, bot) => {
           value: doc.following.length,
           inline: true
         }
-      ],
+        ],
       footer: { // Footer text
         text: 'Broadcast Tower User Profile'
       }
@@ -154,33 +154,49 @@ exports.log = (bot, message) => {
 
 const loopCmd = async (bot) => {
   var helpString = ''
-  for (var command in bot.commands)
+  for (var command in bot.commands) {
     if (!bot.commands[command].hidden)
       helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
-  return helpString
+    return helpString
+  }
 }
+
 
 exports.help = async (msg, cmd, bot) => {
   let botUser = await bot.getSelf()
   if (cmd === 'all') {
     var helpTitle = 'Broadcast Tower Command List'
     let helpString = await loopCmd(bot)
+    var embed = {
+      embed: {
+        title: helpTitle,
+        description: helpString,
+        author: {
+          name: botUser.username,
+          icon_url: botUser.avatarURL
+        },
+        color: config.color,
+        footer: {
+          text: 'Broadcast Tower Help Station'
+        }
+      }
+    }
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
     var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/1000, bot.commands[cmd].usage)
-  }
 
-  var embed = {
-    embed: {
-      title: helpTitle,
-      description: helpString,
-      author: {
-        name: botUser.username,
-        icon_url: botUser.avatarURL
-      },
-      color: config.color,
-      footer: {
-        text: 'Broadcast Tower Help Station'
+    var embed = {
+      embed: {
+        title: helpTitle,
+        description: helpString,
+        author: {
+          name: botUser.username,
+          icon_url: botUser.avatarURL
+        },
+        color: config.color,
+        footer: {
+          text: 'Broadcast Tower Help Station'
+        }
       }
     }
   }
