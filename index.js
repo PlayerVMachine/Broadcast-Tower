@@ -300,7 +300,7 @@ const bEval = bot.registerCommand('eval', (msg, args) => {
 
 const help = bot.registerCommand('help', (msg, args) => {
 	if (args[0])
-		fns.fullHelp(msg, 'all', bot)
+		fns.help(msg, 'all', bot)
 	else if (bot.commands[args[1]] !== undefined)
 		fns.help(msg, args[1], bot)
 	else
