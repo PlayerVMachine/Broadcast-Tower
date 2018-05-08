@@ -122,5 +122,8 @@
 		"description":"Send a post to your followers!",
 		"fullDescription":"Send a post to your followers, no blank posts, certain profanity prohibited.",
 		"usage":"`b.post I just got my first Chicken Royale!`"
+	}, 
+	"help" : {
+		"singleCmdDesc":"**Aliases:** %s\n**Description:** %s\n**Cooldown:** %ss\n**Usage:** %s"
 	}
 }

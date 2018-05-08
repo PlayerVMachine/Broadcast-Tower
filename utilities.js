@@ -151,3 +151,32 @@ exports.log = (bot, message) => {
   console.log(util.format(date, message))
   bot.createMessage(config.logChannelID, util.format(date, message))
 }
+
+exports.help = async (msg, cmd, bot) => {
+  let botUser = await bot.getSelf()
+  if (cmd === 'all') {
+    var helpTitle = 'Broadcast Tower Command List'
+    var helpString = ''
+    for (command in bot.commands)
+      if (!command.hidden)
+        helpString.concat('**' + command.label + ':** ' + command.description +'\n')
+  } else {
+    var helpTitle = 'Help for: ' + bot.commands[cmd].label
+    var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands.[cmd].cooldown/10, bot.commands[cmd].usage)
+  }
+
+  var embed = {
+    embed: {
+      title: helpTitle
+      description: helpString
+      author: {
+        name: botUser.username,
+        icon_url: botUser.avatarURL
+      },
+      color: config.color,
+      footer: {
+        text: 'Broadcast Tower Help Station'
+      }
+    }
+  }
+}

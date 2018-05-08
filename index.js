@@ -300,9 +300,11 @@ const bEval = bot.registerCommand('eval', (msg, args) => {
 
 const help = bot.registerCommand('help', (msg, args) => {
 	if (args[0])
-		fns.fullHelp(msg, bot)
-	else if (args[1])
-		fns.help(msg, bot)
+		fns.fullHelp(msg, 'all', bot)
+	else if (bot.commands[args[1]] !== undefined)
+		fns.help(msg, args[1], bot)
+	else
+		return
 })
 
 //actually connect

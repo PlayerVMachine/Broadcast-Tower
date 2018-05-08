@@ -22,11 +22,12 @@ exports.beval = async (msg, code, bot) => {
     try {
         let evaled = await eval(code)
 
-        if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled) }
-            console.log(evaled)
-            bot.createMessage(msg.channel.id, noMention(evaled))
+        if (typeof evaled !== 'string')
+            evaled = require('util').inspect(evaled) 
+
+        bot.createMessage(msg.channel.id, noMention(evaled))
     } catch (err) {
-        bot.createMessage(msg.channel.id, `\`ERROR\` \`\`\`xl\n${noMention(err)}\n\`\`\``)
+        bot.createMessage(msg.channel.id, `\`\`\`xl\n${noMention(err)}\n\`\`\``)
     }
 }
 
