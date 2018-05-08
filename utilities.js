@@ -167,8 +167,8 @@ exports.help = async (msg, cmd, bot) => {
 
   var embed = {
     embed: {
-      title: helpTitle
-      description: helpString
+      title: helpTitle,
+      description: helpString,
       author: {
         name: botUser.username,
         icon_url: botUser.avatarURL
