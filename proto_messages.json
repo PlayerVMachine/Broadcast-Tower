@@ -18,7 +18,7 @@
 		"logError":": Account could not be created for %s",
 		"accountCreated":"%s, your account has been created! You are ready to broadcast!",
 		"accountNotCreated":"%s, there was an error creating your account, please try again later. If this message persists contact Hal.",
-		"alreadyHasAccount":"s, you already have an account!",
+		"alreadyHasAccount":"%s, you already have an account!",
 		"description":"Create a station with the Tower to start broadcasting.",
 		"fullDescription":"Create an account to use the bot's features.",
 		"usage":"`b.create`"
