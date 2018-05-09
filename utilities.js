@@ -153,6 +153,7 @@ exports.log = (bot, message) => {
 }
 
 function HelpEmbed (title, helpString, bot) {
+  this.embed = {}
   this.embed.title = title
   this.embed.description = helpString
   this.embed.author = {name: botUser.username, icon_url: botUser.avatarURL}
@@ -161,6 +162,7 @@ function HelpEmbed (title, helpString, bot) {
 
 exports.help = async (msg, cmd, bot) => {
   let botUser = await bot.getSelf()
+  helpString = ''
   if (cmd === 'all') {
     var helpTitle = 'Broadcast Tower Command List'
     for (var command in bot.commands) {
