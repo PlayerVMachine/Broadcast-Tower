@@ -152,7 +152,7 @@ exports.log = (bot, message) => {
   bot.createMessage(config.logChannelID, util.format(date, message))
 }
 
-function HelpEmbed (title, helpString, bot) {
+function HelpEmbed (title, helpString, botUser) {
   this.embed = {}
   this.embed.title = title
   this.embed.description = helpString
@@ -169,11 +169,11 @@ exports.help = async (msg, cmd, bot) => {
       if (!bot.commands[command].hidden)
        helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
     }
-    var embed = new HelpEmbed(helpTitle, helpString, bot)
+    var embed = new HelpEmbed(helpTitle, helpString, botUser)
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
     var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/1000, bot.commands[cmd].usage)
-    var embed = new HelpEmbed(helpTitle, helpString, bot)
+    var embed = new HelpEmbed(helpTitle, helpString, botUser)
   }
 
   bot.createMessage(msg.channel.id, embed)
