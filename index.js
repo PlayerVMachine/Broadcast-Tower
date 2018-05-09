@@ -315,7 +315,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 //Event Listener for Stream Notification         //
 //////////////////////////////////////////////////
 bot.on('presenceUpdate', (other, oldPresence) => {
-	fns.log(oldPresence, bot)
+	fns.log(other.user + ' : ' + oldPresence, bot)
 })
 
 
