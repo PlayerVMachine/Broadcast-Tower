@@ -14,8 +14,8 @@
 		"usage":"`b.ping`"
 	},
 	"create" : {
-		"logSuccess":": Account created for %s",
-		"logError":": Account could not be created for %s",
+		"logSuccess":": Account created for \\%s",
+		"logError":": Account could not be created for \\%s",
 		"accountCreated":"%s, your account has been created! You are ready to broadcast!",
 		"accountNotCreated":"%s, there was an error creating your account, please try again later. If this message persists contact Hal.",
 		"alreadyHasAccount":"%s, you already have an account!",
