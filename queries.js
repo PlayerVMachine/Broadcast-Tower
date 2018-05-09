@@ -13,42 +13,6 @@ const authMechanism = 'DEFAULT'
 // Connection URL
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-exports.createUser = async (userid, dmChannelid) => {
-	try {
-		let client = await MongoClient.connect(url)
-
-		const col = client.db(config.db).collection('Users')
-
-		const userdata = {
-			user: userid,
-			status: 'active',
-			tagline: '',
-			bio: '',
-			following: [],
-			followers: [],
-			blocked: [],
-			sendTo: dmChannelid,
-			mature: false,
-			dnd: false,
-			joined: new Date(),
-			eColor: config.color,
-			premium: false
-		}
-
-		let created = await col.insertOne(userdata)
-		if (created.insertedCount === 1) {
-			client.close()
-			return 1
-		} else {
-			client.close()
-			return 0
-		}
-	} catch (e) {
-		log.error(e)
-		return -1
-	}
-}
-
 // function to delete User
 exports.deleteUser = async (userid) => {
 	try {
@@ -145,15 +109,15 @@ exports.userExists = async (userid) => {
 
 		if (found === null) {
 			client.close()
-			return 0
+			return false
 		}
 		else {
 			client.close()
-			return 1
+			return true
 		}
 	} catch (e) {
 		log.error(e)
-		return -1
+		return false
 	}
 }
 

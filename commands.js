@@ -41,23 +41,6 @@ exports.qeval = async (msg, code, bot) => {
 //Command Functions            //
 ////////////////////////////////
 
-exports.create = async (msg, bot) => {
-    let dmChannel = await msg.author.getDMChannel()
-
-    let res = await db.createUser(msg.author.id, dmChannel.id)
-
-    if (res === 1) { 
-        bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
-        fns.log(util.format(reply.create.logSuccess, msg.author.mention), bot)
-    } else if (res === 0) { 
-        bot.createMessage(msg.channel.id, util.format(reply.create.accountNotCreated, msg.author.username))
-        fns.log(util.format(reply.create.logError, msg.author.mention), bot) 
-    } else if (res === -1) { 
-        bot.createMessage(msg.channel.id, util.format(reply.generic.failure, msg.author.username))
-        fns.log(util.format(reply.create.logFailure, 'create', msg.author.mention), bot)
-    }
-}
-
 exports.delete = async (msg, bot) => {
     var confirm = fns.rand4Digit()
 

@@ -17,40 +17,54 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 
 exports.create = async (msg, bot) => {
 	try {
-		let dmChannel = await msg.author.getDMChannel()
 		
 		let client = await MongoClient.connect(url)
-
 		const col = client.db(config.db).collection('Users')
 
-		const userdata = {
-			user: msg.author.id,
-			status: 'active',
-			tagline: '',
-			bio: '',
-			following: [],
-			followers: [],
-			blocked: [],
-			sendTo: dmChannel.id,
-			private: false,
-			mature: false,
-			dnd: false,
-			joined: new Date(),
-			eColor: config.color,
-			premium: false
+		let found = await col.findOne({user: userid})
+		if (found === null) {
+
+			let dmChannel = await msg.author.getDMChannel()
+
+			const userdata = {
+				user: msg.author.id,
+				status: 'active',
+				tagline: '',
+				bio: '',
+				following: [],
+				followers: [],
+				blocked: [],
+				sendTo: dmChannel.id,
+				private: false,
+				mature: false,
+				dnd: false,
+				joined: new Date(),
+				eColor: config.color,
+				premium: false
+			}
+
+			let created = await co.insertOne(userdata)
+
+			if (created.insertedCount === 1) { 
+				bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
+				fns.log(util.format(reply.create.logSuccess, msg.author.mention), bot)
+			} else { 
+				bot.createMessage(msg.channel.id, util.format(reply.create.accountNotCreated, msg.author.username))
+				fns.log(util.format(reply.create.logError, msg.author.mention), bot)
+			}
+		} else {
+			bot.createMessage(msg.channel.id, util.format(reply.create.alreadyHasAccount, msg.author.username))
 		}
 
-		let created = await col.insertOne(userdata)
+	} catch (err) {
+		fns.log(`\`\`\`diff\n-` + err + `\`\`\``, bot)
+	}
+}
 
-		if (created.insertedCount === 1) { 
-			bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
-			fns.log(util.format(reply.create.logSuccess, msg.author.mention), bot)
-		} else { 
-			bot.createMessage(msg.channel.id, util.format(reply.create.accountNotCreated, msg.author.username))
-			fns.log(util.format(reply.create.logError, msg.author.mention), bot)
-		}
+exports.delete = async (msg, bot) => {
+	try {
 
-	} catch (e) {
-		fns.log(e, bot)
+	} catch (err) {
+		fns.log(`\`\`\`diff\n-` + err + `\`\`\``, bot)
 	}
 }

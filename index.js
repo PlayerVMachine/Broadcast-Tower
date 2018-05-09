@@ -54,15 +54,8 @@ const ping = bot.registerCommand('ping', 'Pong!', {
 })
 
 const createAccount = bot.registerCommand('create', async (msg, args) => {
-	let hasAccount = await db.userExists(msg.author.id);
-
-	if (hasAccount === 0 )	
-		amgmt.create(msg, bot)
-	else if (hasAccount === 1)
-		return util.format(reply.create.alreadyHasAccount, msg.author.username)
-	else
-		return util.format(reply.generic.failure, msg.author.username)
-
+	//call the function to create an account if one doesn't exist already
+	amgmt.create(msg, bot)
 }, {
 	aliases: ['signup', 'join', 'register'],
 	cooldown: 10000,
