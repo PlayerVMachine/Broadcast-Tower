@@ -315,13 +315,12 @@ const help = bot.registerCommand('help', (msg, args) => {
 //Event Listener for Stream Notification         //
 //////////////////////////////////////////////////
 bot.on('presenceUpdate', async (other, oldPresence) => {
-/*	if (other.user.id !== undefined) {
-		let isUser = await fns.userHasAccount(other.user.id, bot)
+	if (other.id !== undefined) {
+		let isUser = await fns.userHasAccount(other.id, bot)
 
 		if (isUser)
-			fns.log(other.game, bot)
-	}*/
-	fns.log(other.id, bot)
+			fns.log(JSON.stringify(other.game), bot)
+	}
 })
 
 
