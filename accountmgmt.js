@@ -1,6 +1,7 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
+const util = require('util')
 
 // project files required
 const config = require('./config.json')
