@@ -166,10 +166,12 @@ exports.help = async (msg, cmd, bot) => {
   if (cmd === 'all') {
     var helpTitle = 'Broadcast Tower Command List'
     for (var command in bot.commands) {
-      if (!bot.commands[command].hidden)
-       helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
+      if (!bot.commands[command].hidden) {
+        helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
+        module.exports.log(bot, helpString.length)
+      }
     }
-    module.exports.log(bot, helpString.length)
+
     var embed = new HelpEmbed(helpTitle, helpString, botUser)
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
