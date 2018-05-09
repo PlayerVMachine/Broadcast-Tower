@@ -323,18 +323,17 @@ bot.on('presenceUpdate', async (other, oldPresence) => {
 			let resChannel = await db.getFields(other.id, 'sendTo')
 
 			var post = fns.postEmbed('Now playing! ' + other.game.name, other.user)
-			bot.createMessage('437492427226480642', post)
 
-/*			for (i = 0; i < followers.length; i++) {
+			for (i = 0; i < followers.length; i++) {
 				let channelID = await db.getFields(followers[i], 'sendTo')
 				if (i !== followers.length - 1) {
 					q.push({channelID:channelID, msg:post, fin:''})
 				} else {
 					q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-						bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
+						//bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
 					})
 				}
-			}*/
+			}
 		}
 	}
 })

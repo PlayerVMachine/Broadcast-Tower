@@ -50,7 +50,7 @@ exports.safetyChecks = async (msg, bot) => {
   }
 
   var secondID = module.exports.isID(msg.content.split(' ')[1])
-  if (followid === -1) {
+  if (secondID === -1) {
     bot.createMessage(msg.channel.id, util.format(reply.generic.invalidID, msg.author.username, msg.content.split(' ')[1]))
     return false
   }
