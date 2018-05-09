@@ -1,0 +1,20 @@
+{
+	"id":"273999507174195203",
+	"game":{
+		"type":0,
+		"timestamps":{"start":1525828888832},
+		"name":"NightRaven is the BestRaven"
+	},
+	"joinedAt":1524286242166,
+	"nick":"PlayerVM™",
+	"roles":["437478955734532106"],
+	"status":"idle",
+	"user": {
+		"id":"273999507174195203",
+		"avatar":"a_34d7d670fdde288559253b16ce09e8bd",
+		"bot":false,
+		"discriminator":"6223",
+		"username":"PlayerVMachine"
+	},
+	"voiceState":{
+		"id":"273999507174195203","sessionID":null,"channelID":null,"mute":false,"deaf":false,"suppress":false,"selfMute":false,"selfDeaf":false}}

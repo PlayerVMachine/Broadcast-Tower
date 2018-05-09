@@ -321,7 +321,7 @@ bot.on('presenceUpdate', async (other, oldPresence) => {
 		if (isUser)
 			fns.log(other.game, bot)
 	}*/
-	fns.log(JSON.stringify(other), bot)
+	fns.log(other.id, bot)
 })
 
 
