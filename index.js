@@ -9,6 +9,7 @@ const fns = require('./utilities.js') // useful functions
 const db = require('./queries.js') // database queries
 const commands = require('./commands.js'); //actual bot commands moduled for tidiness
 const reply = require('./proto_messages.json')
+const amgmt = require('./accountmgmt.js')
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
@@ -56,7 +57,7 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 	let hasAccount = await db.userExists(msg.author.id);
 
 	if (hasAccount === 0 )	
-		commands.create(msg, bot)
+		amgmt.create(msg, bot)
 	else if (hasAccount === 1)
 		return util.format(reply.create.alreadyHasAccount, msg.author.username)
 	else
