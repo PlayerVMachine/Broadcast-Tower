@@ -152,47 +152,26 @@ exports.log = (bot, message) => {
   bot.createMessage(config.logChannelID, util.format(date, message))
 }
 
+function HelpEmbed (title, helpString, bot) {
+  this.embed.title = title
+  this.embed.description = helpString
+  this.embed.author = {name: botUser.username, icon_url: botUser.avatarURL}
+  this.embed.footer = {text: 'Broadcast Tower Help Station'}
+}
+
 exports.help = async (msg, cmd, bot) => {
   let botUser = await bot.getSelf()
-  var helpString = ''
   if (cmd === 'all') {
     var helpTitle = 'Broadcast Tower Command List'
     for (var command in bot.commands) {
       if (!bot.commands[command].hidden)
        helpString.concat('**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n')
     }
-    var embed = {
-      embed: {
-        title: helpTitle,
-        description: helpString,
-        author: {
-          name: botUser.username,
-          icon_url: botUser.avatarURL
-        },
-        color: config.color,
-        footer: {
-          text: 'Broadcast Tower Help Station'
-        }
-      }
-    }
+    var embed = new HelpEmbed(helpTitle, helpString, bot)
   } else {
     var helpTitle = 'Help for: ' + bot.commands[cmd].label
     var helpString = util.format(reply.help.singleCmdDesc, bot.commands[cmd].aliases, bot.commands[cmd].fullDescription, bot.commands[cmd].cooldown/1000, bot.commands[cmd].usage)
-
-    var embed = {
-      embed: {
-        title: helpTitle,
-        description: helpString,
-        author: {
-          name: botUser.username,
-          icon_url: botUser.avatarURL
-        },
-        color: config.color,
-        footer: {
-          text: 'Broadcast Tower Help Station'
-        }
-      }
-    }
+    var embed = new HelpEmbed(helpTitle, helpString, bot)
   }
 
   bot.createMessage(msg.channel.id, embed)
