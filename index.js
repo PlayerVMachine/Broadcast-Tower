@@ -93,7 +93,7 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 	let res = await fns.safetyChecks(msg, bot)
 
 	if (res)
-		commands.follow(msg, followid ,bot)
+		commands.follow(msg, fns.isID(args[0]) ,bot)
 }, {
 	aliases: ['fol'],
 	argsRequired: true,
