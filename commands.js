@@ -112,6 +112,7 @@ exports.follow = async (msg, followid, bot) => {
         // if not following
         let addToFollowing = await db.pushUserToList(msg.author.id, 'following', followid)
         let addToFollowers = await db.pushUserToList(followid, 'followers', msg.author.id)
+        fns.log('addedtofollowing', bot)
 
         if (addToFollowing === 1 && addToFollowers === 1) {
             bot.createMessage(msg.channel.id, msg.author.username + ', you are now following their broadcasts!')
