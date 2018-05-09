@@ -74,6 +74,7 @@ exports.safetyChecks = async (msg, bot) => {
   }
 
   //checks passed
+  module.exports.log('true', bot)
   return true
 }
 

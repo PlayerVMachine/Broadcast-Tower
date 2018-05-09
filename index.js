@@ -91,9 +91,10 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 
 const followUser = bot.registerCommand('follow', async (msg, args) => {
 	let res = await fns.safetyChecks(msg, bot)
+	followid = fns.isID(args[0]) 
 
 	if (res)
-		commands.follow(msg, fns.isID(args[0]) ,bot)
+		commands.follow(msg, followid, bot)
 }, {
 	aliases: ['fol'],
 	argsRequired: true,
