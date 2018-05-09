@@ -23,14 +23,14 @@ exports.create = async (msg, bot) => {
 		const col = client.db(config.db).collection('Users')
 
 		const userdata = {
-			user: userid,
+			user: msg.author.id,
 			status: 'active',
 			tagline: '',
 			bio: '',
 			following: [],
 			followers: [],
 			blocked: [],
-			sendTo: dmChannelid,
+			sendTo: dmChannel.id,
 			private: false,
 			mature: false,
 			dnd: false,
