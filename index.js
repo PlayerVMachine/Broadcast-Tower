@@ -311,5 +311,13 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
+////////////////////////////////////////////////////
+//Event Listener for Stream Notification         //
+//////////////////////////////////////////////////
+bot.on('presenceUpdate', (other, oldPresence) => {
+	fns.log(oldPresence, bot)
+})
+
+
 //actually connect
 bot.connect()

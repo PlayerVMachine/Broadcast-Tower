@@ -146,7 +146,7 @@ exports.rand4Digit = () => {
   return Math.floor(Math.random() * (max - min)) + min // The maximum is exclusive and the minimum is inclusive
 }
 
-exports.log = (bot, message) => {
+exports.log = (message, bot) => {
   let date = new Date().toLocaleString('en-GB', { timeZone: 'America/New_York' })
   console.log(util.format(date, message))
   bot.createMessage(config.logChannelID, util.format(date, message))
