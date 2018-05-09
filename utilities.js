@@ -157,7 +157,7 @@ function HelpEmbed (title, helpString, botUser) {
   this.embed.title = title
   this.embed.description = helpString
   this.embed.author = {name: botUser.username, icon_url: botUser.avatarURL}
-  this.embed.color = config.eColor
+  this.embed.color = config.color
   this.embed.footer = {text: 'Broadcast Tower Help Station'}
 }
 

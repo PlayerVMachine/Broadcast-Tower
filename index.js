@@ -290,12 +290,13 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	usage: reply.post.usage
 })
 
-const bEval = bot.registerCommand('eval', (msg, args) => {
+const bEval = bot.registerCommand('eval', async (msg, args) => {
 	commands.beval(msg, args.join(' '), bot)
 }, {
-	requirements : {
+	requirements: {
 		userIDs: [config.creator]
-	}
+	},
+	hidden: true
 })
 
 const help = bot.registerCommand('help', (msg, args) => {
@@ -303,6 +304,11 @@ const help = bot.registerCommand('help', (msg, args) => {
 		fns.help(msg, args[0], bot)
 	else
 		fns.help(msg, 'all', bot)
+}, {
+	cooldown: 5000,
+	description: reply.help.description,
+	fullDescription: reply.help.fullDescription,
+	usage: reply.help.usage
 })
 
 //actually connect
