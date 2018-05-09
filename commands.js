@@ -48,13 +48,13 @@ exports.create = async (msg, bot) => {
 
     if (res === 1) { 
         bot.createMessage(msg.channel.id, util.format(reply.create.accountCreated, msg.author.username))
-        fns.log(bot, util.format(reply.create.logSuccess, msg.author.mention))
+        fns.log(util.format(reply.create.logSuccess, msg.author.mention), bot)
     } else if (res === 0) { 
         bot.createMessage(msg.channel.id, util.format(reply.create.accountNotCreated, msg.author.username))
-        fns.log(bot, util.format(reply.create.logError, msg.author.mention)) 
+        fns.log(util.format(reply.create.logError, msg.author.mention), bot) 
     } else if (res === -1) { 
         bot.createMessage(msg.channel.id, util.format(reply.generic.failure, msg.author.username))
-        fns.log(bot, util.format(reply.create.logFailure, 'create', msg.author.mention))
+        fns.log(util.format(reply.create.logFailure, 'create', msg.author.mention), bot)
     }
 }
 
