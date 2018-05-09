@@ -157,6 +157,7 @@ function HelpEmbed (title, helpString, botUser) {
   this.embed.title = title
   this.embed.description = helpString
   this.embed.author = {name: botUser.username, icon_url: botUser.avatarURL}
+  this.embed.color = config.eColor
   this.embed.footer = {text: 'Broadcast Tower Help Station'}
 }
 
@@ -168,7 +169,6 @@ exports.help = async (msg, cmd, bot) => {
     for (var command in bot.commands) {
       if (!bot.commands[command].hidden) {
         helpString += '**' + bot.commands[command].label + ':** ' + bot.commands[command].description +'\n'
-        module.exports.log(bot, helpString.length)
       }
     }
 
