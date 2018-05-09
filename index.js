@@ -183,9 +183,9 @@ const editBio = bot.registerCommand('bio', async (msg, args) => {
 
 const editMature = bot.registerCommand('mature', async (msg, args) => {
 	let isUser = await fns.userHasAccount(msg, bot)
-		if (res) {
-			let setMature = await commands.toggleMature(msg, bot)
-		}
+	if (res) {
+		let setMature = await commands.toggleMature(msg, bot)
+	}
 }, {
 	aliases: ['rating', 'm'],
 	cooldown: 5000,
@@ -197,8 +197,8 @@ const editMature = bot.registerCommand('mature', async (msg, args) => {
 const seeProfile = bot.registerCommand('profile', async (msg, args) => {
 	if (args.length === 0) {
 		let isUser = await fns.userHasAccount(msg, bot)
-			if (res)
-				var profileID = msg.author.id 
+		if (res)
+			var profileID = msg.author.id 
 	} else {
 		let res = await fns.safetyChecks(msg, bot)
 		if (res)
@@ -251,13 +251,13 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 		} catch (e) {
 			console.log(e.message)
 		}
-}, {
-	aliases: ['cls', 'clear'],
-	cooldown: 20000,
-	description: reply.clearDMs.description,
-	fullDescription: reply.clearDMs.fullDescription,
-	usage: reply.clearDMs.usage
-})
+	}, {
+		aliases: ['cls', 'clear'],
+		cooldown: 20000,
+		description: reply.clearDMs.description,
+		fullDescription: reply.clearDMs.fullDescription,
+		usage: reply.clearDMs.usage
+	})
 
 const post = bot.registerCommand('post', async (msg, args) => {
 	if(args.length === 0)
@@ -315,13 +315,26 @@ const help = bot.registerCommand('help', (msg, args) => {
 //Event Listener for Stream Notification         //
 //////////////////////////////////////////////////
 bot.on('presenceUpdate', async (other, oldPresence) => {
-	//obj = other
 	if (other.id !== undefined) {
-		fns.log(other.id, bot)
-		//let isUser = await fns.userHasAccount(other.id, bot)
+		let isUser = await db.userExists(other.id)
 
-		//if (isUser)
-		//	fns.log(JSON.stringify(other.game), bot)
+		if (isUser) {
+			let followers = await db.getFields(other.id, 'followers')
+			let resChannel = await db.getFields(other.id, 'sendTo')
+
+			var post = fns.postEmbed('Now playing! ' + other.game.name, other.user)
+			
+			for (i = 0; i < followers.length; i++) {
+				let channelID = await db.getFields(followers[i], 'sendTo')
+				if (i !== followers.length - 1) {
+					q.push({channelID:channelID, msg:post, fin:''})
+				} else {
+					q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
+						bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
+					})
+				}
+			}
+		}
 	}
 })
 
