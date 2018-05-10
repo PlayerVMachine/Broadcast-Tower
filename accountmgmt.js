@@ -1,7 +1,7 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
-const setTimeoutPromise = util.promisify(setTimeout)
+const setTimeoutPromise = require('util').promisify(setTimeout)
 
 // project files required
 const config = require('./config.json')
