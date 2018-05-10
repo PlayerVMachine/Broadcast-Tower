@@ -28,11 +28,6 @@ exports.getUsername = async (userid, bot) => {
   return user.username 
 }
 
-exports.isUserBot = async (userid, bot) => {
-  let user = await bot.users.get(userid)
-  return user.bot
-}
-
 exports.userHasAccount = async (msg, bot) => {
   let hasAccount = await db.userExists(msg.author.id);
   if (hasAccount === 0) {
