@@ -64,11 +64,11 @@ exports.create = async (msg, bot) => {
 const del = async (msg, bot, col) => {
 	try {
 		//delete user from the followers list of people they're following
-		let rem = await col.findAndModify({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
+		let rem = await col.updateMany({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
 
 		fns.log(rem, bot)
 
-		if (rem.ok === 1) {
+		if (rem.result.ok === 1) {
 
 			let del = await col.findOneAndDelete({user: userid})
 
