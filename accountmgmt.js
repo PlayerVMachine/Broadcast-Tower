@@ -70,7 +70,7 @@ const del = async (msg, bot, col) => {
 
 		if (rem.result.ok === 1) {
 
-			let del = await col.findOneAndDelete({user: userid})
+			let del = await col.findOneAndDelete({user: msg.author.id})
 
 			if (del.ok === 1) {
 				fns.log(f(reply.close.logSuccess, msg.author.mention), bot)
