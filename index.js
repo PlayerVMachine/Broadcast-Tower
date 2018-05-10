@@ -10,6 +10,7 @@ const db = require('./queries.js') // database queries
 const commands = require('./commands.js'); //actual bot commands moduled for tidiness
 const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
+const act = require('./actions.js')
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
@@ -65,6 +66,7 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 })
 
 const deleteAccount = bot.registerCommand('close', async (msg, args) => {
+	//call the function to close an account if one doesn't exist already
 	amgmt.close(msg, bot)
 }, {
 	aliases: ['delete', 'rm', 'del'],
@@ -74,12 +76,8 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 	usage: reply.close.usage
 })
 
-const followUser = bot.registerCommand('follow', async (msg, args) => {
-	let res = await fns.safetyChecks(msg, bot)
-	followid = fns.isID(args[0]) 
-
-	if (res)
-		commands.follow(msg, followid, bot)
+const followUser = bot.registerCommand('follow', async (msg, args) => { 
+		act.follow(msg, bot)
 }, {
 	aliases: ['fol'],
 	argsRequired: true,

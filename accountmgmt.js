@@ -1,7 +1,6 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
-const setTimeoutPromise = require('util').promisify(setTimeout)
 
 // project files required
 const config = require('./config.json')
@@ -75,7 +74,7 @@ const del = async (msg, bot, col) => {
 				bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
 			} else {
 				fns.log(f(reply.close.logError, msg.author.mention), bot)
-				fns.log(f(reply.generic.logError, rem.lastErrorObject), bot)
+				fns.log(f(reply.generic.logError, rem.result.lastErrorObject), bot)
 				bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
 			}
 		} else {
@@ -122,11 +121,13 @@ exports.close = async (msg, bot) => {
     } else {
     	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
+    	//edit message if no reply in 10s and close listener
     	medit = setTimeout((msgid) => {
     		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
     		bot.removeListener('messageCreate', confirmation)
     	}, 10000, delMessage.id)
 
+    	//register event listener for close confirmation/cancel
     	bot.on('messageCreate', confirmation)
     }
 }

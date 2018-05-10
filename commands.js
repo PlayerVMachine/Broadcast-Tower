@@ -41,42 +41,6 @@ exports.qeval = async (msg, code, bot) => {
 //Command Functions            //
 ////////////////////////////////
 
-exports.delete = async (msg, bot) => {
-    var confirm = fns.rand4Digit()
-
-    const confirmation = async (response) => {
-        res = response.content.split(' ')[0];
-        if (response.author.id === msg.author.id && res !== confirm.toString()) {
-            bot.createMessage(msg.channel.id, 'Sorry that was not the confirmation code')
-        // completed = true
-    } else if (response.author.id === msg.author.id && res === confirm.toString()) {
-        let res = await db.deleteUser(msg.author.id)
-        bot.removeListener('messageCreate', confirmation)
-            // completed = true
-
-            if (res === 1) { 
-                bot.createMessage(msg.channel.id, msg.author.username + ', your account has been deleted! The airwaves will miss your broadcasts.') 
-            } else if (res === 0) { 
-                bot.createMessage(msg.channel.id, msg.author.username + ', there was an error deleting your account, please try again later.') 
-            } else { 
-                bot.createMessage(msg.channel.id, msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.')
-            } 
-        } else if (response.author.id === msg.author.id && response.content === 'cancel') {
-            bot.createMessage(msg.channel.id, 'Account deletion cancelled.')
-            bot.removeListener('messageCreate', confirmation)
-            // completed = true
-        }
-    }
-
-    let delMessage = await bot.createMessage(msg.channel.id, 'Are you sure you want to close your account? Confirm with: `' + confirm + '`, cancel with `cancel`')
-
-    bot.on('messageCreate', confirmation)
-    setTimeoutPromise(10000, delMessage.id).then((msgid) => {
-        bot.editMessage(msg.channel.id, msgid, 'No repsonse recieved in time (10s) cancelling delete request')
-        bot.removeListener('messageCreate', confirmation)
-    })
-}
-
 exports.follow = async (msg, followid, bot) => {
     // check if user is already follwing the other user
     let isInList = await db.userInList(msg.author.id, 'following', followid)

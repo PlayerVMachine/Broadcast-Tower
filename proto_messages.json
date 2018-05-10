@@ -39,9 +39,9 @@
 	"follow" : {
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
-		"followSuccess":"%s, you are now tuned into %s's broadcasts!",
-		"followError":"%s, there was an error tunining into %s's broadcasts, please try again later.",
-		"followAlready":"%s, you are already tuned into %s's broadcasts!",
+		"success":"%s, you are now tuned into %s's broadcasts!",
+		"error":"%s, there was an error tunining into %s's broadcasts, please try again later.",
+		"already":"%s, you are already tuned into %s's broadcasts!",
 		"description":"Tune into a users broadcasts.",
 		"fullDescription":"Follow a user to recieve their posts.",
 		"usage":"`b.follow @user` or `b.follow userid`"
