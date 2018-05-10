@@ -77,7 +77,7 @@ const del = async (msg, bot) => {
 
 			if (del.ok === 1) {
 				fns.log(f(reply.close.logSuccess, msg.author.mention), bot)
-				bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username)
+				bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
 			} else {
 				fns.log(f(reply.close.logError, msg.author.mention), bot)
 				fns.log(f(reply.generic.logError, rem.lastErrorObject), bot)
