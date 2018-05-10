@@ -17,18 +17,18 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 const safetyChecks = async (msg, secondID, bot) => {
 	
 	if (secondID === -1) {
-		bot.createMessage(msg.channel.id, util.format(reply.generic.invalidID, msg.author.username, msg.content.split(' ')[1]))
+		bot.createMessage(msg.channel.id, f(reply.generic.invalidID, msg.author.username, msg.content.split(' ')[1]))
 		return false
 	}
 
 	if (secondID === msg.author.id) {
-		bot.createMessage(msg.channel.id, util.format(reply.generic.cannotDoToSelf, msg.author.username))
+		bot.createMessage(msg.channel.id, f(reply.generic.cannotDoToSelf, msg.author.username))
 		return false
 	}
 
 	let isBot = await module.exports.isUserBot(secondID, bot)
 	if (isBot){
-		bot.createMessage(msg.channel.id, util.format(reply.generic.cannotDoToBots, msg.author.username))
+		bot.createMessage(msg.channel.id, f(reply.generic.cannotDoToBots, msg.author.username))
 		return false
 	}
 
@@ -36,7 +36,7 @@ const safetyChecks = async (msg, secondID, bot) => {
 
 	if (followeeHasAccount === 0) {
 		let secondUsername = await fns.getUsername(secondID, bot)
-		bot.createMessage(msg.channel.id, util.format(reply.generic.UserNoAccount, msg.author.username, secondUsername))
+		bot.createMessage(msg.channel.id, f(reply.generic.UserNoAccount, msg.author.username, secondUsername))
 		return false
 	}
 
