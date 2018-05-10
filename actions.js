@@ -14,7 +14,7 @@ const authMechanism = 'DEFAULT'
 
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-const safetyChecks = async (msg, secondID, bot) => {
+const safetyChecks = async (msg, secondID, col, bot) => {
 	
 	if (secondID === -1) {
 		bot.createMessage(msg.channel.id, f(reply.generic.invalidID, msg.author.username, msg.content.split(' ')[1]))
@@ -59,7 +59,7 @@ exports.follow = async(msg, args, bot) => {
 		
 		//check for undesirable conditions
 		let secondID = fns.isID(args[0])
-		let safe = await safetyChecks(msg, secondID, bot)
+		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
 
