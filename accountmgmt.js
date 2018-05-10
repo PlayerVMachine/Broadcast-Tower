@@ -66,8 +66,6 @@ const del = async (msg, bot) => {
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
 
-		let found = await col.findOne({user: msg.author.id})
-
 		//delete user from the followers list of people they're following
 		let rem = await col.findAndModify({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
 
@@ -114,6 +112,8 @@ exports.close = async (msg, bot) => {
             // completed = true
         }
     }
+
+    let found = await col.findOne({user: msg.author.id})
 
     if (found === null) {
     	bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
