@@ -1,6 +1,7 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
+const setTimeoutPromise = util.promisify(setTimeout)
 
 // project files required
 const config = require('./config.json')
@@ -101,7 +102,7 @@ exports.close = async (msg, bot) => {
 		res = response.content.split(' ')[0];
 		if (response.author.id === msg.author.id && res !== confirm.toString()) {
         	//confirmation code entered incorrectly
-        	bot.createMessage(msg.channel.id, f(reply.close.wrongCode, msg.author.id))
+        	bot.createMessage(msg.channel.id, f(reply.close.wrongCode, msg.author.username))
         	bot.removeListener('messageCreate', confirmation)
         } else if (response.author.id === msg.author.id && res === confirm.toString()) {
         	//confirmation code entered correctly
@@ -109,7 +110,7 @@ exports.close = async (msg, bot) => {
         	bot.removeListener('messageCreate', confirmation)
 
         } else if (response.author.id === msg.author.id && response.content === 'cancel') {
-        	bot.createMessage(msg.channel.id, 'Account deletion cancelled.')
+        	bot.createMessage(msg.channel.id, f(reply.close.cancelled, msg.author.username))
         	bot.removeListener('messageCreate', confirmation)
             // completed = true
         }
@@ -120,11 +121,11 @@ exports.close = async (msg, bot) => {
     if (found === null) {
     	bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
     } else {
-    	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.closeConfirmation, msg.author.id, confirm))
+    	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
     	bot.on('messageCreate', confirmation)
     	setTimeoutPromise(10000, delMessage.id).then((msgid) => {
-    		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.id))
+    		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
     		bot.removeListener('messageCreate', confirmation)
     	})
     }
