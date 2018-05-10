@@ -47,10 +47,10 @@ exports.create = async (msg, bot) => {
 
 			if (created.insertedCount === 1) { 
 				bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
-				fns.log(util.format(reply.create.logSuccess, msg.author.mention), bot)
+				fns.log(f(reply.create.logSuccess, msg.author.mention), bot)
 			} else { 
 				bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
-				fns.log(util.format(reply.create.logError, msg.author.mention), bot)
+				fns.log(f(reply.create.logError, msg.author.mention), bot)
 			}
 		} else {
 			bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
@@ -121,10 +121,11 @@ exports.close = async (msg, bot) => {
     } else {
     	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
-    	bot.on('messageCreate', confirmation)
     	let medit = setTimeout((msgid) => {
     		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
     		bot.removeListener('messageCreate', confirmation)
     	}, 10000, delMessage.id)
+
+    	bot.on('messageCreate', confirmation)
     }
 }
