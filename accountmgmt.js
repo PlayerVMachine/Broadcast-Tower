@@ -60,7 +60,7 @@ exports.create = async (msg, bot) => {
 	}
 }
 
-function delete = async (msg, bot) => {
+const delete = async (msg, bot) => {
 	try {
 
 		let client = await MongoClient.connect(url)
