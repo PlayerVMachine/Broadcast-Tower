@@ -13,27 +13,6 @@ const authMechanism = 'DEFAULT'
 // Connection URL
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-// function to delete User
-exports.deleteUser = async (userid) => {
-	try {
-		let client = await MongoClient.connect(url)
-
-		const col = client.db(config.db).collection('Users')
-
-		let deleted = await col.findOneAndDelete({user: userid})
-		if (deleted.ok === 1) {
-			client.close()
-			return 1
-		} else {
-			client.close()
-			return 0
-		}
-	} catch (e) {
-		log.error(e)
-		return -1
-	}
-}
-
 // works for status, tagline, bio, sendTo, mature, dnd, eColor, premium
 exports.setField = async (userid, field, value) => {
 	try {

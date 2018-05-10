@@ -65,16 +65,7 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 })
 
 const deleteAccount = bot.registerCommand('close', async (msg, args) => {
-	let hasAccount = await db.userExists(msg.author.id);
-
-	if (hasAccount === 1 ) {	
-		commands.delete(msg, bot)
-	} else if (hasAccount === 0) {
-		return util.format(reply.generic.useeNoAccount, msg.author.username)
-	} else {
-		return util.format(reply.generic.failure, msg.author.username)
-	}
-
+	amgmt.close(msg, bot)
 }, {
 	aliases: ['delete', 'rm', 'del'],
 	cooldown: 10000,
