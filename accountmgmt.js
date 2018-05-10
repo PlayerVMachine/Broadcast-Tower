@@ -66,8 +66,6 @@ const del = async (msg, bot, col) => {
 		//delete user from the followers list of people they're following
 		let rem = await col.updateMany({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
 
-		fns.log(rem, bot)
-
 		if (rem.result.ok === 1) {
 
 			let del = await col.findOneAndDelete({user: msg.author.id})
