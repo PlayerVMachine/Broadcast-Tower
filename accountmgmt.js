@@ -93,6 +93,8 @@ const del = async (msg, bot) => {
 }
 
 exports.close = async (msg, bot) => {
+	let client = await MongoClient.connect(url)
+	const col = client.db(config.db).collection('Users')
 	var confirm = fns.rand4Digit()
 
 	const confirmation = async (response) => {
