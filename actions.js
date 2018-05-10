@@ -44,7 +44,7 @@ const safetyChecks = async (msg, secondID, bot) => {
   return true
 }
 
-exports.follow = async(msg, bot) => {
+exports.follow = async(msg, args, bot) => {
 	try {
 		//database
 		let client = await MongoClient.connect(url)

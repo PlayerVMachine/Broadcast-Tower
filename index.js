@@ -77,7 +77,7 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 })
 
 const followUser = bot.registerCommand('follow', async (msg, args) => { 
-		act.follow(msg, bot)
+		act.follow(msg, args, bot)
 }, {
 	aliases: ['fol'],
 	argsRequired: true,
