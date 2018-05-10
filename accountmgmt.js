@@ -93,6 +93,7 @@ exports.close = async (msg, bot) => {
 	let client = await MongoClient.connect(url)
 	const col = client.db(config.db).collection('Users')
 	var confirm = fns.rand4Digit()
+	var medit
 
 	const confirmation = async (response) => {
 		res = response.content.split(' ')[0];
@@ -121,7 +122,7 @@ exports.close = async (msg, bot) => {
     } else {
     	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
-    	let medit = setTimeout((msgid) => {
+    	medit = setTimeout((msgid) => {
     		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
     		bot.removeListener('messageCreate', confirmation)
     	}, 10000, delMessage.id)
