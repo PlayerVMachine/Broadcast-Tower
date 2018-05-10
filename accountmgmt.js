@@ -100,7 +100,11 @@ exports.close = async (msg, bot) => {
 
 	const confirmation = async (response) => {
 		res = response.content.split(' ')[0];
-		if (response.author.id === msg.author.id && res !== confirm.toString()) {
+		if (response.author.id === msg.author.id && response.content === 'cancel') {
+			//user cancelled closing
+        	bot.createMessage(msg.channel.id, f(reply.close.cancelled, msg.author.username))
+        	bot.removeListener('messageCreate', confirmation)
+        } else if (response.author.id === msg.author.id && res !== confirm.toString()) {
         	//confirmation code entered incorrectly
         	bot.createMessage(msg.channel.id, f(reply.close.wrongCode, msg.author.username))
         	bot.removeListener('messageCreate', confirmation)
@@ -108,11 +112,6 @@ exports.close = async (msg, bot) => {
         	//confirmation code entered correctly
         	delete(msg, bot)
         	bot.removeListener('messageCreate', confirmation)
-
-        } else if (response.author.id === msg.author.id && response.content === 'cancel') {
-        	bot.createMessage(msg.channel.id, f(reply.close.cancelled, msg.author.username))
-        	bot.removeListener('messageCreate', confirmation)
-            // completed = true
         }
     }
 
