@@ -26,7 +26,7 @@ const safetyChecks = async (msg, secondID, bot) => {
 		return false
 	}
 
-	let isBot = await module.exports.isUserBot(secondID, bot)
+	let isBot = await fns.isUserBot(secondID, bot)
 	if (isBot){
 		bot.createMessage(msg.channel.id, f(reply.generic.cannotDoToBots, msg.author.username))
 		return false
