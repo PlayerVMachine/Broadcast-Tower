@@ -61,14 +61,12 @@ exports.create = async (msg, bot) => {
 	}
 }
 
-const del = async (msg, bot) => {
+const del = async (msg, bot, col) => {
 	try {
-
-		let client = await MongoClient.connect(url)
-		const col = client.db(config.db).collection('Users')
-
 		//delete user from the followers list of people they're following
 		let rem = await col.findAndModify({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
+
+		fns.log(rem, bot)
 
 		if (rem.ok === 1) {
 
@@ -110,7 +108,7 @@ exports.close = async (msg, bot) => {
         	bot.removeListener('messageCreate', confirmation)
         } else if (response.author.id === msg.author.id && res === confirm.toString()) {
         	//confirmation code entered correctly
-        	delete(msg, bot)
+        	delete(msg, bot, col)
         	bot.removeListener('messageCreate', confirmation)
         }
     }
