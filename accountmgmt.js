@@ -100,14 +100,17 @@ exports.close = async (msg, bot) => {
         	//confirmation code entered correctly
         	del(msg, bot, col)
         	bot.removeListener('messageCreate', confirmation)
+        	clearTimeout(medit)
         } else if (response.author.id === msg.author.id && response.content === 'cancel') {
 			//user cancelled closing
         	bot.createMessage(msg.channel.id, f(reply.close.cancelled, msg.author.username))
         	bot.removeListener('messageCreate', confirmation)
+        	clearTimeout(medit)
         } else if (response.author.id === msg.author.id && res !== confirm.toString()) {
         	//confirmation code entered incorrectly
         	bot.createMessage(msg.channel.id, f(reply.close.wrongCode, msg.author.username))
         	bot.removeListener('messageCreate', confirmation)
+        	clearTimeout(medit)
         }
     }
 
@@ -119,9 +122,9 @@ exports.close = async (msg, bot) => {
     	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
     	bot.on('messageCreate', confirmation)
-    	setTimeoutPromise(10000, delMessage.id).then((msgid) => {
+    	let medit = setTimeout((msgid) => {
     		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
     		bot.removeListener('messageCreate', confirmation)
-    	})
+    	}, 10000, delMessage.id)
     }
 }
