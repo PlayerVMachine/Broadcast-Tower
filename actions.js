@@ -58,7 +58,7 @@ exports.follow = async(msg, bot) => {
 		}
 		
 		//check for undesirable conditions
-		let secondID = fns.isID(testID)
+		let secondID = fns.isID(args[0])
 		let safe = await safetyChecks(msg, secondID, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told

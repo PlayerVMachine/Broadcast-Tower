@@ -1,6 +1,6 @@
 {
 	"generic" : {
-		"logError":"```diff\n- %s\n ```",
+		"logError":"```diff\n- %s```",
 		"useeNoAccount":"%s, you do not have a broadcast station!",
 		"userNoAccount":"%s, %s does not have a broadcast station.",
 		"invalidID":"%s, %s is not a valid user id or mention.",
@@ -37,6 +37,8 @@
 		"usage":"`b.close`"
 	},
 	"follow" : {
+		"logSuccess":": %s followed %s",
+		"logError":": Error occured when %s tried %s",
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
 		"success":"%s, you are now tuned into %s's broadcasts!",
