@@ -32,7 +32,7 @@ const safetyChecks = async (msg, secondID, bot) => {
 		return false
 	}
 
-	let followeeHasAccount = await db.userExists(secondID)
+	let followeeHasAccount = await col.findOne({user: secondID})
 
 	if (followeeHasAccount === 0) {
 		let secondUsername = await fns.getUsername(secondID, bot)
