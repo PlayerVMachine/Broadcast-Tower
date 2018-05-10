@@ -2,11 +2,12 @@
 	"generic" : {
 		"logError":"```diff\n- %s```",
 		"useeNoAccount":"%s, you do not have a broadcast station!",
-		"userNoAccount":"%s, %s does not have a broadcast station.",
-		"invalidID":"%s, %s is not a valid user id or mention.",
-		"cooldownMessage":"Your frequency is too high please lower it.",
-		"cannotDoToBots":"%s, this action is not supported on bots",
-		"cannotDoToSelf":"%s, this action is not supported on yourself"
+		"userNoAccount":"%s, %s does not have a broadcast station!",
+		"invalidID":"%s, %s is not a valid user id or mention!",
+		"cooldownMessage":"Your frequency is too high please lower it!",
+		"cannotDoToBots":"%s, this action is not supported on bots!",
+		"cannotDoToSelf":"%s, this action is not supported on yourself!",
+		"userUnknown":"%s, The user %s has never tuned into the Tower's singals."
 	},
 	"ping" : {
 		"description":"No one asks how the bot is, only ping?",
