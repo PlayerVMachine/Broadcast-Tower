@@ -27,7 +27,7 @@ const safetyChecks = async (msg, secondID, col, bot) => {
 	}
 
 	let isBot = await bot.users.get(secondID)
-	if (isBot.bot === undefined) {
+	if (isBot === undefined) {
 		//do nothing, catches error and lets followeeHasAccount break the news
 	} else if (isBot.bot){
 		bot.createMessage(msg.channel.id, f(reply.generic.cannotDoToBots, msg.author.username))
