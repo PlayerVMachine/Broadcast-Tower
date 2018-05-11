@@ -71,6 +71,7 @@ exports.follow = async(msg, args, bot) => {
 
 		//already following
 		let isInList = col.findOne({user: msg.author.id, following: secondID})
+		fns.log(isInList, bot)
 		if (isInList !== null) {
 			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$addToSet: {following: msg.author.id}})
