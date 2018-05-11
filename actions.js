@@ -79,6 +79,7 @@ exports.follow = async(msg, args, bot) => {
 
 		//you blocked them!
 		let isBlocked = await col.findOne({user: msg.author.id}, {blocked: secondID})
+		fns.log(isBlocked, bot)
 		if (isBlocked !== null) {
 			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, msg.author.username, second))
 			return
