@@ -70,7 +70,7 @@ exports.follow = async(msg, args, bot) => {
 		let second = await fns.getUsername(secondID, bot)
 
 		//already following
-		let isInList = col.findOne({user: msg.author.id, following: secondID})
+		let isInList = await col.findOne({user: msg.author.id, following: secondID})
 		fns.log(isInList, bot)
 		if (isInList !== null) {
 			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second))
