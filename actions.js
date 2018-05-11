@@ -73,33 +73,34 @@ exports.follow = async(msg, args, bot) => {
 		let isInList = col.findOne({user: msg.author.id, following: secondID})
 		if (isInList !== null) {
 			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second))
-			let beSure = await col.findOneAndUpdate({user: secondID}, {$addToSet: {following: value}})
+			let beSure = await col.findOneAndUpdate({user: secondID}, {$addToSet: {following: msg.author.id}})
 			return
 		}
 
 		//you blocked them!
-		let isBlocked = await col.findOne({user: msg.author.id, blocked: secondID})
+		let isBlocked = await col.findOne({user: msg.author.id}, {blocked: secondID})
 		if (isBlocked) {
 			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, msg.author.username, second))
 			return
 		}
 
 		//they blocked you!
-		let theyBlocked = await col.findOne({user:secondID, blocked: msg.author.id})
+		let theyBlocked = await col.findOne({user:secondID}, {blocked: msg.author.id})
 		if (theyBlocked) {
 			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, second, msg.author.username))
 			return
 		}
 
     	// if not following
-    	let addToFollowing = await col.findOneAndUpdate(msg.author.id, 'following', followid)
-    	let addToFollowers = await col.findOneAndUpdate(followid, 'followers', msg.author.id)
+    	let addToFollowing = await col.findOneAndUpdate({user: usermsg.author.id}, {$addtoset: {following: followid}})
+    	let addToFollowers = await col.findOneAndUpdate({user: followid}, {$addtoset: {followers: msg.author.id}})
     	if (addToFollowers.result.ok === 1 && addToFollowing.result.ok) {
     		fns.log(f(reply.follow.logError), bot)
-    		bot.createMessage(msg.channel.id, f(reply.follow.success), msg.author.username, second)
+    		bot.createMessage(msg.channel.id, f(reply.follow.success, msg.author.username, second))
     	} else {
-    		fns.log(f(reply.general.logError, rem.lastErrorObject), bot)
-    		bot.createMessage(msg.channel.id, f())
+    		fns.log(f(reply.general.logError, addToFollowers.lastErrorObject), bot)
+    		fns.log(f(reply.general.logError, addToFollowing.lastErrorObject), bot)
+    		bot.createMessage(msg.channel.id, f(reply.follow.error, msg.author.username, second))
     	}
     } catch (err) {
     	fns.log(f(reply.generic.logError, err), bot)
@@ -108,18 +109,48 @@ exports.follow = async(msg, args, bot) => {
 
 exports.unfollow = async(msg, bot) => {
 	try {
+		//database
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
 
+		//check is usee is a user
 		let found = await col.findOne({user: msg.author.id})
-
 		if (found === null) {
 			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
-		} else {
+			return
+		}
+		
+		//check for undesirable conditions
+		let secondID = fns.isID(args[0])
+		let safe = await safetyChecks(msg, secondID, col, bot)
+		if (!safe)
+			return	//something was wrong with the input and the user was told
 
-		} 
+		//grab their username
+		let second = await fns.getUsername(secondID, bot)
+
+		//is not in list
+		let isInList = col.findOne({user: msg.author.id, following: secondID})
+		if (isInList === null) {
+			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second))
+			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.username}})
+			return
+		}
+
+		//unfollow
+		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: followid}})
+    	let remFromFollowers = await col.findOneAndUpdate({user: followid}, {$pull: {followers: msg.author.id}})
+    	if (remFromFollowers.result.ok === 1 && remFromFollowing.result.ok) {
+    		fns.log(f(reply.follow.logError), bot)
+    		bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
+    	} else {
+    		fns.log(f(reply.general.logError, remFromFollowing.lastErrorObject), bot)
+    		fns.log(f(reply.general.logError, remFromFollowers.lastErrorObject), bot)
+    		bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second)
+    	}
+
 	} catch (err) {
-
+		fns.log(f(reply.generic.logError, err), bot)
 	}
 }
 

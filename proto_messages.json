@@ -39,7 +39,6 @@
 	},
 	"follow" : {
 		"logSuccess":": %s followed %s",
-		"logError":": Error occured when %s tried %s",
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
 		"success":"%s, you are now tuned into %s's broadcasts!",
@@ -50,6 +49,7 @@
 		"usage":"`b.follow @user` or `b.follow userid`"
 	},
 	"unfollow" : {
+		"logSuccess":": %s unfollowed %s",
 		"unfollowSuccess":"%s, you are no longer following %s's broadcasts!",
 		"unfollowError":"%s, there was an error unfollowing %s, please try again later.",
 		"notFollowing":"%s, you are not following %s!",

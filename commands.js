@@ -41,39 +41,6 @@ exports.qeval = async (msg, code, bot) => {
 //Command Functions            //
 ////////////////////////////////
 
-exports.follow = async (msg, followid, bot) => {
-    // check if user is already follwing the other user
-    let isInList = await db.userInList(msg.author.id, 'following', followid)
-    let isBlocked = await db.userInList(msg.author.id, 'blocked', followid)
-    if (isBlocked) {
-        bot.createMessage(msg.channel.id, 'You blocked that user! Cannot follow them')
-        return
-    }
-    let theyBlocked = await db.userInList(followid, 'blocked', msg.author.id)
-    if (theyBlocked) {
-        bot.createMessage(msg.channel.id, 'They have blocked you! Cannot follow them')
-        return
-    }
-
-    if (isInList === 0) {
-        // if not following
-        let addToFollowing = await db.pushUserToList(msg.author.id, 'following', followid)
-        let addToFollowers = await db.pushUserToList(followid, 'followers', msg.author.id)
-        fns.log('addedtofollowing', bot)
-
-        if (addToFollowing === 1 && addToFollowers === 1) {
-            bot.createMessage(msg.channel.id, msg.author.username + ', you are now following their broadcasts!')
-        } else if (addToFollowers === 0 || addToFollowing === 0) {
-            bot.createMessage(msg.channel.id, msg.author.username + ', there was an error following that user, please try again later.')
-        } else if (isInList === 1) {
-            bot.createMessage(msg.channel.id, msg.author.username + ', you are already following their broadcasts!')
-            let addToFollowers = await db.pushUserToList(followid, 'followers', msg.author.id) // run in case this part failed
-        } else {
-            bot.createMessage(msg.channel.id, msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.')
-        }
-    }
-}
-
 exports.unfollow = async (msg, unfollowid, bot) => {
     // check if user is already follwing the other user
     let isInList = await db.userInList(msg.author.id, 'following', unfollowid)
