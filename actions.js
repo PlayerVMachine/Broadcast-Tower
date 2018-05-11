@@ -225,12 +225,13 @@ exports.post = async (msg, args, bot, q) => {
 	let followers = sender.followers
 	let resChannel = sender.sendTo
 
+	fns.log(sender, bot)
+
 	let post = fns.postEmbed(message, msg.author)
 
 	for (i = 0; i < followers.length; i++) {
 		let recipient = await col.findOne({user: followers[i]})
 		channelID = recipient.sendTo
-		fns.log(channelID, bot)
 		if (i !== followers.length - 1) {
 			q.push({channelID:channelID, msg:post, fin:''})
 		} else {
