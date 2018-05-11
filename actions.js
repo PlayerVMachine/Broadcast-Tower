@@ -229,7 +229,7 @@ exports.post = async (msg, args, bot, q) => {
 
 	let post = fns.postEmbed(message, msg.author)
 
-	let remMessage = await bot.createMessage(msg.author.id, 'Your post is scheduled to broadcast in 5s, type `cancel` to cancel transmission')
+	let remMessage = await bot.createMessage(msg.channel.id, 'Your post is scheduled to broadcast in 5s, type `cancel` to cancel transmission')
 	bot.on('messageCreated', callback = async (message) => {
 		if(message.author.id === msg.author.id && cancel.test(message.content)) {
 			bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
