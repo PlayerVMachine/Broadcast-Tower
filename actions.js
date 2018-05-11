@@ -92,7 +92,7 @@ exports.follow = async(msg, args, bot) => {
 		}
 
     	// if not following
-    	let addToFollowing = await col.findOneAndUpdate({user: usermsg.author.id}, {$addtoset: {following: followid}})
+    	let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addtoset: {following: followid}})
     	let addToFollowers = await col.findOneAndUpdate({user: followid}, {$addtoset: {followers: msg.author.id}})
     	if (addToFollowers.result.ok === 1 && addToFollowing.result.ok) {
     		fns.log(f(reply.follow.logError), bot)
