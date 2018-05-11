@@ -147,7 +147,7 @@ exports.unfollow = async(msg, bot) => {
     	} else {
     		fns.log(f(reply.general.logError, remFromFollowing.lastErrorObject), bot)
     		fns.log(f(reply.general.logError, remFromFollowers.lastErrorObject), bot)
-    		bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second)
+    		bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second))
     	}
 
 	} catch (err) {
