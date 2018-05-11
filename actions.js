@@ -129,8 +129,7 @@ exports.unfollow = async(msg, args, bot) => {
 		let second = await fns.getUsername(secondID, bot)
 
 		//is not in list
-		let isInList = col.findOne({user: msg.author.id, following: secondID})
-		fns.log(isInList, bot)
+		let isInList = await col.findOne({user: msg.author.id, following: secondID})
 		if (isInList === null) {
 			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.username}})
