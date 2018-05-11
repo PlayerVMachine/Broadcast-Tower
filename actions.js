@@ -202,18 +202,24 @@ exports.post = async (msg, args, bot, q) => {
 	}
 
 	//no blank posts
-	if(args.length === 0)
-		bot.createMessage(msg.channel.id, f(reply.post.noBlankPosts, msg.author.username))
+	if(args.length === 0) {
+		bot.createMessage(msg.channel.id, f(reply.post.noBlankPost, msg.author.username))
+		return
+	}
 
 	//no non-printing characters
 	let message = args.join(' ')
-	if (nonPrintingChars.test(message))
+	if (nonPrintingChars.test(message)) {
 		bot.createMessage(msg.channel.id, f(reply.post.noNonPrinting, msg.author.username))
+		return
+	}
 
 	//swearjar
 	let isRude = pc.profane(message)
-	if (isRude)
+	if (isRude) {
 		bot.createMessage(msg.channel.id, f(reply.post.noProfanity, msg.author.username))
+		return
+	}
 
 	let sender = await col.findOne({user: msg.author.id})
 	let followers = sender.followers
@@ -222,7 +228,7 @@ exports.post = async (msg, args, bot, q) => {
 	let post = fns.postEmbed(message, msg.author)
 
 	for (i = 0; i < followers.length; i++) {
-		let recipient = await col.findOne({user: msg.author.id})
+		let recipient = await col.findOne({user: followers[i]})
 		channelID = recipient.sendTo
 		if (i !== followers.length - 1) {
 			q.push({channelID:channelID, msg:post, fin:''})
