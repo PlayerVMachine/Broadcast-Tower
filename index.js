@@ -243,28 +243,7 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 	})
 
 const post = bot.registerCommand('post', async (msg, args) => {
-	if(args.length === 0)
-		return util.format(reply.post.noBlankPosts, msg.author.id)
-
-	let followers = await db.getFields(msg.author.id, 'followers')
-	let resChannel = await db.getFields(msg.author.id, 'sendTo')
-
-	var message = args.join(' ')
-	if (nonPrintingChars.test(message))
-		return util.format(reply.post.noNonPrinting, msg.author.id)
-
-	var post = fns.postEmbed(message, msg.author)
-
-	for (i = 0; i < followers.length; i++) {
-		let channelID = await db.getFields(followers[i], 'sendTo')
-		if (i !== followers.length - 1) {
-			q.push({channelID:channelID, msg:post, fin:''})
-		} else {
-			q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
-			})
-		}
-	}
+	act.post(msg, args, bot, q)
 }, {
 	aliases: ['cast', 'send'],
 	cooldown: 10000,

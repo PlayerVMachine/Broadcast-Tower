@@ -118,6 +118,7 @@
 	"post" : {
 		"noBlankPost":"No blank broadcasts thank you %s.",
 		"noNonPrinting":"Heck off with your non-printing characters %s tyvm.",
+		"noProfanity":"Language, %s!",
 		"sentConfirm":"Your station just broadcasted: %s",
 		"description":"Send a post to your followers!",
 		"fullDescription":"Send a post to your followers, no blank posts, certain profanity prohibited.",

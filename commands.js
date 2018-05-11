@@ -41,29 +41,6 @@ exports.qeval = async (msg, code, bot) => {
 //Command Functions            //
 ////////////////////////////////
 
-exports.unfollow = async (msg, unfollowid, bot) => {
-    // check if user is already follwing the other user
-    let isInList = await db.userInList(msg.author.id, 'following', unfollowid)
-
-    if (isInList === 1) {
-        let removeFromFollowing = await db.pullUserFromList(msg.author.id, 'following', unfollowid)
-        let removeFromFollowers = await db.pullUserFromList(unfollowid, 'followers', msg.author.id)
-
-        if (removeFromFollowing === 1 && removeFromFollowers === 1) {
-            bot.createMessage(msg.channel.id, msg.author.username + ', you are no longer following their broadcasts!')
-        } else if (removeFromFollowers === 0 || removeFromFollowing === 0) {
-            bot.createMessage(msg.channel.id, msg.author.username + ', there was an error unfollowing that user, please try again later.')
-        } else {
-            bot.createMessage(msg.channel.id, msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.')
-        }
-    } else if (isInList === 0) {
-        bot.createMessage(msg.channel.id, msg.author.username + ', you are not following their broadcasts!')
-        let removeFromFollowers = await db.pullUserFromList(unfollowid, 'followers', msg.author.id) // run in case this part failed
-    } else {
-        bot.createMessage(msg.channel.id, msg.author.username + ', sorry an antenna broke somewhere! If this message persists contact Hal.')
-    }
-}
-
 exports.block = async (msg, blockid, bot) => {
     let removeFromFollowing = await db.pullUserFromList(msg.author.id, 'following', blockid)
     let removeFromFollowers = await db.pullUserFromList(blockid, 'followers', msg.author.id)

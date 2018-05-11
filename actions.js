@@ -1,6 +1,7 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
+const pc = require('swearjar')
 
 // project files required
 const config = require('./config.json')
@@ -11,8 +12,11 @@ const fns = require('./utilities.js')
 const user = encodeURIComponent(config.user)
 const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
-
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
+
+//regex
+const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
+
 
 const safetyChecks = async (msg, secondID, col, bot) => {
 	
@@ -138,14 +142,14 @@ exports.unfollow = async(msg, args, bot) => {
 
 		//unfollow
 		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
-    	let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
-    	if (remFromFollowers.ok === 1 && remFromFollowing.ok) {
-    		bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
-    	} else {
-    		fns.log(f(reply.general.logError, remFromFollowing.lastErrorObject), bot)
-    		fns.log(f(reply.general.logError, remFromFollowers.lastErrorObject), bot)
-    		bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second))
-    	}
+		let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
+		if (remFromFollowers.ok === 1 && remFromFollowing.ok) {
+			bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
+		} else {
+			fns.log(f(reply.general.logError, remFromFollowing.lastErrorObject), bot)
+			fns.log(f(reply.general.logError, remFromFollowers.lastErrorObject), bot)
+			bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second))
+		}
 
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
@@ -183,5 +187,47 @@ exports.unblock = async(msg, bot) => {
 		}
 	} catch (err) {
 
+	}
+}
+
+exports.post = async (msg, args, bot, q) => {
+	let client = await MongoClient.connect(url)
+	const col = client.db(config.db).collection('Users')
+
+	//check is usee is a user
+	let found = await col.findOne({user: msg.author.id})
+	if (found === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+		return
+	}
+
+	//no blank posts
+	if(args.length === 0)
+		bot.createMessage(msg.channel.id, f(reply.post.noBlankPosts, msg.author.username))
+
+	//no non-printing characters
+	let message = args.join(' ')
+	if (nonPrintingChars.test(message))
+		bot.createMessage(msg.channel.id, f(reply.post.noNonPrinting, msg.author.username))
+
+	//swearjar
+	let isRude = pc.profane(message)
+	if (isRude)
+		bot.createMessage(msg.channel.id, f(reply.post.noProfanity, msg.author.username))
+
+	let followers = await db.getFields(msg.author.id, 'followers')
+	let resChannel = await db.getFields(msg.author.id, 'sendTo')
+
+	let post = fns.postEmbed(message, msg.author)
+
+	for (i = 0; i < followers.length; i++) {
+		let channelID = await db.getFields(followers[i], 'sendTo')
+		if (i !== followers.length - 1) {
+			q.push({channelID:channelID, msg:post, fin:''})
+		} else {
+			q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
+				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
+			})
+		}
 	}
 }
