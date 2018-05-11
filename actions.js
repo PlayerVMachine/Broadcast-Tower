@@ -137,8 +137,8 @@ exports.unfollow = async(msg, args, bot) => {
 		}
 
 		//unfollow
-		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: followid}})
-    	let remFromFollowers = await col.findOneAndUpdate({user: followid}, {$pull: {followers: msg.author.id}})
+		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
+    	let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
     	if (remFromFollowers.ok === 1 && remFromFollowing.ok) {
     		bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
     	} else {
