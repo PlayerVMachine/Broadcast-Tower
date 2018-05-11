@@ -95,7 +95,6 @@ exports.follow = async(msg, args, bot) => {
     	let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     	let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     	if (addToFollowers.ok === 1 && addToFollowing.ok) {
-    		fns.log(f(reply.follow.logError), bot)
     		bot.createMessage(msg.channel.id, f(reply.follow.success, msg.author.username, second))
     	} else {
     		fns.log(f(reply.general.logError, addToFollowers.lastErrorObject), bot)
@@ -140,8 +139,7 @@ exports.unfollow = async(msg, bot) => {
 		//unfollow
 		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: followid}})
     	let remFromFollowers = await col.findOneAndUpdate({user: followid}, {$pull: {followers: msg.author.id}})
-    	if (remFromFollowers.result.ok === 1 && remFromFollowing.result.ok) {
-    		fns.log(f(reply.follow.logError), bot)
+    	if (remFromFollowers.ok === 1 && remFromFollowing.ok) {
     		bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
     	} else {
     		fns.log(f(reply.general.logError, remFromFollowing.lastErrorObject), bot)
