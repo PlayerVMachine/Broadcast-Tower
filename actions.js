@@ -249,5 +249,5 @@ exports.post = async (msg, args, bot, q) => {
 		}
 		if (followers.length > 0)
 			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
-	}, 5000, remMessage.id)
+	}, 10000, remMessage.id)
 }
