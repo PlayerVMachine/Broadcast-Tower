@@ -32,7 +32,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 //Define Message queue
 var q = new Queue(function (data, cb) {
 	bot.createMessage(data.channelID, data.msg)
-	cb(null, data.fin)
+	cb(null, result)
 }, {
 	afterProcessDelay:1000
 })
@@ -246,7 +246,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	act.post(msg, args, bot, q)
 }, {
 	aliases: ['cast', 'send'],
-	cooldown: 10000,
+	cooldown: 1000,
 	description: reply.post.description,
 	fullDescription: reply.post.fullDescription,
 	usage: reply.post.usage

@@ -225,11 +225,20 @@ exports.post = async (msg, args, bot, q) => {
 	let followers = sender.followers
 	let resChannel = sender.sendTo
 
-	fns.log(sender, bot)
-
 	let post = fns.postEmbed(message, msg.author)
 
 	for (i = 0; i < followers.length; i++) {
+		let recipient = await col.findOne({user: followers[i]})
+		channelID = recipient.sendTo
+		q.push({channelID:channelID, msg:post})
+	}
+	if (followers.length > 0)
+		q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
+
+
+}
+
+/*	for (i = 0; i < followers.length; i++) {
 		let recipient = await col.findOne({user: followers[i]})
 		channelID = recipient.sendTo
 		if (i !== followers.length - 1) {
@@ -239,5 +248,4 @@ exports.post = async (msg, args, bot, q) => {
 				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
 			})
 		}
-	}
-}
+	}*/
