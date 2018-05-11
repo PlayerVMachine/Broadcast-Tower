@@ -241,7 +241,7 @@ exports.post = async (msg, args, bot, q) => {
 
 	medit = setTimeout(async (remID) => {
 		bot.removeListener('messageCreated', callback)
-		bot.deleteMessage(msg.channelID, remID, 'Timeout expired')
+		bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
 		for (i = 0; i < followers.length; i++) {
 			let recipient = await col.findOne({user: followers[i]})
 			channelID = recipient.sendTo
