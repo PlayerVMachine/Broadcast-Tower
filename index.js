@@ -243,10 +243,11 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 	})
 
 const post = bot.registerCommand('post', async (msg, args) => {
+	//function to send posts
 	act.post(msg, args, bot, q)
 }, {
 	aliases: ['cast', 'send'],
-	cooldown: 1000,
+	cooldown: 5000,
 	description: reply.post.description,
 	fullDescription: reply.post.fullDescription,
 	usage: reply.post.usage

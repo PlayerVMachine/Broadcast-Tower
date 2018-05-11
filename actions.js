@@ -16,6 +16,7 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 
 //regex
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
+const cancel = new RegExp('^[aceln]*[^abdf-kmo-z]\\b', 'i')
 
 
 const safetyChecks = async (msg, secondID, col, bot) => {
@@ -193,6 +194,7 @@ exports.unblock = async(msg, bot) => {
 exports.post = async (msg, args, bot, q) => {
 	let client = await MongoClient.connect(url)
 	const col = client.db(config.db).collection('Users')
+	var medit
 
 	//check is usee is a user
 	let found = await col.findOne({user: msg.author.id})
@@ -227,25 +229,25 @@ exports.post = async (msg, args, bot, q) => {
 
 	let post = fns.postEmbed(message, msg.author)
 
-	for (i = 0; i < followers.length; i++) {
-		let recipient = await col.findOne({user: followers[i]})
-		channelID = recipient.sendTo
-		q.push({channelID:channelID, msg:post})
-	}
-	if (followers.length > 0)
-		q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
-
-
-}
-
-/*	for (i = 0; i < followers.length; i++) {
-		let recipient = await col.findOne({user: followers[i]})
-		channelID = recipient.sendTo
-		if (i !== followers.length - 1) {
-			q.push({channelID:channelID, msg:post, fin:''})
-		} else {
-			q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-				bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
-			})
+	let remMessage = await bot.createMessage(msg.author.id, 'Your post is scheduled to broadcast in 5s, type `cancel` to cancel transmission')
+	bot.on('messageCreated', callback = async (message) => {
+		if(message.author.id === msg.author.id && cancel.test(message.content)) {
+			bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
+			bot.removeListener('messageCreated', callback)
+			clearTimeout(medit)
+			return 
 		}
-	}*/
+	})
+
+	medit = setTimeout(async (remID) => {
+		bot.removeListener('messageCreated', callback)
+		bot.deleteMessage(msg.channelID, remID, 'Timeout expired')
+		for (i = 0; i < followers.length; i++) {
+			let recipient = await col.findOne({user: followers[i]})
+			channelID = recipient.sendTo
+			q.push({channelID:channelID, msg:post})
+		}
+		if (followers.length > 0)
+			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
+	}, 5000, remMessage.id)
+}
