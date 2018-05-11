@@ -94,7 +94,7 @@ exports.follow = async(msg, args, bot) => {
     	// if not following
     	let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     	let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
-    	if (addToFollowers.result.ok === 1 && addToFollowing.result.ok) {
+    	if (addToFollowers.ok === 1 && addToFollowing.ok) {
     		fns.log(f(reply.follow.logError), bot)
     		bot.createMessage(msg.channel.id, f(reply.follow.success, msg.author.username, second))
     	} else {
