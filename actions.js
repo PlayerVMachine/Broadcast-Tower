@@ -230,7 +230,8 @@ exports.post = async (msg, args, bot, q) => {
 	let post = fns.postEmbed(message, msg.author)
 
 	const callback = async (message) => {
-		if(message.author.id === msg.author.id && cancel.test(message.content)) {
+		//test if condition is being passed or not cancel.test(message.content)
+		if(message.author.id === msg.author.id && message.content === 'cancel') {
 			bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
 			bot.removeListener('messageCreated', callback)
 			clearTimeout(medit)
@@ -238,7 +239,6 @@ exports.post = async (msg, args, bot, q) => {
 	}
 
 	let remMessage = await bot.createMessage(msg.channel.id, 'Your post is scheduled to broadcast in 5s, type `cancel` to cancel transmission')
-	bot.on('messageCreated', callback)
 
 	medit = setTimeout(async (remID) => {
 		//remove ability to cancel
@@ -252,5 +252,7 @@ exports.post = async (msg, args, bot, q) => {
 		}
 		if (followers.length > 0)
 			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
-	}, 5000, remMessage.id)
+	}, 6000, remMessage.id)
+	//try this at the end?
+	bot.on('messageCreated', callback)
 }
