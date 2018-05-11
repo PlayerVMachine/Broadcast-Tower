@@ -215,13 +215,15 @@ exports.post = async (msg, args, bot, q) => {
 	if (isRude)
 		bot.createMessage(msg.channel.id, f(reply.post.noProfanity, msg.author.username))
 
-	let followers = await db.getFields(msg.author.id, 'followers')
-	let resChannel = await db.getFields(msg.author.id, 'sendTo')
+	let sender = await col.findOne({user: msg.author.id})
+	let followers = sender.followers
+	let resChannel = sender.sendTo
 
 	let post = fns.postEmbed(message, msg.author)
 
 	for (i = 0; i < followers.length; i++) {
-		let channelID = await db.getFields(followers[i], 'sendTo')
+		let recipient = await col.findOne({user: msg.author.id})
+		channelID = recipient.sendTo
 		if (i !== followers.length - 1) {
 			q.push({channelID:channelID, msg:post, fin:''})
 		} else {
