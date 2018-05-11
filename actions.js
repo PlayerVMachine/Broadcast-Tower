@@ -106,7 +106,7 @@ exports.follow = async(msg, args, bot) => {
     }
 }
 
-exports.unfollow = async(msg, bot) => {
+exports.unfollow = async(msg, args, bot) => {
 	try {
 		//database
 		let client = await MongoClient.connect(url)

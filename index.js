@@ -89,10 +89,8 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 })
 
 const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
-	let res = await fns.safetyChecks(msg, bot)
-
-	if (res)
-		commands.unfollow(msg, args[0] ,bot)
+	//command to unfollow user
+	act.unfollow(msg, args ,bot)
 }, {
 	aliases: ['unfol', 'uf'],
 	argsRequired: true,
