@@ -50,6 +50,9 @@ exports.updateHandler = async (editMsg, msg, bot, col) => {
 	if (editMsg.author.id !== msg.author.id)
 		return
 
+	let botUser = await bot.getSelf()
+	let discUser = await bot.users.get(msg.author.id)
+
 	if (editMsg.content.startsWith('tagline')) {
 		//get just the tagline
 		let newTagline = editMsg.content.slice(8)
