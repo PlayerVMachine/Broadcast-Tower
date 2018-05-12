@@ -44,7 +44,7 @@ const editView = (btUser, discUser, botUser) => {
 				{name: 'Mature: ', value: mature, inline: true},
 				{name: 'Private: ', value: private, inline: true},
 				{name: 'DND: ', value:dnd, inline: true},
-				{name: 'Color', value: color, inline: false},
+				{name: 'Color', value: color, inline: true},
 				{name: 'Following: ', value:btUser.following.length, inline: true},
 				{name: 'Followers: ', value:btUser.followers.length, inline: true},
 				{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
