@@ -197,7 +197,7 @@ exports.block = async(msg, args, bot) => {
 		let blocked = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {blocked: secondID}})
 		let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
-		if (blocked.ok === 1 && remFromFollowing === 1 && remFromFollowers === 1) {
+		if (blocked.ok === 1 && remFromFollowing.ok === 1 && remFromFollowers.ok === 1) {
 			bot.createMessage(msg.channel.id, f(reply.block.success, msg.author.username, second))
 		} else {
 			bot.createMessage(msg.channel.id, f(reply.block.error, msg.author.username, second))
