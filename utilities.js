@@ -125,7 +125,7 @@ exports.postEmbed = (msg, user) => {
         name: user.username,
         icon_url: user.avatarURL
       },
-      color: config.color,
+      color: parseInt(config.color, 16),
       footer: { // Footer text
         text: 'Report abuse to Hal'
       }
@@ -152,7 +152,7 @@ function HelpEmbed (title, helpString, botUser) {
   this.embed.title = title
   this.embed.description = helpString
   this.embed.author = {name: botUser.username, icon_url: botUser.avatarURL}
-  this.embed.color = config.color
+  this.embed.color = parseInt(config.color, 16)
   this.embed.footer = {text: 'Broadcast Tower Help Station'}
 }
 
