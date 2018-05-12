@@ -14,13 +14,14 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-const editView = (btUser, discUser, botUser) => {
+const editView = async (btUser, discUser, botUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
 	let mature = 'Profanity `not` allowed'
 	let private = 'Privacy set to `public`'
 	let dnd = 'Do not disturb set to `off`'
 	let color = 'Embed color: ' + btUser.eColor
+	let avatar = await discUser.dynamicAvatarURL('gif', 512)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -36,7 +37,7 @@ const editView = (btUser, discUser, botUser) => {
 			title: discUser.username + `'s account details.`,
 			description: 'Current settings:',
 			color: config.color,
-			thumbnail: {url: discUser.avatarURL, width: 512, height:512},
+			thumbnail: {url: avatar, width: 512, height:512},
 			author: {name: botUser.username, icon_url: botUser.avatarURL},
 			fields: [
 				{name: 'Tagline: ', value: tagline, inline: false},
