@@ -94,7 +94,7 @@
 	},
 	"mature" : {
 		"current":"%s, your profanity preference is set to `%s`.",
-		"uexpected":"%s setting is one of `yes` or `no` not: %s",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
 		"success":"%s, your profanity preference is now set to `%s`.",
 		"error":"%s, there was an error setting your profanity preference.",
 		"description":"Set your mature preference",
