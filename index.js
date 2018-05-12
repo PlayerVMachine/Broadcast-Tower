@@ -113,7 +113,8 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 })
 
 const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
-		act.unblock(msg, args, bot)
+	//unblock a user
+	act.unblock(msg, args, bot)
 }, {
 	aliases: ['unb'],
 	argsRequired:true,
