@@ -76,7 +76,27 @@ exports.edit = async (msg, args, bot) => {
 
 		let embed = editView(usee, discUser, botUser)
 
-		bot.createMessage(msg.channel.id, embed)
+		let iprofile = await bot.createMessage(msg.channel.id, embed)
+
+		const updateHandler = (editMsg) => {
+			if (editMsg.author.id !== msg.author.id)
+				return
+
+			if (editMsg.content.startsWith('tagline')) {
+				//get just the tagline
+				let newTagline = editMsg.content.slice(8)
+				if (newTagline.length > 140) {
+					bot.createMessage(msg.channel.id, f(reply.tagline.isTooLong, msg.author.username))
+				} else {
+					let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tagline:newTagline}})
+					let newEmbed = editView(usee, discUser, botUser)
+					bot.editMessage(msg.channel.id, iprofile.id, newEmbed)
+					bot.removeListener('messageCreate', updateHandler)
+				}
+			}
+		}
+
+		bot.on('messageCreate', updateHandler)
 
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
