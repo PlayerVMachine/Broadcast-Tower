@@ -140,23 +140,16 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 	usage: reply.tagline.usage
 })
 
-const editBio = bot.registerCommand('bio', async (msg, args) => {
-	let isUser = await fns.userHasAccount(msg, bot)
-	if (res) {
-		var text = args.join(' ')
-		if (text.length < 400) {
-			let setBio = await commands.setBio(msg, text, bot)
-		}
-		else {
-			return util.format(reply.bio.isTooLong, msg.author.id)
-		}
-	}
+const editBio = edit.registerSubcommand('bio', async (msg, args) => {
+	prof.setBio(msg, args, bot)
 }, {
+	aliases: ['b'],
 	cooldown: 5000,
 	description: reply.bio.description,
 	fullDescription: reply.bio.fullDescription,
 	usage: reply.bio.usage
 })
+
 
 const editMature = bot.registerCommand('mature', async (msg, args) => {
 	let isUser = await fns.userHasAccount(msg, bot)

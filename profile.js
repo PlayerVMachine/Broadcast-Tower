@@ -120,7 +120,7 @@ exports.setTagline = async (msg, args, bot) => {
 		//findone and update their tagline
 		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tagline:newTagline}})
 		if (update.ok === 1) {
-			bot.createMessage(msg.channel.id, f(reply.tagline.success, msg.author.id, newTagline))
+			bot.createMessage(msg.channel.id, f(reply.tagline.success, msg.author.username, newTagline))
 		} else {
 			fns.log(f(reply.generic.logError, err), bot)
 		}
@@ -131,6 +131,96 @@ exports.setTagline = async (msg, args, bot) => {
 }
 
 //view tagline
-exports.getTagline = async (msg, args, bot) => {
+exports.getTagline = async (msg, bot) => {
 
+}
+
+//edit tagline - without big edit embed
+exports.setTagline = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.tagline.current, msg.author.username, usee.tagline))
+			return
+		}
+
+		let newTagline = args.join(' ')
+		if (newTagline.length > 140) {
+			bot.createMessage(msg.channel.id, f(reply.tagline.isTooLong, msg.author.username))
+			return
+		}
+
+		if (pc.profane(newTagline)) {
+			bot.createMessage(msg.channel.id, f(reply.tagline.isProfane, msg.author.username))
+			return
+		}
+
+		//findone and update their tagline
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tagline:newTagline}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.tagline.success, msg.author.username, newTagline))
+		} else {
+			fns.log(f(reply.generic.logError, err), bot)
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
+}
+
+exports.getBio = async (msg, bot) => {
+
+}
+
+//edit bio
+exports.setBio = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.bio.current, msg.author.username, usee.bio))
+			return
+		}
+
+		let newBio = args.join(' ')
+		if (newBio.length > 400) {
+			bot.createMessage(msg.channel.id, f(reply.bio.isTooLong, msg.author.username))
+			return
+		}
+
+		if (pc.profane(newBio)) {
+			bot.createMessage(msg.channel.id, f(reply.bio.isProfane, msg.author.username))
+			return
+		}
+
+		//findone and update their tagline
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {bio:newBio}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.bio.success, msg.author.username, newBio))
+		} else {
+			fns.log(f(reply.generic.logError, err), bot)
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
 }

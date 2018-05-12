@@ -80,16 +80,17 @@
 		"error":"%s, there was an error setting your tagline, please try again later.",
 		"description":"Provide a brief descritption of your station.",
 		"fullDescription":"View/set your tagline on your profile card.",
-		"usage":"`b.tagline` to view current, `b.tagline text` to set new"
+		"usage":"`b.view tagline` to view current, `b.edit tagline <text>` to set new"
 	},
 	"bio" : {
-		"current":"%s this is your current bio: %s",
+		"current":"%s your current bio: %s, set a new one with `b.edit bio <text>`",
 		"isTooLong":"%s, sorry that's too long to be your bio (limit is 400 characters).",
-		"setSuccess":"%s, your bio is now set to: %s",
-		"setError":"%s, there was an error setting your bio, please try again later.",
+		"isProfane":"%s, you cannot have profanity in your bio!",
+		"success":"%s, your bio is now set to: %s",
+		"error":"%s, there was an error setting your bio, please try again later.",
 		"description":"Provide a brief descritption of your station.",
-		"fullDescription":"View/set your tagline on your profile card.",
-		"usage":"`b.tagline` to view current, `b.tagline text` to set new"
+		"fullDescription":"View/set your bio on your profile card.",
+		"usage":"`b.view bio` to view current, `b.edit bio <text>` to set new"
 	},
 	"mature" : {
 		"current":"%s, your mature preference is set to `%s`.",
