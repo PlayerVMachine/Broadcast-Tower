@@ -36,7 +36,7 @@ exports.edit = async (msg, args, bot) => {
 
 		let iprofile = await bot.createMessage(msg.channel.id, embed)
 
-		bot.on('messageCreate', uh.updateHandler, msg, bot, col)
+		bot.on('messageCreate', uh.updateHandler(msg, bot, col))
 
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
