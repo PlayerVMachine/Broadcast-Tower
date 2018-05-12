@@ -1,6 +1,7 @@
 const f = require('util').format
 const pc = require('swearjar')
 
+const config = require('./config.json')
 const reply = require('./proto_messages.json')
 
 exports.editView = (btUser, discUser, botUser) => {
