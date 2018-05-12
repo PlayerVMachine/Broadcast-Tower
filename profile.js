@@ -21,7 +21,7 @@ const editView = async (btUser, discUser, botUser) => {
 	let private = 'Privacy set to `public`'
 	let dnd = 'Do not disturb set to `off`'
 	let color = 'Embed color: ' + btUser.eColor
-	let avatar = await discUser.dynamicAvatarURL('gif', 512)
+	let avatar = await discUser.dynamicAvatarURL('png', 512)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
