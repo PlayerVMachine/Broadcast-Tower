@@ -164,7 +164,7 @@ exports.unfollow = async(msg, args, bot) => {
 	}
 }
 
-exports.block = async(msg, bot) => {
+exports.block = async(msg, args, bot) => {
 	try {
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
@@ -208,7 +208,7 @@ exports.block = async(msg, bot) => {
 	}
 }
 
-exports.unblock = async(msg, bot) => {
+exports.unblock = async(msg, args, bot) => {
 	try {
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
