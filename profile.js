@@ -37,11 +37,11 @@ const editView = (btUser, discUser, botUser) => {
 			description: 'Current settings:',
 			color: parseInt(config.color, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
-			author: {name: botUser.username, icon_url: botUser.avatarURL},
+			author: {name: discUser.username, icon_url: discUser.avatarURL},
 			fields: [
 				{name: 'Tagline: ', value: tagline, inline: false},
 				{name: 'Bio: ', value: bio, inline: false},
-				{name: 'Mature: ', value: mature, inline: false},
+				{name: 'Mature: ', value: mature, inline: true},
 				{name: 'Private: ', value: private, inline: true},
 				{name: 'DND: ', value:dnd, inline: true},
 				{name: 'Color', value: color, inline: false},
@@ -49,7 +49,7 @@ const editView = (btUser, discUser, botUser) => {
 				{name: 'Followers: ', value:btUser.followers.length, inline: true},
 				{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
 			],
-			footer: {text: 'prepared by ' + botUser.mention}
+			footer: {text: 'prepared by ' + botUser.username}
 		}
 	}
 
