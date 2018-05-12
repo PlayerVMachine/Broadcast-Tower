@@ -37,7 +37,7 @@ exports.edit = async (msg, args, bot) => {
 		let iprofile = await bot.createMessage(msg.channel.id, embed)
 
 		const call = (editMsg) => {
-			uh.updateHandler(editMsg, msg, bot, col)
+			uh.updateHandler(editMsg, msg, iprofile, bot, col)
 			bot.removeListener('messageCreate', call)
 		}
 

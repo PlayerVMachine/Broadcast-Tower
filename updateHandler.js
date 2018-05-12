@@ -46,7 +46,7 @@ exports.editView = (btUser, discUser, botUser) => {
 	return embed
 }
 
-exports.updateHandler = async (editMsg, msg, bot, col) => {
+exports.updateHandler = async (editMsg, msg, iprofile, bot, col) => {
 	if (editMsg.author.id !== msg.author.id)
 		return
 
