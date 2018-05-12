@@ -14,14 +14,13 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-const editView = async (btUser, discUser, botUser) => {
+const editView = (btUser, discUser, botUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
 	let mature = 'Profanity `not` allowed'
 	let private = 'Privacy set to `public`'
 	let dnd = 'Do not disturb set to `off`'
 	let color = 'Embed color: ' + btUser.eColor
-	let avatar = await discUser.dynamicAvatarURL('png', 512)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -37,7 +36,7 @@ const editView = async (btUser, discUser, botUser) => {
 			title: discUser.username + `'s account details.`,
 			description: 'Current settings:',
 			color: parseInt(config.color, 16),
-			thumbnail: {url: avatar, width: 512, height:512},
+			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
 			author: {name: botUser.username, icon_url: botUser.avatarURL},
 			fields: [
 				{name: 'Tagline: ', value: tagline, inline: false},
@@ -75,7 +74,7 @@ exports.edit = async (msg, bot) => {
 		let botUser = await bot.getSelf()
 		let discUser = await bot.users.get(msg.author.id)
 
-		let embed = await editView(usee, discUser, botUser)
+		let embed = editView(usee, discUser, botUser)
 
 		bot.createMessage(msg.channel.id, embed)
 
