@@ -11,6 +11,7 @@ const commands = require('./commands.js'); //actual bot commands moduled for tid
 const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
+const prof = require('./profile.js')
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
@@ -122,6 +123,10 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 	description: reply.unblock.description,
 	fullDescription: reply.unblock.fullDescription,
 	usage:reply.unblock.usage
+})
+
+const edit = bot.registerCommand('edit', (msg, args) => {
+	prof.edit(msg, bot)
 })
 
 const editTagline = bot.registerCommand('tagline', async (msg, args) => {
