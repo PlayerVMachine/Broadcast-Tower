@@ -73,10 +73,11 @@
 		"usage":"`b.unblock @user` or `b.block userid`"
 	},
 	"tagline" : {
-		"current":"%s, this is your current tagline: %s",
+		"current":"%s, your current tagline is: %s, set a new one with `b.edit tagline <text>`",
 		"isTooLong":"%s, sorry that's too long to be your tagline (limit is 140 characters).",
-		"setSuccess":"%s, your tagline is now set to: %s",
-		"setError":"%s, there was an error setting your tagline, please try again later.",
+		"isProfane":"%s, you cannot have profanity in your tagline!",
+		"success":"%s, your tagline is now set to: %s",
+		"error":"%s, there was an error setting your tagline, please try again later.",
 		"description":"Provide a brief descritption of your station.",
 		"fullDescription":"View/set your tagline on your profile card.",
 		"usage":"`b.tagline` to view current, `b.tagline text` to set new"

@@ -129,16 +129,9 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 	prof.edit(msg, edit, bot)
 })
 
-const editTagline = bot.registerCommand('tagline', async (msg, args) => {
-	let isUser = await fns.userHasAccount(msg, bot)
-	if (res) {
-		var text = args.join(' ')
-		if (text.length < 140) {
-			let setTagline = await commands.setTagline(msg, text, bot)
-		} else {
-			return util.format(reply.tagline.isTooLong, msg.author.id)
-		}
-	}
+
+const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
+	prof.setTagline(msg, args, bot)
 }, {
 	aliases: ['tl'],
 	cooldown: 5000,
