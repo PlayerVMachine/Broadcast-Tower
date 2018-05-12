@@ -102,7 +102,7 @@ exports.setTagline = async (msg, args, bot) => {
 		}
 
 		if (args.length === 0) {
-			bot.createMessage(msg.channel.id f(reply.tagline.current, msg.author.username, usee.tagline))
+			bot.createMessage(msg.channel.id, f(reply.tagline.current, msg.author.username, usee.tagline))
 			return
 		}
 
