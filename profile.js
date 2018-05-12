@@ -38,7 +38,7 @@ exports.edit = async (msg, args, bot) => {
 
 		const call = (editMsg) => {
 			uh.updateHandler(editMsg, msg, bot, col)
-			removeListener('messageCreate', call)
+			bot.removeListener('messageCreate', call)
 		}
 
 		bot.on('messageCreate', call)
