@@ -14,7 +14,7 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-const editView = (btUser, discUser, botUser) {
+const editView = (btUser, discUser, botUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
 	let mature = 'Profanity `not` allowed'
@@ -58,7 +58,7 @@ const editView = (btUser, discUser, botUser) {
 }
 
 //base edit command
-exports.edit = async (msg, bot) {
+exports.edit = async (msg, bot) => {
 	try {
 		//database
 		let client = await MongoClient.connect(url)
@@ -85,16 +85,16 @@ exports.edit = async (msg, bot) {
 }
 
 //base view command
-exports.view = async (msg, args, bot) {
+exports.view = async (msg, args, bot) => {
 
 }
 
 //edit tagline
-exports.setTagline = async (msg, args, bot) {
+exports.setTagline = async (msg, args, bot) => {
 
 }
 
 //view tagline
-exports.getTagline = async (msg, args, bot) {
+exports.getTagline = async (msg, args, bot) => {
 
 }
