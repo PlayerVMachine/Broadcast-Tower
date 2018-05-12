@@ -36,7 +36,7 @@ const editView = async (btUser, discUser, botUser) => {
 		embed: {
 			title: discUser.username + `'s account details.`,
 			description: 'Current settings:',
-			color: config.color,
+			color: parseInt(config.color, 16),
 			thumbnail: {url: avatar, width: 512, height:512},
 			author: {name: botUser.username, icon_url: botUser.avatarURL},
 			fields: [
