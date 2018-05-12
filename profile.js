@@ -78,7 +78,7 @@ exports.edit = async (msg, args, bot) => {
 
 		let iprofile = await bot.createMessage(msg.channel.id, embed)
 
-		const updateHandler = (editMsg) => {
+		const updateHandler = async (editMsg) => {
 			if (editMsg.author.id !== msg.author.id)
 				return
 
