@@ -45,9 +45,9 @@ const editView = (btUser, discUser, botUser) => {
 				{name: 'Private: ', value: private, inline: false},
 				{name: 'DND: ', value:dnd, inline: false},
 				{name: 'Color', value: color, inline: false},
-				{name: 'Following: ', value:btUser.Following.length, inline: true},
-				{name: 'Followers: ', value:btUser.Following.length, inline: true},
-				{name: 'Blocked: ', value:btUser.Following.length, inline: true}
+				{name: 'Following: ', value:btUser.following.length, inline: true},
+				{name: 'Followers: ', value:btUser.followers.length, inline: true},
+				{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
 			],
 			footer: {text: 'prepared by ' + botUser.mention}
 		}
@@ -71,12 +71,10 @@ exports.edit = async (msg, bot) => {
 			return
 		}
 
-		console.log(usee)
-
 		let botUser = await bot.getSelf()
 		let discUser = await bot.users.get(msg.author.id)
 
-		//embed = editView(usee, discUser, botUser)
+		embed = editView(usee, discUser, botUser)
 
 		bot.createMessage(msg.channel.id, embed)
 
