@@ -50,14 +50,16 @@
 	"unfollow" : {
 		"success":"%s, you are no longer following %s's broadcasts!",
 		"error":"%s, there was an error unfollowing %s, please try again later.",
+		"blocked":"%s, you were blocked by %s, as a result you were removed from their followers.",
 		"notFollowing":"%s, you are not following %s!",
 		"description":"Cease recieving a users broadcasts.",
 		"fullDescription":"Unfollow a user to stop getting their posts.",
 		"usage":"`b.unfollow @user` or `b.unfollow userid`"
 	},
 	"block" : {
-		"blockSuccess":"%s, you have blocked %s.",
-		"blockError":"%s, there was an error blocking %s, please try again later.",
+		"success":"%s, you have blocked %s.",
+		"error":"%s, there was an error blocking %s, please try again later.",
+		"already":"%s, you've already blocked %s!",
 		"description":"Block a user to prevent them following you, also prevents you from following them.",
 		"fullDescription":"Block a user to prevent them following you, also prevents you from following them.",
 		"usage":"`b.block @user` or `b.block userid`"

@@ -101,10 +101,8 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 })
 
 const blockUser = bot.registerCommand('block', async (msg, args) => {
-	let res = await fns.safetyChecks(msg, bot)
-
-	if (res)
-		commands.block(msg, args[0] ,bot)
+	//block a user
+	act.block(msg, args, bot)
 }, {
 	aliases: ['bl'],
 	argsRequired: true,

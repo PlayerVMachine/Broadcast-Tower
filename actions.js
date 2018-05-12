@@ -133,11 +133,18 @@ exports.unfollow = async(msg, args, bot) => {
 		//grab their username
 		let second = await fns.getUsername(secondID, bot)
 
+		//check if they've been blocked
+		let isInList = await col.findOne({user: secondID, blocked: msg.author.id})
+		if (isInList !== null) {
+			bot.createMessage(msg.channel.id, f(reply.unfollow.blocked, msg.author.username, second))
+			return
+		}
+
 		//is not in list
 		let isInList = await col.findOne({user: msg.author.id, following: secondID})
 		if (isInList === null) {
 			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second))
-			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.username}})
+			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 			return
 		}
 
@@ -163,14 +170,41 @@ exports.block = async(msg, bot) => {
 		const col = client.db(config.db).collection('Users')
 
 		let found = await col.findOne({user: msg.author.id})
-
 		if (found === null) {
 			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
-		} else {
-
+			return
 		}
-	} catch (err) {
 
+		//check for undesirable conditions
+		let secondID = fns.isID(args[0])
+		let safe = await safetyChecks(msg, secondID, col, bot)
+		if (!safe)
+			return	//something was wrong with the input and the user was told
+
+		//grab their username
+		let second = await fns.getUsername(secondID, bot)
+
+		//is in list
+		let isInList = await col.findOne({user: msg.author.id, blocked: secondID})
+		if (isInList !== null) {
+			bot.createMessage(msg.channel.id, f(reply.blocked.already, msg.author.username, second))
+			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
+			let beSurex2 = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
+			return
+		}
+
+		//block them
+		let blocked = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {blocked: secondID}})
+		let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
+		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
+		if (blocked.ok === 1 && remFromFollowing === 1 && remFromFollowers === 1) {
+			bot.createMessage(msg.channel.id, f(reply.blocked.success, msg.author.username, second))
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.blocked.error, msg.author.username, second))
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
 	}
 }
 
