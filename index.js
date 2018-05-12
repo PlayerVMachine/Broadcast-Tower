@@ -277,7 +277,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 ////////////////////////////////////////////////////
 //Event Listener for Stream Notification         //
 //////////////////////////////////////////////////
-bot.on('presenceUpdate', async (other, oldPresence) => {
+/*bot.on('presenceUpdate', async (other, oldPresence) => {
 	if (other.id !== undefined) {
 		let isUser = await db.userExists(other.id)
 
@@ -299,7 +299,7 @@ bot.on('presenceUpdate', async (other, oldPresence) => {
 			}
 		}
 	}
-})
+})*/
 
 
 //actually connect
