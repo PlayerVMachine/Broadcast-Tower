@@ -58,7 +58,7 @@ const editView = (btUser, discUser, botUser) => {
 }
 
 //base edit command
-exports.edit = async (msg, bot) => {
+exports.edit = async (msg, args, bot) => {
 	try {
 		//database
 		let client = await MongoClient.connect(url)
@@ -78,7 +78,6 @@ exports.edit = async (msg, bot) => {
 
 		bot.createMessage(msg.channel.id, embed)
 
-
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
 	}
@@ -89,9 +88,25 @@ exports.view = async (msg, args, bot) => {
 
 }
 
-//edit tagline
+//edit tagline - without big edit embed
 exports.setTagline = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
 
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		//findone and update their tagline
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
 }
 
 //view tagline

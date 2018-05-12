@@ -126,7 +126,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 })
 
 const edit = bot.registerCommand('edit', (msg, args) => {
-	prof.edit(msg, bot)
+	prof.edit(msg, edit, bot)
 })
 
 const editTagline = bot.registerCommand('tagline', async (msg, args) => {
