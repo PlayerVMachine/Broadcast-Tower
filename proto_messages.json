@@ -65,8 +65,9 @@
 		"usage":"`b.block @user` or `b.block userid`"
 	},
 	"unblock" : {
-		"unblockSuccess":"%s, you have unblocked %s",
-		"unblockError":"%s, there was an error unblocking %s, please try again later.",
+		"success":"%s, you have unblocked %s! They may now follow you if they have not blocked you",
+		"error":"%s, there was an error unblocking %s, please try again later.",
+		"notBlocked":"%s, you have not blocked %s!",
 		"description":"Unblocks a user allowing you to follow each other",
 		"fullDescription":"Unblocks a user allowing you to follow each other",
 		"usage":"`b.unblock @user` or `b.block userid`"

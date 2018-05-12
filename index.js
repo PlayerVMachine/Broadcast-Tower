@@ -113,10 +113,7 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 })
 
 const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
-	let res = await fns.safetyChecks(msg, bot)
-
-	if (res)
-		commands.unblock(msg, args[0] ,bot)
+		act.unblock(msg, args, bot)
 }, {
 	aliases: ['unb'],
 	argsRequired:true,
