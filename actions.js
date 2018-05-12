@@ -134,8 +134,8 @@ exports.unfollow = async(msg, args, bot) => {
 		let second = await fns.getUsername(secondID, bot)
 
 		//check if they've been blocked
-		let isInList = await col.findOne({user: secondID, blocked: msg.author.id})
-		if (isInList !== null) {
+		let isInBlocked = await col.findOne({user: secondID, blocked: msg.author.id})
+		if (isInBlocked !== null) {
 			bot.createMessage(msg.channel.id, f(reply.unfollow.blocked, msg.author.username, second))
 			return
 		}
