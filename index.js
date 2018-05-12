@@ -151,13 +151,10 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 })
 
 
-const editMature = bot.registerCommand('mature', async (msg, args) => {
-	let isUser = await fns.userHasAccount(msg, bot)
-	if (res) {
-		let setMature = await commands.toggleMature(msg, bot)
-	}
+const editMature = edit.registerSubcommand('mature', async (msg, args) => {
+	prof.setMature(msg, args, bot)
 }, {
-	aliases: ['rating', 'm'],
+	aliases: ['profanity', 'm'],
 	cooldown: 5000,
 	description: reply.mature.description,
 	fullDescription: reply.mature.fullDescription,

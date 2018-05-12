@@ -224,3 +224,49 @@ exports.setBio = async (msg, args, bot) => {
 		fns.log(f(reply.generic.logError, err), bot)
 	}
 }
+
+//set Mature
+exports.setMature = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		if (usee.mature)
+			var profanity = 'yes'
+		else
+			var profanity = 'no'
+
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.mature.current, msg.author.username, profanity))
+			return
+		}
+
+		if (args[0].toLowerCase().startsWith('y')) {
+			var setProfane = true
+		} else if (args[0].toLowerCase().startsWith('n')) {
+			var setProfane = false
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.mature.unexpected, msg.author.username, args[0]))
+			return
+		}
+
+		//findone and update their tagline
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {mature:setProfane}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.mature.success, msg.author.username, args[0]))
+		} else {
+			fns.log(f(reply.generic.logError, err), bot)
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
+}
