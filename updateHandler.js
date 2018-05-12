@@ -61,7 +61,6 @@ exports.updateHandler = async (editMsg, msg, bot, col) => {
 			let newEmbed = module.exports.editView(newUsee, discUser, botUser)
 			bot.editMessage(msg.channel.id, iprofile.id, newEmbed)
 			bot.removeListener('messageCreate', updateHandler)
-			}
 		}
 	}
 }
