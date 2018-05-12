@@ -90,7 +90,7 @@ exports.edit = async (msg, args, bot) => {
 				} else {
 					let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tagline:newTagline}})
 					let newUsee = await col.findOne({user: msg.author.id})
-					let newEmbed = editView(usee, discUser, botUser)
+					let newEmbed = editView(newUsee, discUser, botUser)
 					bot.editMessage(msg.channel.id, iprofile.id, newEmbed)
 					bot.removeListener('messageCreate', updateHandler)
 				}
