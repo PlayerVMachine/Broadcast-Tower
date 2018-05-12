@@ -75,7 +75,7 @@ exports.edit = async (msg, bot) => {
 		let botUser = await bot.getSelf()
 		let discUser = await bot.users.get(msg.author.id)
 
-		embed = editView(usee, discUser, botUser)
+		let embed = await editView(usee, discUser, botUser)
 
 		bot.createMessage(msg.channel.id, embed)
 
