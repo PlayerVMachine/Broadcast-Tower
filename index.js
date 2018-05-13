@@ -41,7 +41,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	owner:'PlayerVMachine#6223',
 	prefix: ['b.', '🅱'],
 	defaultCommandOptions: {
-		cooldownMessage: delAfterCD
+		cooldownMessage: 'whyY'//delAfterCD
 	}
 })
 
