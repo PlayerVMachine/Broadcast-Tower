@@ -23,7 +23,7 @@ const editView = (btUser, discUser) => {
 	let mature = 'Profanity **not** allowed'
 	let private = 'Privacy set to **public**'
 	let dnd = 'Do not disturb set to **off**'
-	let color = 'Embed color: ' + btUser.eColor.slice(2)
+	let color = 'Embed color: #' + btUser.eColor.slice(2)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -44,7 +44,7 @@ const editView = (btUser, discUser) => {
 			{name: 'Bio: ', value: bio, inline: false},
 			{name: 'Mature: ', value: mature, inline: true},
 			{name: 'Private: ', value: private, inline: true},
-			{name: 'DND: ', value:dnd, inline: true},
+			{name: 'Do Not Disturb: ', value:dnd, inline: true},
 			{name: 'Color', value: color, inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
@@ -63,7 +63,7 @@ const viewView = (btUser, discUser) => {
 	let mature = 'No'
 	let private = 'Public'
 	let dnd = 'Off'
-	let color = btUser.eColor
+	let color = '#' + btUser.eColor.slice(2)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -86,8 +86,8 @@ const viewView = (btUser, discUser) => {
 			{name: 'Bio: ', value: bio, inline: false},
 			{name: 'Profanity: ', value: mature, inline: true},
 			{name: 'Private: ', value: private, inline: true},
-			{name: 'DND: ', value:dnd, inline: true},
-			{name: 'Color', value: '#' + color.slice(2), inline: true},
+			{name: 'Do Not Disturb: ', value:dnd, inline: true},
+			{name: 'Color', value: color, inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			],
