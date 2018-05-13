@@ -25,8 +25,8 @@ const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //cd function
 const delAfterCD = async (message) => {
-	console.log(message)
-	console.log(message.command)
+	console.log(message.command.label)
+	console.log(message.command.cooldown)	
 	return 'check logs'
 }
 //reply.generic.cooldownMessage
