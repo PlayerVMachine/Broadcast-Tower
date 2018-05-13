@@ -103,17 +103,17 @@ exports.follow = async(msg, args, bot) => {
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '✅')
 
 			const folRes = async (message, emoji, userID) => {
-				if (message.id !== folReq.id)
+				if (userID !== secondID)
 					return
 
 				if (emoji.name === '❌') {
-					bot.editMessage(massage.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' declined!')
+					bot.editMessage(message.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' declined!')
 				} else if (emoji.name === '✅') {
 					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     				if (addToFollowers.ok === 1 && addToFollowing.ok) {
     					bot.createMessage(usee.sendTo, f(reply.follow.success, msg.author.username, second.username))
-    					bot.editMessage(massage.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' accepted!')
+    					bot.editMessage(message.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' accepted!')
     				}
 				}
 				bot.removeListener('messageReactionAdd', folRes)
