@@ -32,7 +32,7 @@ const delAfterCD = (message) => {
 			if (messages[msg].content === replyString)
 				deleteMessage(messages[msg].channel.id, messages[msg].id, 'timeout expired')
 		}
-	}, 2000, message, replyString)
+	}, 5000, message, replyString)
 	let replyString = f(reply.generic.cooldownMessage, message.command.cooldown/1000)
 	return replyString
 }
