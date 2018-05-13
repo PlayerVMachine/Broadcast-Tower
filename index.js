@@ -185,7 +185,7 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 	usage: reply.mature.usage
 })
 
-const editDND = edit.registerSubcommand('mature', async (msg, args) => {
+const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 	prof.setDND(msg, args, bot)
 }, {
 	cooldown: 5000,
