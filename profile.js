@@ -59,6 +59,47 @@ const editView = (btUser, discUser, botUser) => {
 	return embed
 }
 
+const viewView = (btUser, discUser, botUser) => {
+	let tagline = 'Not set'
+	let bio = 'Not set'
+	let mature = 'Profanity `not` allowed'
+	let private = 'Privacy set to `public`'
+	let dnd = 'Do not disturb set to `off`'
+	let color = 'Embed color: ' + btUser.eColor
+
+	if (btUser.tagline.length !== 0)
+		tagline = btUser.tagline
+	if (btUser.bio.length !== 0)
+		bio = btUser.bio
+	if (btUser.mature)
+		mature = 'Profanity `is` allowed'
+	if (btUser.dnd)
+		dnd = 'Do Not disturb set to `on`'
+
+	var embed = {
+		embed: {
+			title: discUser.username + `'s account details.`,
+			description: 'User profile:',
+			color: parseInt(btUser.eColor, 16),
+			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
+			author: {name: discUser.username, icon_url: discUser.avatarURL},
+			fields: [
+			{name: 'Tagline: ', value: tagline, inline: false},
+			{name: 'Bio: ', value: bio, inline: false},
+			{name: 'Mature: ', value: mature, inline: true},
+			{name: 'Private: ', value: private, inline: true},
+			{name: 'DND: ', value:dnd, inline: true},
+			{name: 'Color', value: color, inline: true},
+			{name: 'Following: ', value:btUser.following.length, inline: true},
+			{name: 'Followers: ', value:btUser.followers.length, inline: true},
+			],
+			footer: {text: 'prepared by ' + botUser.username}
+		}
+	}
+
+	return embed
+}
+
 //base edit command
 exports.edit = async (msg, args, bot) => {
 	try {
@@ -87,10 +128,50 @@ exports.edit = async (msg, args, bot) => {
 
 //base view command
 exports.view = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
 
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		let botUser = await bot.getSelf()
+
+		if (args.length === 0) {
+			let discUser = await bot.users.get(msg.author.id)
+			let embed = viewView(usee, discUser, botUser)
+			bot.createMessage(msg.channel.id, embed)
+			return
+		}
+
+		let secondID = fns.isID(args[0])
+		if (secondID === -1) {
+			bot.createMessage(msg.channel.id, f(reply.view.unexpected, msg.author.id, args[0]))
+			return
+		}
+
+		let discUser = await bot.users.get(secondID)
+		let user = await col.findOne({user: secondID})
+		if (user === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.userNoAccount, msg.author.username, discUser.username))
+			return
+		}
+
+		let embed = viewView(user, discUser, botUser)
+		bot.createMessage(msg.channel.id, embed)
+		return
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
 }
 
-//edit tagline - without big edit embed
+//edit tagline
 exports.setTagline = async (msg, args, bot) => {
 	try {
 		//database
@@ -133,12 +214,7 @@ exports.setTagline = async (msg, args, bot) => {
 	}
 }
 
-//view tagline
-exports.getTagline = async (msg, bot) => {
-
-}
-
-//edit tagline - without big edit embed
+//edit tagline
 exports.setTagline = async (msg, args, bot) => {
 	try {
 		//database
@@ -179,10 +255,6 @@ exports.setTagline = async (msg, args, bot) => {
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
 	}
-}
-
-exports.getBio = async (msg, bot) => {
-
 }
 
 //edit bio
@@ -366,6 +438,7 @@ exports.setPrivate = async (msg, args, bot) => {
 	}
 }
 
+//edit embed colour
 exports.setColor = async (msg, args, bot) => {
 	try {
 		//database

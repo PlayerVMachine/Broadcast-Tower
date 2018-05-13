@@ -32,8 +32,7 @@ const delAfterCD = (message) => {
 				bot.deleteMessage(messages[msg].channel.id, messages[msg].id, 'timeout expired')
 		}
 	}, 2000, message)
-	let replyString = f(reply.generic.cooldownMessage, message.command.cooldown/1000)
-	return replyString
+	return f(reply.generic.cooldownMessage, message.command.cooldown/1000)
 }
 
 //comand client
@@ -234,17 +233,7 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 })
 
 const view = bot.registerCommand('profile', async (msg, args) => {
-	if (args.length === 0) {
-		let isUser = await fns.userHasAccount(msg, bot)
-		if (res)
-			var profileID = msg.author.id 
-	} else {
-		let res = await fns.safetyChecks(msg, bot)
-		if (res)
-			var profileID = fns.isID(args[0])
-	}
-
-	let profile = await commands.viewProfile(msg, profileID, bot)
+	prof.view(msg, args, bot)
 }, {
 	aliases: ['prof', 'pf'],
 	cooldown: 20000,
