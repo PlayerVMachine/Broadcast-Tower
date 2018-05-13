@@ -99,16 +99,16 @@ exports.follow = async(msg, args, bot) => {
 		let secondUsee = await col.findOne({user: secondID})
 		if (secondUsee.private) {
 			let folReq = await bot.createMessage(secondUsee.sendTo, f(reply.follow.request, msg.author.username))
-			bot.addMessageReaction(secondUsee.sendTo, folReq.id, 'x')
-			bot.addMessageReaction(secondUsee.sendTo, folReq.id, 'white_check_mark')
+			bot.addMessageReaction(secondUsee.sendTo, folReq.id, ':x:')
+			bot.addMessageReaction(secondUsee.sendTo, folReq.id, ':white_check_mark:')
 
 			const folRes = async (message, emoji, userID) => {
 				if (message.id !== folReq.id)
 					return
 
-				if (emoji.name === 'x') {
+				if (emoji.name === ':x:') {
 					bot.editMessage(usee.sendTo, folReq.id, 'Follow request from ' + msg.author.username + ' declined!')
-				} else if (emoji.name === 'white_check_mark') {
+				} else if (emoji.name === ':white_check_mark:') {
 					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     				if (addToFollowers.ok === 1 && addToFollowing.ok) {
