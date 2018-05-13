@@ -34,7 +34,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 var longQ
 
 //Define Message queue
-const q = new Queue(function async (data, cb) {
+const q = new Queue(async function (data, cb) {
 	//db connection
 	let client = await MongoClient.connect(url)
 	const col = client.db(config.db).collection('Users')
