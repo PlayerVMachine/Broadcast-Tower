@@ -25,11 +25,12 @@ const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //cd function
 const delAfterCD = (message) => {
-	console.log(message.command.label)
-	console.log(message.command.cooldown)	
-	return 'HeLp'
+	setTimeout(async (message) => {
+		let messages = await bot.getMessages(message.channel.id,5,,message.id)
+		console.log(messages.length)
+	}, 2000, message)	
+	return f(reply.generic.cooldownMessage, message.command.cooldown/100)
 }
-//reply.generic.cooldownMessage
 
 //comand client
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
