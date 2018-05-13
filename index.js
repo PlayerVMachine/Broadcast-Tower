@@ -1,4 +1,6 @@
 //module imports
+const MongoClient = require('mongodb').MongoClient
+const f = require('util').format
 const Eris = require('eris')
 const Queue = require('better-queue')
 const util = require('util')
@@ -12,6 +14,12 @@ const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
 const prof = require('./profile.js')
+
+// mongodb login
+const user = encodeURIComponent(config.user)
+const password = encodeURIComponent(config.pass)
+const authMechanism = 'DEFAULT'
+const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
