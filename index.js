@@ -63,11 +63,12 @@ const q = new Queue(async function (data, cb) {
 	afterProcessDelay:1000
 })
 
+//put messages that hit dnd here to wait a long time
 longQ = new Queue(function (data, cb) {
 	q.push(data)
 	cb(null)
 }, {
-	afterProcessDelay:120000 //2 minutes
+	afterProcessDelay:1800000 //30 minutes
 })
 
 //ready
@@ -182,7 +183,6 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 	usage: reply.bio.usage
 })
 
-
 const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 	prof.setMature(msg, args, bot)
 }, {
@@ -202,7 +202,16 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 	usage: reply.dnd.usage
 })
 
-const seeProfile = bot.registerCommand('profile', async (msg, args) => {
+const editDND = edit.registerSubcommand('color', async (msg, args) => {
+	prof.setColor(msg, args, bot)
+}, {
+	cooldown: 2000,
+	description: reply.color.description,
+	fullDescription: reply.color.fullDescription,
+	usage: reply.color.usage
+})
+
+const view = bot.registerCommand('profile', async (msg, args) => {
 	if (args.length === 0) {
 		let isUser = await fns.userHasAccount(msg, bot)
 		if (res)

@@ -14,6 +14,9 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
+//regex
+const isHex = new RegExp(/^#[0-9A-F]{6}$/, 'i')
+
 const editView = (btUser, discUser, botUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
@@ -35,7 +38,7 @@ const editView = (btUser, discUser, botUser) => {
 		embed: {
 			title: discUser.username + `'s account details.`,
 			description: 'Current settings:',
-			color: parseInt(config.color, 16),
+			color: parseInt(btUser.eColor, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
 			author: {name: discUser.username, icon_url: discUser.avatarURL},
 			fields: [
@@ -308,6 +311,44 @@ exports.setDND = async (msg, args, bot) => {
 		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {dnd:setdnd}})
 		if (update.ok === 1) {
 			bot.createMessage(msg.channel.id, f(reply.dnd.success, msg.author.username, args[0]))
+		} else {
+			fns.log(f(reply.generic.logError, err), bot)
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
+}
+
+exports.setColor = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.color.current, msg.author.username, usee.eColor))
+			return
+		}
+
+		if (isHex.test(args[0])) {
+			var color = '0x' + args[0].slice(1)
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.color.unexpected, msg.author.username, args[0]))
+			return
+		}
+
+		//findone and update their tagline
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {eColor:color}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.color.success, msg.author.username, args[0]))
 		} else {
 			fns.log(f(reply.generic.logError, err), bot)
 		}
