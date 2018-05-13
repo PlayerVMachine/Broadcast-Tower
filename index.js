@@ -28,7 +28,7 @@ const delAfterCD = (message) => {
 	console.log(`owo what's this?\n` + message)
 	return `check console`	
 }
-
+//reply.generic.cooldownMessage
 
 //comand client
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
@@ -40,7 +40,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	owner:'PlayerVMachine#6223',
 	prefix: ['b.', '🅱'],
 	defaultCommandOptions: {
-		cooldownMessage:reply.generic.cooldownMessage
+		cooldownMessage: delAfterCD
 	}
 })
 
