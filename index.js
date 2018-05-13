@@ -202,7 +202,7 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 	usage: reply.dnd.usage
 })
 
-const editDND = edit.registerSubcommand('color', async (msg, args) => {
+const editColor = edit.registerSubcommand('color', async (msg, args) => {
 	prof.setColor(msg, args, bot)
 }, {
 	cooldown: 2000,
