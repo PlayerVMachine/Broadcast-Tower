@@ -50,13 +50,19 @@ const q = new Queue(async function (data, cb) {
 	//get recipient
 	let user = await col.findOne({user: data.recipient})
 	if(user === undefined) {
+		fns.log('user === undefined was true', bot)
 		bot.createMessage(data.channelID, data.msg)
 		cb(null, result)
 	} else if (user.dnd) {
+		fns.log('user.dnd was true', bot)
 		longQ.push(data)
+		cb(null, result)
 	} else if (!user.dnd) {
+		fns.log('!user.dnd was true', bot)
 		bot.createMessage(data.channelID, data.msg)
 		cb(null, result)
+	} else {
+		fns.log('fell through the if statement', bot)
 	}
 	
 }, {
@@ -64,6 +70,7 @@ const q = new Queue(async function (data, cb) {
 })
 
 longQ = new Queue(function (data, cb) {
+	fns.log(`we're in the long queue`, bot)
 	q.push(data)
 	cb(null, result)
 }, {
