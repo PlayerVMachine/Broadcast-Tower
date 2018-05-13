@@ -80,7 +80,7 @@ const viewView = (btUser, discUser) => {
 		embed: {
 			color: parseInt(btUser.eColor, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
-			author: {name: discUser.username + `'s Braodcast Station.`, icon_url: discUser.avatarURL},
+			author: {name: discUser.username + `'s Broadcast Station.`, icon_url: discUser.avatarURL},
 			fields: [
 			{name: 'Tagline: ', value: tagline, inline: false},
 			{name: 'Bio: ', value: bio, inline: false},
