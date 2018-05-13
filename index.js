@@ -30,12 +30,36 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	}
 })
 
+//
+var longQ
+
 //Define Message queue
-var q = new Queue(function (data, cb) {
-	bot.createMessage(data.channelID, data.msg)
-	cb(null, result)
+const q = new Queue(function async (data, cb) {
+	//db connection
+	let client = await MongoClient.connect(url)
+	const col = client.db(config.db).collection('Users')
+
+	//get recipient
+	let user = await col.findOne({user: data.recipient})
+	if(user === undefined) {
+		bot.createMessage(data.channelID, data.msg)
+		cb(null, result)
+	} else if (user.dnd) {
+		longQ.push(data)
+	} else if (!user.dnd) {
+		bot.createMessage(data.channelID, data.msg)
+		cb(null, result)
+	}
+	
 }, {
 	afterProcessDelay:1000
+})
+
+longQ = new Queue(function (data, cb) {
+	q.push(data)
+	cb(null, result)
+}, {
+	afterProcessDelay:120000 //2 minutes
 })
 
 //ready

@@ -270,3 +270,49 @@ exports.setMature = async (msg, args, bot) => {
 		fns.log(f(reply.generic.logError, err), bot)
 	}
 }
+
+//set dnd
+exports.setDND = async (msg, args, bot) => {
+	try {
+		//database
+		let client = await MongoClient.connect(url)
+		const col = client.db(config.db).collection('Users')
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		if (usee.dnd)
+			var dndSetTo = 'yes'
+		else
+			var dndSetTo = 'no'
+
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.dnd.current, msg.author.username, dndSetTo))
+			return
+		}
+
+		if (args[0].toLowerCase().startsWith('y')) {
+			var setdnd = true
+		} else if (args[0].toLowerCase().startsWith('n')) {
+			var setdnd = false
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.dnd.unexpected, msg.author.username, args[0]))
+			return
+		}
+
+		//findone and update their tagline
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {dnd:setdnd}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.dnd.success, msg.author.username, args[0]))
+		} else {
+			fns.log(f(reply.generic.logError, err), bot)
+		}
+
+	} catch (err) {
+		fns.log(f(reply.generic.logError, err), bot)
+	}
+}

@@ -99,7 +99,16 @@
 		"error":"%s, there was an error setting your profanity preference.",
 		"description":"Set your mature preference",
 		"fullDescription":"Set your mature preference i.e. do you want to send/recieve broadcasts with some profanity",
-		"usage":"`b.mature`"
+		"usage":"`b.mature y|n`"
+	},
+	"dnd" : {
+		"current":"%s, your Do Not Disturb preference is set to `%s`.",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
+		"success":"%s, your Do Not Disturb preference is now set to `%s`.",
+		"error":"%s, there was an error setting your Do Not Disturb preference.",
+		"description":"Set your Do Not Disturb preference",
+		"fullDescription":"Set your Do Not Disturb preference i.e. do you want to recieve broadcast DMs",
+		"usage":"`b.dnd y|n`"
 	},
 	"profile" : {
 		"description":"View your profile or a users profile.",

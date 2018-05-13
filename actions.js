@@ -305,9 +305,9 @@ exports.post = async (msg, args, bot, q) => {
 		for (i = 0; i < followers.length; i++) {
 			let recipient = await col.findOne({user: followers[i]})
 			channelID = recipient.sendTo
-			q.push({channelID:channelID, msg:post})
+			q.push({channelID:channelID, msg:post, recipient:recipient.user})
 		}
 		if (followers.length > 0)
-			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message)})
+			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
 	}, 6000, remMessage.id)
 }
