@@ -97,6 +97,13 @@ exports.follow = async(msg, args, bot) => {
 		}
 
 		let secondUsee = await col.findOne({user: secondID})
+
+		//todo offer override
+		if (secondUsee.mature && !usee.mature) {
+			bot.createMessage(msg.channel.id, f(reply.follow.profMismatch, msg.author.username, second.username))
+			return
+		}
+
 		if (secondUsee.private) {
 			let folReq = await bot.createMessage(secondUsee.sendTo, f(reply.follow.request, msg.author.username))
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '❌')
@@ -107,13 +114,13 @@ exports.follow = async(msg, args, bot) => {
 					return
 
 				if (emoji.name === '❌') {
-					bot.editMessage(message.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' declined!')
+					bot.editMessage(message.channel.id, folReq.id, f(reply.follow.privDeny, msg.author.username))
 				} else if (emoji.name === '✅') {
 					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     				if (addToFollowers.ok === 1 && addToFollowing.ok) {
     					bot.createMessage(usee.sendTo, f(reply.follow.success, msg.author.username, second.username))
-    					bot.editMessage(message.channel.id, folReq.id, 'Follow request from ' + msg.author.username + ' accepted!')
+    					bot.editMessage(message.channel.id, folReq.id, f(reply.follow.privAck, msg.author.username))
     				}
 				}
 				bot.removeListener('messageReactionAdd', folRes)

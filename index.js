@@ -23,6 +23,12 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
+//cd function
+const delAfterCD = (message) => {
+	console.log(`owo what's this?\n` + message)
+	return `check console`	
+}
+
 
 //comand client
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
