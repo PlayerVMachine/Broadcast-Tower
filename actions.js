@@ -254,8 +254,8 @@ exports.post = async (msg, args, bot, q) => {
 	var medit
 
 	//check is usee is a user
-	let found = await col.findOne({user: msg.author.id})
-	if (found === null) {
+	let usee = await col.findOne({user: msg.author.id})
+	if (usee === null) {
 		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
 		return
 	}
@@ -275,7 +275,7 @@ exports.post = async (msg, args, bot, q) => {
 
 	//swearjar
 	let isRude = pc.profane(message)
-	if (isRude) {
+	if (isRude && !usee.mature) {
 		bot.createMessage(msg.channel.id, f(reply.post.noProfanity, msg.author.username))
 		return
 	}
