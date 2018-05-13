@@ -110,7 +110,7 @@
 		"fullDescription":"Set your Do Not Disturb preference i.e. do you want to recieve broadcast DMs",
 		"usage":"`b.dnd y|n`"
 	},
-	"dnd" : {
+	"color" : {
 		"current":"%s, your color is set to `%s`.",
 		"unexpected":"%s, color must be a 6 hex-digit string like `#ff0000` not: %s",
 		"success":"%s, your embed color is now set to `%s`.",
