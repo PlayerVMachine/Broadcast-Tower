@@ -25,14 +25,14 @@ const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //cd function
 const delAfterCD = (message) => {
-	setTimeout(async (message) => {
+/*	setTimeout(async (message) => {
 		let messages = await bot.getMessages(message.channel.id,5,undefined,message.id)
 		console.log(messages.length)
 		for (var msg in messages) {
 			if (messages[msg].content === replyString)
 				deleteMessage(messages[msg].channel.id, messages[msg].id, 'timeout expired')
 		}
-	}, 5000, [message, replyString])
+	}, 5000, [message, replyString])*/
 	let replyString = f(reply.generic.cooldownMessage, message.command.cooldown/1000)
 	return replyString
 }
