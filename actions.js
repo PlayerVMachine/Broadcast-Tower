@@ -288,7 +288,11 @@ exports.post = async (msg, args, bot, q) => {
 
 	const callback = async (message) => {
 		if(message.author.id === msg.author.id &&  cancel.test(message.content)) {
-			bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
+			try {
+				bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
+			} catch (e) {
+				//no message to delete
+			}
 			bot.removeListener('messageCreated', callback)
 			clearTimeout(medit)
 		}
