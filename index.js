@@ -28,8 +28,13 @@ const delAfterCD = (message) => {
 	setTimeout(async (message) => {
 		let messages = await bot.getMessages(message.channel.id,5,undefined,message.id)
 		console.log(messages.length)
-	}, 2000, message)	
-	return f(reply.generic.cooldownMessage, message.command.cooldown/100)
+		for (var msg in messages) {
+			if (messages[msg].content === replyString)
+				deleteMessage(messages[msg].channel.id, messages[msg].id, 'timeout expired')
+		}
+	}, 2000, message, replyString)
+	replyString = f(reply.generic.cooldownMessage, message.command.cooldown/1000)
+	return replyString
 }
 
 //comand client
