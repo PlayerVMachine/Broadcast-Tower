@@ -102,7 +102,7 @@ exports.follow = async(msg, args, bot) => {
 			bot.addMessageReaction(usee.sendTo, folReq.id, 'x')
 			bot.addMessageReaction(usee.sendTo, folReq.id, 'white_check_mark')
 
-			const folRes = (message, emoji, userID) => {
+			const folRes = async (message, emoji, userID) => {
 				if (message.id !== folReq.id)
 					return
 
