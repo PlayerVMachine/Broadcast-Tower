@@ -107,13 +107,13 @@ exports.follow = async(msg, args, bot) => {
 					return
 
 				if (emoji.name === 'x') {
-					bot.editMessage(usee.sendTo, folReq.id, 'Follow request from ' + msg.author.username ' declined!')
+					bot.editMessage(usee.sendTo, folReq.id, 'Follow request from ' + msg.author.username + ' declined!')
 				} else if (emoji.name === 'white_check_mark') {
 					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     				if (addToFollowers.ok === 1 && addToFollowing.ok) {
     					bot.createMessage(usee.sendTo, f(reply.follow.success, msg.author.username, second.username))
-    					bot.editMessage(secondUsee.sendTo, folReq.id, 'Follow request from ' + msg.author.username ' accepted!')
+    					bot.editMessage(secondUsee.sendTo, folReq.id, 'Follow request from ' + msg.author.username + ' accepted!')
     				}
 				}
 				bot.removeListener('messageReactionAdd', folRes)
