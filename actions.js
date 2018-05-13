@@ -115,6 +115,7 @@ exports.follow = async(msg, args, bot) => {
 
 				if (emoji.name === '❌') {
 					bot.editMessage(message.channel.id, folReq.id, f(reply.follow.privDeny, msg.author.username))
+					bot.createMessage(usee.sendTo, f(reply.follow.denied, msg.author.username, second.username))
 				} else if (emoji.name === '✅') {
 					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})

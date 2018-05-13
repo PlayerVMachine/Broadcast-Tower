@@ -62,34 +62,35 @@ const editView = (btUser, discUser, botUser) => {
 const viewView = (btUser, discUser, botUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
-	let mature = 'Profanity `not` allowed'
-	let private = 'Privacy set to `public`'
-	let dnd = 'Do not disturb set to `off`'
-	let color = 'Embed color: ' + btUser.eColor
+	let mature = 'no'
+	let private = '`public`'
+	let dnd = '`off`'
+	let color = btUser.eColor
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
 	if (btUser.bio.length !== 0)
 		bio = btUser.bio
 	if (btUser.mature)
-		mature = 'Profanity `is` allowed'
+		mature = '`yes`'
 	if (btUser.dnd)
-		dnd = 'Do Not disturb set to `on`'
+		dnd = '`on`'
+	if (btUser.private)
+		private = '`private`'
 
 	var embed = {
 		embed: {
-			title: discUser.username + `'s account details.`,
-			description: 'User profile:',
+			title: discUser.username + `'s Braodcast Station.`,
 			color: parseInt(btUser.eColor, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
 			author: {name: discUser.username, icon_url: discUser.avatarURL},
 			fields: [
 			{name: 'Tagline: ', value: tagline, inline: false},
 			{name: 'Bio: ', value: bio, inline: false},
-			{name: 'Mature: ', value: mature, inline: true},
+			{name: 'Profanity: ', value: mature, inline: true},
 			{name: 'Private: ', value: private, inline: true},
 			{name: 'DND: ', value:dnd, inline: true},
-			{name: 'Color', value: color, inline: true},
+			{name: 'Color', value: '#' + color.slice(2), inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			],
