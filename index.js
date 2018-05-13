@@ -185,6 +185,15 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 	usage: reply.mature.usage
 })
 
+const editDND = edit.registerSubcommand('mature', async (msg, args) => {
+	prof.setDND(msg, args, bot)
+}, {
+	cooldown: 5000,
+	description: reply.dnd.description,
+	fullDescription: reply.dnd.fullDescription,
+	usage: reply.dnd.usage
+})
+
 const seeProfile = bot.registerCommand('profile', async (msg, args) => {
 	if (args.length === 0) {
 		let isUser = await fns.userHasAccount(msg, bot)
