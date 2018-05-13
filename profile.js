@@ -17,30 +17,28 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 //regex
 const isHex = new RegExp(/^#[0-9A-F]{6}$/, 'i')
 
-const editView = (btUser, discUser, botUser) => {
+const editView = (btUser, discUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
-	let mature = 'Profanity `not` allowed'
-	let private = 'Privacy set to `public`'
-	let dnd = 'Do not disturb set to `off`'
-	let color = 'Embed color: ' + btUser.eColor
+	let mature = 'Profanity **not** allowed'
+	let private = 'Privacy set to **public**'
+	let dnd = 'Do not disturb set to **off**'
+	let color = 'Embed color: ' + btUser.eColor.slice(2)
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
 	if (btUser.bio.length !== 0)
 		bio = btUser.bio
 	if (btUser.mature)
-		mature = 'Profanity `is` allowed'
+		mature = 'Profanity **is** allowed'
 	if (btUser.dnd)
-		dnd = 'Do Not disturb set to `on`'
+		dnd = 'Do Not disturb set to **on**'
 
 	var embed = {
 		embed: {
-			title: discUser.username + `'s account details.`,
-			description: 'Current settings:',
 			color: parseInt(btUser.eColor, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
-			author: {name: discUser.username, icon_url: discUser.avatarURL},
+			author: {name: discUser.username + `'s current settings.`, icon_url: discUser.avatarURL},
 			fields: [
 			{name: 'Tagline: ', value: tagline, inline: false},
 			{name: 'Bio: ', value: bio, inline: false},
@@ -52,19 +50,19 @@ const editView = (btUser, discUser, botUser) => {
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
 			],
-			footer: {text: 'prepared by ' + botUser.username}
+			footer: {text: 'broadcast Tower Station: '+ discUser.username}
 		}
 	}
 
 	return embed
 }
 
-const viewView = (btUser, discUser, botUser) => {
+const viewView = (btUser, discUser) => {
 	let tagline = 'Not set'
 	let bio = 'Not set'
-	let mature = 'no'
-	let private = '`public`'
-	let dnd = '`off`'
+	let mature = 'No'
+	let private = 'Public'
+	let dnd = 'Off'
 	let color = btUser.eColor
 
 	if (btUser.tagline.length !== 0)
@@ -72,15 +70,14 @@ const viewView = (btUser, discUser, botUser) => {
 	if (btUser.bio.length !== 0)
 		bio = btUser.bio
 	if (btUser.mature)
-		mature = '`yes`'
+		mature = 'Yes'
 	if (btUser.dnd)
-		dnd = '`on`'
+		dnd = 'On'
 	if (btUser.private)
-		private = '`private`'
+		private = 'Private'
 
 	var embed = {
 		embed: {
-			//title: discUser.username + `'s Braodcast Station.`,
 			color: parseInt(btUser.eColor, 16),
 			thumbnail: {url: discUser.avatarURL, width: 256, height:256},
 			author: {name: discUser.username + `'s Braodcast Station.`, icon_url: discUser.avatarURL},
@@ -94,7 +91,7 @@ const viewView = (btUser, discUser, botUser) => {
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			],
-			footer: {text: 'prepared by ' + botUser.username}
+			footer: {text: 'broadcast Tower Station: '+ discUser.username}
 		}
 	}
 
@@ -115,10 +112,9 @@ exports.edit = async (msg, args, bot) => {
 			return
 		}
 
-		let botUser = await bot.getSelf()
 		let discUser = await bot.users.get(msg.author.id)
 
-		let embed = editView(usee, discUser, botUser)
+		let embed = editView(usee, discUser)
 
 		bot.createMessage(msg.channel.id, embed)
 
@@ -141,11 +137,9 @@ exports.view = async (msg, args, bot) => {
 			return
 		}
 
-		let botUser = await bot.getSelf()
-
 		if (args.length === 0) {
 			let discUser = await bot.users.get(msg.author.id)
-			let embed = viewView(usee, discUser, botUser)
+			let embed = viewView(usee, discUser)
 			bot.createMessage(msg.channel.id, embed)
 			return
 		}
@@ -163,7 +157,7 @@ exports.view = async (msg, args, bot) => {
 			return
 		}
 
-		let embed = viewView(user, discUser, botUser)
+		let embed = viewView(user, discUser)
 		bot.createMessage(msg.channel.id, embed)
 		return
 

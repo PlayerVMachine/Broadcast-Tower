@@ -232,10 +232,10 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 	usage: reply.private.usage
 })
 
-const view = bot.registerCommand('profile', async (msg, args) => {
+const view = bot.registerCommand('view', async (msg, args) => {
 	prof.view(msg, args, bot)
 }, {
-	aliases: ['prof', 'pf'],
+	aliases: ['profile', 'vw'],
 	cooldown: 20000,
 	description: reply.view.description,
 	fullDescription: reply.view.fullDescription,
