@@ -26,7 +26,7 @@ const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 //cd function
 const delAfterCD = (message) => {
 	setTimeout(async (message) => {
-		let messages = await bot.getMessages(message.channel.id,5,,message.id)
+		let messages = await bot.getMessages(message.channel.id,5,after:message.id)
 		console.log(messages.length)
 	}, 2000, message)	
 	return f(reply.generic.cooldownMessage, message.command.cooldown/100)
