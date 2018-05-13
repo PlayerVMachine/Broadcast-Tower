@@ -177,7 +177,7 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 	prof.setTagline(msg, args, bot)
 }, {
-	aliases: ['tl'],
+	aliases: ['-t'],
 	cooldown: 5000,
 	description: reply.tagline.description,
 	fullDescription: reply.tagline.fullDescription,
@@ -187,7 +187,7 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 	prof.setBio(msg, args, bot)
 }, {
-	aliases: ['b'],
+	aliases: ['-b'],
 	cooldown: 5000,
 	description: reply.bio.description,
 	fullDescription: reply.bio.fullDescription,
@@ -197,7 +197,7 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 	prof.setMature(msg, args, bot)
 }, {
-	aliases: ['profanity', 'm'],
+	aliases: ['-m'],
 	cooldown: 5000,
 	description: reply.mature.description,
 	fullDescription: reply.mature.fullDescription,
@@ -207,6 +207,7 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 	prof.setDND(msg, args, bot)
 }, {
+	aliases: ['-d'],
 	cooldown: 5000,
 	description: reply.dnd.description,
 	fullDescription: reply.dnd.fullDescription,
@@ -216,6 +217,7 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 const editColor = edit.registerSubcommand('color', async (msg, args) => {
 	prof.setColor(msg, args, bot)
 }, {
+	aliases: ['-c'],
 	cooldown: 2000,
 	description: reply.color.description,
 	fullDescription: reply.color.fullDescription,
@@ -225,7 +227,7 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 	prof.setPrivate(msg, args, bot)
 }, {
-	aliases: ['priv'],
+	aliases: ['priv', '-p'],
 	cooldown: 2000,
 	description: reply.private.description,
 	fullDescription: reply.private.fullDescription,
@@ -236,7 +238,7 @@ const view = bot.registerCommand('view', async (msg, args) => {
 	prof.view(msg, args, bot)
 }, {
 	aliases: ['profile', 'vw'],
-	cooldown: 20000,
+	cooldown: 5000,
 	description: reply.view.description,
 	fullDescription: reply.view.fullDescription,
 	usage: reply.view.usage
