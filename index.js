@@ -49,7 +49,7 @@ const q = new Queue(async function (data, cb) {
 
 	//get recipient
 	let user = await col.findOne({user: data.recipient})
-	if(user === undefined) {
+	if(user === null) {
 		fns.log('user === undefined was true', bot)
 		bot.createMessage(data.channelID, data.msg)
 		cb(null)
