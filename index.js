@@ -24,7 +24,7 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
 //cd function
-const delAfterCD = async (message) => {
+const delAfterCD = (message) => {
 	console.log(message.command.label)
 	console.log(message.command.cooldown)	
 	return 'HeLp'
@@ -41,7 +41,7 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	owner:'PlayerVMachine#6223',
 	prefix: ['b.', '🅱'],
 	defaultCommandOptions: {
-		cooldownMessage: 'whyY'//delAfterCD
+		cooldownMessage: delAfterCD
 	}
 })
 
