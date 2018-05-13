@@ -313,24 +313,25 @@ exports.post = async (msg, args, bot, q) => {
 
 	let post = fns.postEmbed(message, msg.author)
 
-	const callback = async (message) => {
-		if(message.author.id === msg.author.id &&  cancel.test(message.content)) {
+	const callback = async (message, emoji, userID) => {
+		if(userID === msg.author.id &&  emoji.name === '❌') {
 			try {
 				bot.editMessage(msg.channel.id, remMessage.id, 'transmission cancelled')
 			} catch (e) {
 				//no message to delete
 			}
-			bot.removeListener('messageCreated', callback)
+			bot.removeListener('messageReactionAdd', callback)
 			clearTimeout(medit)
 		}
 	}
 
-	let remMessage = await bot.createMessage(msg.channel.id, 'Your post is scheduled to broadcast in 5s, type `cancel` to cancel transmission')
-	bot.on('messageCreate', callback)
+	let remMessage = await bot.createMessage(msg.channel.id, 'Your post is scheduled to broadcast in 5s, react with :x: to cancel')
+	bot.addMessageReaction(msg.channel.id, remMessage.id, '❌')
+	bot.on('messageReactionAdd', callback)
 
 	medit = setTimeout(async (remID) => {
 		//remove ability to cancel
-		bot.removeListener('messageCreated', callback)
+		bot.removeListener('messageReactionAdd', callback)
 		bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
 
 		for (i = 0; i < followers.length; i++) {
@@ -340,5 +341,5 @@ exports.post = async (msg, args, bot, q) => {
 		}
 		if (followers.length > 0)
 			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
-	}, 6000, remMessage.id)
+	}, 5000, remMessage.id)
 }
