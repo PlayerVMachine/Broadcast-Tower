@@ -59,8 +59,8 @@ exports.follow = async(msg, args, bot) => {
 		const col = client.db(config.db).collection('Users')
 
 		//check is usee is a user
-		let found = await col.findOne({user: msg.author.id})
-		if (found === null) {
+		let usee = await col.findOne({user: msg.author.id})
+		if (usee === null) {
 			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
 			return
 		}
@@ -72,12 +72,12 @@ exports.follow = async(msg, args, bot) => {
 			return	//something was wrong with the input and the user was told
 
 		//grab their username
-		let second = await fns.getUsername(secondID, bot)
+		let second = await bot.users.get(secondID)
 
 		//already following
 		let isInList = await col.findOne({user: msg.author.id, following: secondID})
 		if (isInList !== null) {
-			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second.username))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$addToSet: {following: msg.author.id}})
 			return
 		}
@@ -85,7 +85,7 @@ exports.follow = async(msg, args, bot) => {
 		//you blocked them!
 		let isBlocked = await col.findOne({user: msg.author.id, blocked: secondID})
 		if (isBlocked !== null) {
-			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, msg.author.username, second.username))
 			return
 		}
 
@@ -96,15 +96,41 @@ exports.follow = async(msg, args, bot) => {
 			return
 		}
 
+		let secondUsee = await col.findOne({user: secondID})
+		if (secondUsee.private) {
+			let folReq = bot.createMessage(usee.sendTo, f(reply.follow.request, second.username))
+			bot.addMessageReaction(usee.sendTo, folReq.id, 'x')
+			bot.addMessageReaction(usee.sendTo, folReq.id, 'white_check_mark')
+
+			const folRes = (message, emoji, userID) => {
+				if (message.id !== folReq.id)
+					return
+
+				if (emoji.name === 'x') {
+					bot.editMessage(usee.sendTo, folReq.id, 'Follow request from second.username declined!')
+				} else if (emoji.name === 'white_check_mark') {
+					let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
+    				let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
+    				if (addToFollowers.ok === 1 && addToFollowing.ok) {
+    					bot.createMessage(usee.sendTo, f(reply.follow.success, msg.author.username, second.username))
+    					bot.editMessage(usee.sendTo, folReq.id, 'Follow request from second.username accepted!')
+    				}
+				}
+				bot.removeListener('messageReactionAdd', folRes)
+			}
+
+			bot.on('messageReactionAdd', folRes)
+		}
+
     	// if not following
     	let addToFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$addToSet: {following: secondID}})
     	let addToFollowers = await col.findOneAndUpdate({user: secondID}, {$addToSet: {followers: msg.author.id}})
     	if (addToFollowers.ok === 1 && addToFollowing.ok) {
-    		bot.createMessage(msg.channel.id, f(reply.follow.success, msg.author.username, second))
+    		bot.createMessage(msg.channel.id, f(reply.follow.success, msg.author.username, second.username))
     	} else {
     		fns.log(f(reply.general.logError, addToFollowers.lastErrorObject), bot)
     		fns.log(f(reply.general.logError, addToFollowing.lastErrorObject), bot)
-    		bot.createMessage(msg.channel.id, f(reply.follow.error, msg.author.username, second))
+    		bot.createMessage(msg.channel.id, f(reply.follow.error, msg.author.username, second.username))
     	}
     } catch (err) {
     	fns.log(f(reply.generic.logError, err), bot)

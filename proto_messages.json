@@ -40,6 +40,7 @@
 	"follow" : {
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
+		"request":"You recieved a follow request from %s! Approve with :white_check_mark: Deny with :x:",
 		"success":"%s, you are now tuned into %s's broadcasts!",
 		"error":"%s, there was an error tunining into %s's broadcasts, please try again later.",
 		"already":"%s, you are already tuned into %s's broadcasts!",
@@ -80,7 +81,7 @@
 		"error":"%s, there was an error setting your tagline, please try again later.",
 		"description":"Provide a brief descritption of your station.",
 		"fullDescription":"View/set your tagline on your profile card.",
-		"usage":"`b.view tagline` to view current, `b.edit tagline <text>` to set new"
+		"usage":"`b.edit tagline` to view current, `b.edit tagline <text>` to set new"
 	},
 	"bio" : {
 		"current":"%s your current bio: %s, set a new one with `b.edit bio <text>`",
@@ -90,7 +91,7 @@
 		"error":"%s, there was an error setting your bio, please try again later.",
 		"description":"Provide a brief descritption of your station.",
 		"fullDescription":"View/set your bio on your profile card.",
-		"usage":"`b.view bio` to view current, `b.edit bio <text>` to set new"
+		"usage":"`b.edit bio` to view current, `b.edit bio <text>` to set new"
 	},
 	"mature" : {
 		"current":"%s, your profanity preference is set to `%s`.",
@@ -99,7 +100,7 @@
 		"error":"%s, there was an error setting your profanity preference.",
 		"description":"Set your mature preference",
 		"fullDescription":"Set your mature preference i.e. do you want to send/recieve broadcasts with some profanity",
-		"usage":"`b.mature y|n`"
+		"usage":"`b.edit mature y|n`"
 	},
 	"dnd" : {
 		"current":"%s, your Do Not Disturb preference is set to `%s`.",
@@ -108,7 +109,7 @@
 		"error":"%s, there was an error setting your Do Not Disturb preference.",
 		"description":"Set your Do Not Disturb preference",
 		"fullDescription":"Set your Do Not Disturb preference i.e. do you want to recieve broadcast DMs",
-		"usage":"`b.dnd y|n`"
+		"usage":"`b.edit dnd y|n`"
 	},
 	"color" : {
 		"current":"%s, your color is set to `%s`.",
@@ -117,12 +118,21 @@
 		"error":"%s, there was an error setting your embed preference.",
 		"description":"Set your embed color",
 		"fullDescription":"Set your embed color",
-		"usage":"`b.color #ff0000`"
+		"usage":"`b.edit color #ff0000`"
 	},
-	"profile" : {
+	"view" : {
 		"description":"View your profile or a users profile.",
 		"fullDescription":"View your profile or a users profile.",
-		"usage":"`b.profile` or `b.profile @user`"
+		"usage":"`b.view` or `b.profile @user`"
+	},
+	"private" : {
+		"current":"%s, your private account preference is set to `%s`.",
+		"unexpected":"%s setting is one of `yes` or `no` not: %s",
+		"success":"%s, your private account preference is now set to `%s`.",
+		"error":"%s, there was an error setting your private account preference.",
+		"description":"Set your private account preference",
+		"fullDescription":"Set your private account preference i.e. can people add you without confirmation?",
+		"usage":"`b.edit private y|n`"
 	},
 	"clearDMs" : {
 		"description":"Clears up to 50 posts from the bot in DMs",
