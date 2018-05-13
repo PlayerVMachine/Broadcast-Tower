@@ -211,6 +211,16 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 	usage: reply.color.usage
 })
 
+const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
+	prof.setPrivate(msg, args, bot)
+}, {
+	aliases: ['priv'],
+	cooldown: 2000,
+	description: reply.private.description,
+	fullDescription: reply.private.fullDescription,
+	usage: reply.private.usage
+})
+
 const view = bot.registerCommand('profile', async (msg, args) => {
 	if (args.length === 0) {
 		let isUser = await fns.userHasAccount(msg, bot)
@@ -226,9 +236,9 @@ const view = bot.registerCommand('profile', async (msg, args) => {
 }, {
 	aliases: ['prof', 'pf'],
 	cooldown: 20000,
-	description: reply.profile.description,
-	fullDescription: reply.profile.fullDescription,
-	usage: reply.profile.usage
+	description: reply.view.description,
+	fullDescription: reply.view.fullDescription,
+	usage: reply.view.usage
 })
 
 const list = bot.registerCommand('list', async (msg, args) => {
