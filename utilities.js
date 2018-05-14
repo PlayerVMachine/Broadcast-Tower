@@ -2,7 +2,6 @@ const util = require('util')
 
 // const filter = require('swearjar')
 const config = require('./config.json')
-const db = require('./queries.js')
 const reply = require('./proto_messages.json')
 
 // match user mentions and id strings
