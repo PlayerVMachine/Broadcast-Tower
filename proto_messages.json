@@ -164,7 +164,7 @@
 		"usage":"`b.post I just got my first Chicken Royale!`"
 	}, 
 	"help" : {
-		"listFormat":"%s**:** %s",
+		"listFormat":"%s: %s",
 		"singleCmdDesc":"**Aliases:** %s\n**Description:** %s\n**Cooldown:** %ss\n**Usage:** %s",
 		"description":"Use with a command name to det more information about the command.",
 		"fullDescription":"Use as `b.help` for a list of commands, use as `b.help commandname` for details on that command.",
