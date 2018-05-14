@@ -285,14 +285,6 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	usage: reply.post.usage
 })
 
-const bEval = bot.registerCommand('eval', async (msg, args) => {
-	commands.beval(msg, args.join(' '), bot)
-}, {
-	requirements: {
-		userIDs: [config.creator]
-	},
-	hidden: true
-})
 
 const help = bot.registerCommand('help', (msg, args) => {
 	if (bot.commands[args[0]] !== undefined)
