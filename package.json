@@ -9,7 +9,7 @@
     "mongodb": "^3.0.7",
     "npm": "^6.0.0",
     "swearjar": "^0.2.0",
-    "winston": "^2.4.2"
+    "twitch-helix": "^1.0.7"
   },
   "devDependencies": {},
   "scripts": {

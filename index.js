@@ -290,36 +290,12 @@ const help = bot.registerCommand('help', (msg, args) => {
 })
 
 const testing = bot.registerCommand('test', async (msg, args) => {
-	let val = await msg.author.getProfile()
-	console.log(val)
-})
+	let client = await MongoClient.connect(url)
+	const col = client.db(config.db).collection('Users')
 
-////////////////////////////////////////////////////
-//Event Listener for Stream Notification         //
-//////////////////////////////////////////////////
-/*bot.on('presenceUpdate', async (other, oldPresence) => {
-	if (other.id !== undefined) {
-		let isUser = await db.userExists(other.id)
-
-		if (isUser) {
-			let followers = await db.getFields(other.id, 'followers')
-			let resChannel = await db.getFields(other.id, 'sendTo')
-
-			var post = fns.postEmbed('Now playing! ' + other.game.name, other.user)
-
-			for (i = 0; i < followers.length; i++) {
-				let channelID = await db.getFields(followers[i], 'sendTo')
-				if (i !== followers.length - 1) {
-					q.push({channelID:channelID, msg:post, fin:''})
-				} else {
-					q.push({channelID:channelID, msg:post, fin:resChannel}).on('finish', (resChannel) => {
-						//bot.createMessage(resChannel, util.format(reply.post.sentConfirm, message))
-					})
-				}
-			}
-		}
-	}
-})*/
+	let usee = await col.findOne({user: msg.author.id})
+	return '```\n' + usee + '\n```'
+}
 
 
 //actually connect
