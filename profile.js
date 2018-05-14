@@ -506,5 +506,5 @@ exports.list = async (msg, args, bot) => {
 		}
 	}
 
-	bot.createMessage(msg.channel.id, embed)
+	bot.createMessage(msg.channel.id, 'embed')
 }
