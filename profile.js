@@ -491,7 +491,7 @@ exports.list = async (msg, args, bot) => {
 
 	let list = []
 	if(usee[args[0]].length === 0) {
-		list.push(reply.list.empty) 
+		list.push(f(reply.list.empty, usee.username)) 
 	} else {
 		for (var usr in usee[args[0]]) {
 			let user = await bot.users.get(usee[args[0]][usr])
