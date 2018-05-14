@@ -24,7 +24,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
 	const usersCol = client.db(config.db).collection('Users') //Tower's users
 
-	let usee = await UsersCol.findOne({user: msg.author.id})
+	let usee = await usersCol.findOne({user: msg.author.id})
 	if (usee === null) {
 		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
 		return
