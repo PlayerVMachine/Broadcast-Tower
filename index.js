@@ -226,7 +226,7 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 	prof.setPrivate(msg, args, bot)
 }, {
-	aliases: ['priv', '-p'],
+	aliases: ['-p'],
 	cooldown: 2000,
 	description: reply.private.description,
 	fullDescription: reply.private.fullDescription,

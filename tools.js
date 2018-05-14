@@ -22,6 +22,7 @@ exports.help = async (msg, args, bot) => {
 		}
 
 		let botUser = await bot.getSelf()
+		let arg = args[0].toLowerCase()
 
 		let commandList = []
 		if (args.length === 0) {
@@ -39,6 +40,34 @@ exports.help = async (msg, args, bot) => {
 			}
 
 			bot.createMessage(msg.channel.id, embed)
+			
+		} else if (cmds.includes(arg)) {
+			let aliases = ''
+			if (bot.commands[arg].aliases.length > 0)
+				aliases = '**Aliases:** ' + bot.commands[arg].aliases
+			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000
+			let subCmds = ''
+			if (bot.commands[arg].subcommands.entries().length > 0) {
+				subCmds = '**Subcommands:** ' + bot.commands[arg].subcommands.keys().join(', ')
+				subCmds = subCmds.slice(0, subCmds.length)
+			}
+			let fullDescription = '**Description:** ' + bot.commands[arg].fullDescription
+			let usage = '**Usage:** ' + bot.commands[arg].usage
+
+			let properties = [aliases, cooldown, subCmds, fullDescription, usage]
+
+			let embed = {
+				embed: {
+					author: {name: botUser.username + `'s` + arg + 'command', icon_url: botUser.avatarURL},
+					description: properties.join('\n'),
+					color: parseInt(config.color, 16)
+				}
+			}
+
+			bot.createMessage(msg.channel.id, embed)
+
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.help.unexpected, msg.author.username, args[0]))
 		}
 
 
