@@ -502,7 +502,7 @@ exports.list = async (msg, args, bot) => {
 	let embed = {
 		embed: {
 			author: {name: f(reply.list[args[0]], msg.author.username), icon_url: msg.author.avatarURL},
-			description: list.join('\n')
+			description: list.join('\n'),
 			color: usee.eColor
 		}
 	}
