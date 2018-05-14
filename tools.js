@@ -62,7 +62,7 @@ exports.help = async (msg, args, bot) => {
 			let fullDescription = '**Description:** ' + bot.commands[arg].fullDescription
 			let usage = '**Usage:** ' + bot.commands[arg].usage
 
-			let properties = [subCmds, aliases, cooldown, fullDescription, usage]
+			let properties = [aliases, cooldown, fullDescription, usage, subCmds]
 
 			let embed = {
 				embed: {
