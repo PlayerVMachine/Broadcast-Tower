@@ -294,7 +294,7 @@ const testing = bot.registerCommand('test', async (msg, args) => {
 	const col = client.db(config.db).collection('Users')
 
 	let usee = await col.findOne({user: msg.author.id})
-	return '```\n' + usee + '\n```'
+	return '```\n' + JSON.stringify(usee) + '\n```'
 })
 
 
