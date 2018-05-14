@@ -287,10 +287,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 
 
 const help = bot.registerCommand('help', (msg, args) => {
-	if (bot.commands[args[0]] !== undefined)
-		fns.help(msg, args[0], bot)
-	else
-		fns.help(msg, 'all', bot)
+	return bot.commands[0]
 }, {
 	cooldown: 5000,
 	description: reply.help.description,
