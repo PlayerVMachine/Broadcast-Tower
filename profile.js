@@ -501,10 +501,10 @@ exports.list = async (msg, args, bot) => {
 
 	let embed = {
 		embed: {
-			author: {name: f(reply.list[args[0]], discUser.username), icon_url: discUser.avatarURL}
+			author: {name: f(reply.list[args[0]], discUser.username), icon_url: discUser.avatarURL},
 			description: list.join('\n')
 		}
 	}
-	
+
 	bot.createMessage(msg.channel.id, embed)
 }
