@@ -24,8 +24,9 @@ exports.help = async (msg, args, bot) => {
 
 		let botUser = await bot.getSelf()
 
-		if(args.length > 0)
+		if(args.length > 0) {
 			let arg = args[0].toLowerCase()
+		}
 
 		let commandList = []
 		if (args.length === 0) {
