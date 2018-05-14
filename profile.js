@@ -491,7 +491,7 @@ exports.list = async (msg, args, bot) => {
 
 	let list = []
 	if(usee[args[0]].length === 0) {
-		list.push(f(reply.list.empty, usee.username)) 
+		list.push(f(reply.list.empty, msg.author.username)) 
 	} else {
 		for (var usr in usee[args[0]]) {
 			let user = await bot.users.get(usee[args[0]][usr])
@@ -501,8 +501,9 @@ exports.list = async (msg, args, bot) => {
 
 	let embed = {
 		embed: {
-			author: {name: f(reply.list[args[0]], usee.username), icon_url: usee.avatarURL},
+			author: {name: f(reply.list[args[0]], msg.author.username), icon_url: msg.author.avatarURL},
 			description: list.join('\n')
+			color: usee.eColor
 		}
 	}
 
