@@ -13,11 +13,13 @@ const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
 
-exports.help = (msg, args, bot) {
+exports.help = async (msg, args, bot) => {
 	try {
 		let cmds = []
-		for (var cmd in bot.commands)
-			cmds.push(bot.commands[cmd].label)
+		for (var cmd in bot.commands) {
+			if (!bot.commands[cmd].hidden)
+				cmds.push(bot.commands[cmd].label)
+		}
 
 		let botUser = await bot.getSelf()
 
