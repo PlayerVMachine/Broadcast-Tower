@@ -53,7 +53,10 @@ exports.help = async (msg, args, bot) => {
 			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000
 			let subCmds = ''
 			if (bot.commands[arg].subcommands !== {}) {
-				subCmds = '**Subcommands:** ' + bot.commands[arg].subcommands.keys().join(', ')
+				let list = []
+				for (cmd in bot.commands[arg].subcommands)
+					list.push(bot.commands[arg].subcommands[cmd].label)
+				subCmds = '**Subcommands:** ' + list.join(', ')
 				subCmds = subCmds.slice(0, subCmds.length)
 			}
 			let fullDescription = '**Description:** ' + bot.commands[arg].fullDescription
