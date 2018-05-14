@@ -26,7 +26,7 @@ exports.help = async (msg, args, bot) => {
 		let commandList = []
 		if (args.length === 0) {
 			for (var cmd in bot.commands) {
-				var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase + bot.commands[cmd].label.slice(1))
+				var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase() + bot.commands[cmd].label.slice(1))
 				commandList.push(f(reply.help.listFormat, name, bot.commands[cmd].description))
 			}
 
