@@ -12,6 +12,7 @@ const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
 const prof = require('./profile.js')
+const tools = require('./tools.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -287,7 +288,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 
 
 const help = bot.registerCommand('help', (msg, args) => {
-	console.log(bot.commands)
+	tools.help(msg, args, bot)
 }, {
 	cooldown: 5000,
 	description: reply.help.description,

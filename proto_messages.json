@@ -1,6 +1,7 @@
 {
 	"generic" : {
 		"logError":"```diff\n- %s```",
+		"bold":"**%s**",
 		"useeNoAccount":"%s, you do not have a broadcast station!",
 		"userNoAccount":"%s, %s does not have a broadcast station!",
 		"invalidID":"%s, %s is not a valid user id or mention!",
@@ -163,6 +164,7 @@
 		"usage":"`b.post I just got my first Chicken Royale!`"
 	}, 
 	"help" : {
+		"listFormat":"%s**:** %s",
 		"singleCmdDesc":"**Aliases:** %s\n**Description:** %s\n**Cooldown:** %ss\n**Usage:** %s",
 		"description":"Use with a command name to det more information about the command.",
 		"fullDescription":"Use as `b.help` for a list of commands, use as `b.help commandname` for details on that command.",

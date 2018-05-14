@@ -15,10 +15,30 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 
 exports.help = (msg, args, bot) {
 	try {
-		//let cmds = []
-		//for (var cmd in bot.commands)
+		let cmds = []
+		for (var cmd in bot.commands)
+			cmds.push(bot.commands[cmd].label)
 
-		bot.createMessage(msg.channel.id, )
+		let botUser = await bot.getSelf()
+
+		let commandList = []
+		if (args.length === 0) {
+			for (var cmd in bot.commands) {
+				var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase + bot.commands[cmd].label.slice(1))
+				commandList.push(f(reply.help.listFormat, name, bot.commands[cmd].description))
+			}
+
+			let embed = {
+				embed: {
+					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					description: commandList.join('\n'),
+					color: parseInt(config.color, 16)
+				}
+			}
+
+			bot.createMessage(msg.channel.id, embed)
+		}
+
 
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
