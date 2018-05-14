@@ -287,7 +287,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 
 
 const help = bot.registerCommand('help', (msg, args) => {
-	console.log(bot.commands[0])
+	console.log(bot.commands)
 }, {
 	cooldown: 5000,
 	description: reply.help.description,
