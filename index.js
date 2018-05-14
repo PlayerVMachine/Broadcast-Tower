@@ -289,6 +289,11 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
+const testing = bot.registerCommand('test', async (msg, args) => {
+	let val = await msg.author.getProfile()
+	console.log(val)
+})
+
 ////////////////////////////////////////////////////
 //Event Listener for Stream Notification         //
 //////////////////////////////////////////////////
