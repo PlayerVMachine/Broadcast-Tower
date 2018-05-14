@@ -53,7 +53,7 @@ exports.help = async (msg, args, bot) => {
 			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000
 			let subCmds = ''
 			if (bot.commands[arg].subcommands.length > 0) {
-				subCmds = '**Subcommands:** ' + bot.commands[arg].subcommands.join(', ')
+				subCmds = '**Subcommands:** ' + bot.commands[arg].subcommands.keys().join(', ')
 				subCmds = subCmds.slice(0, subCmds.length)
 			}
 			let fullDescription = '**Description:** ' + bot.commands[arg].fullDescription
@@ -63,7 +63,7 @@ exports.help = async (msg, args, bot) => {
 
 			let embed = {
 				embed: {
-					author: {name: botUser.username + `'s` + arg + 'command', icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s ` + arg + ' command', icon_url: botUser.avatarURL},
 					description: properties.join('\n'),
 					color: parseInt(config.color, 16)
 				}
