@@ -49,7 +49,7 @@ exports.help = async (msg, args, bot) => {
 		} else if (cmds.includes(arg)) {
 			let aliases = ''
 			if (bot.commands[arg].aliases.length > 0)
-				aliases = '**Aliases:** ' + bot.commands[arg].aliases
+				aliases = '**Aliases:** ' + bot.commands[arg].aliases.join(', ')
 			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000
 			let subCmds = ''
 			if (bot.commands[arg].subcommands.length > 0) {
@@ -59,7 +59,7 @@ exports.help = async (msg, args, bot) => {
 			let fullDescription = '**Description:** ' + bot.commands[arg].fullDescription
 			let usage = '**Usage:** ' + bot.commands[arg].usage
 
-			let properties = [aliases, cooldown, subCmds, fullDescription, usage]
+			let properties = [subCmds, aliases, cooldown, fullDescription, usage]
 
 			let embed = {
 				embed: {

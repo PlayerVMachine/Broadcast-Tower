@@ -106,7 +106,7 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 	cooldown: 10000,
 	description: reply.create.description,
 	fullDescription: reply.create.fullDescription,
-	usage: reply.create.description
+	usage: reply.create.usage
 })
 
 const deleteAccount = bot.registerCommand('close', async (msg, args) => {
