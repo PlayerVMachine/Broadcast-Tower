@@ -93,7 +93,7 @@ exports.clean = async (msg, args, bot) => {
 	}
 
 	let maxGet = 50
-	if (args[0] !== undefined) {
+	if (args.length > 0) {
 		let num = parseInt(args[0])
 		if (num < 50)
 			maxGet = num
