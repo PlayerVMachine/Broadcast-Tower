@@ -295,7 +295,7 @@ const testing = bot.registerCommand('test', async (msg, args) => {
 
 	let usee = await col.findOne({user: msg.author.id})
 	return '```\n' + usee + '\n```'
-}
+})
 
 
 //actually connect
