@@ -170,6 +170,11 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 
 const edit = bot.registerCommand('edit', (msg, args) => {
 	prof.edit(msg, edit, bot)
+}, {
+	cooldown: 2000,
+	description: 'todo',
+	fullDescription: 'todo',
+	usage:'todo'
 })
 
 
@@ -254,26 +259,14 @@ const list = bot.registerCommand('list', async (msg, args) => {
 })
 
 const clearDMs = bot.registerCommand('clean', async (msg, args) => {
-	let dmchannel = await msg.author.getDMChannel();
-	if (msg.channel.id !== dmchannel.id)
-		return 'The tower only purges messages in DMs'
-
-	let messages = await msg.channel.getMessages();
-
-	for (i = 0; i < 50; i++)
-		try {
-			if(messages[i].author.id !== msg.author.id)
-				msg.channel.deleteMessage(messages[i].id)
-		} catch (e) {
-			console.log(e.message)
-		}
-	}, {
-		aliases: ['cls', 'clear'],
-		cooldown: 20000,
-		description: reply.clearDMs.description,
-		fullDescription: reply.clearDMs.fullDescription,
-		usage: reply.clearDMs.usage
-	})
+	tools.clean(msg, args, bot)
+}, {
+	aliases: ['cls', 'clear'],
+	cooldown: 20000,
+	description: reply.clearDMs.description,
+	fullDescription: reply.clearDMs.fullDescription,
+	usage: reply.clearDMs.usage
+})
 
 const post = bot.registerCommand('post', async (msg, args) => {
 	//function to send posts

@@ -50,7 +50,7 @@ exports.help = async (msg, args, bot) => {
 			let aliases = ''
 			if (bot.commands[arg].aliases.length > 0)
 				aliases = '**Aliases:** ' + bot.commands[arg].aliases.join(', ')
-			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000
+			let cooldown = '**Cooldown:** ' + bot.commands[arg].cooldown / 1000 + 's'
 			let subCmds = ''
 			
 			let list = []
@@ -82,5 +82,31 @@ exports.help = async (msg, args, bot) => {
 
 	} catch (err) {
 		fns.log(f(reply.generic.logError, err), bot)
+	}
+}
+
+exports.clean = async (msg, args, bot) => {
+	let dmchannel = await msg.author.getDMChannel();
+	if (msg.channel.id !== dmchannel.id) {
+		bot.createMessage(msg.channel.id, 'The tower only purges messages in DMs')
+		return
+	}
+
+	let maxGet = 50
+	if (args[0] !== undefined) {
+		let num = parseInt(args[0])
+		if (num < 50)
+			maxGet = num
+	}
+
+	let messages = await msg.channel.getMessages(maxGet);
+
+	for (i = 0; i < maxGet; i++) {
+		try {
+			if(messages[i].author.id !== msg.author.id)
+				msg.channel.deleteMessage(messages[i].id)
+		} catch (e) {
+			console.log(e.message)
+		}
 	}
 }
