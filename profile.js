@@ -471,3 +471,40 @@ exports.setColor = async (msg, args, bot) => {
 		fns.log(f(reply.generic.logError, err), bot)
 	}
 }
+
+exports.list = async (msg, args, bot) => {
+	//database
+	let client = await MongoClient.connect(url)
+	const col = client.db(config.db).collection('Users')
+
+	//check is usee is a user
+	let usee = await col.findOne({user: msg.author.id})
+	if (usee === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+		return
+	}
+
+	if (!['following', 'followers', 'blocked'].includes(args[0])) {
+		bot.createMessage(msg.channel.id, f(reply.list.notAlist, msg.author.username, args[0]))
+		return
+	}
+
+	let list = []
+	if(usee[args[0]].length === 0) {
+		list.push(reply.list.empty) 
+	} else {
+		for (var usr in usee[args[0]]) {
+			let user = await bot.users.get(usee[args[0]][usr])
+			list.push(user.username)
+		}
+	}
+
+	let embed = {
+		embed: {
+			author: {name: f(reply.list[args[0]], discUser.username), icon_url: discUser.avatarURL}
+			description: list.join('\n')
+		}
+	}
+	
+	bot.createMessage(msg.channel.id, embed)
+}

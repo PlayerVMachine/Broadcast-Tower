@@ -245,23 +245,10 @@ const view = bot.registerCommand('view', async (msg, args) => {
 })
 
 const list = bot.registerCommand('list', async (msg, args) => {
-	var list = args[0].toLowerCase()
-	if (list === 'blocked') {
-		let userList = await commands.listUsers(msg, list, bot)
-		bot.createMessage(msg.channel.id, userList)
-	} else if (list === 'followers') {
-		let userList = await commands.listUsers(msg, list, bot)
-		bot.createMessage(msg.channel.id, userList)
-	} else if (list === 'following') {
-		let userList = await commands.listUsers(msg, list, bot)
-		bot.createMessage(msg.channel.id, userList)
-	} else {
-		return util.format(reply.list.notAList, msg.author.username)
-	}
-
+	prof.list(msg, args, bot)
 }, {
 	aliases: ['ls', 'li'],
-	cooldown: 5000,
+	cooldown: 2000,
 	description: reply.list.description,
 	fullDescription: reply.list.fullDescription,
 	usage: reply.list.usage
