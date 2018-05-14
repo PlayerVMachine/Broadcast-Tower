@@ -13,6 +13,7 @@ const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
 const prof = require('./profile.js')
 const tools = require('./tools.js')
+const twitch = require('./twitch-handler.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -290,11 +291,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 })
 
 const testing = bot.registerCommand('test', async (msg, args) => {
-	let client = await MongoClient.connect(url)
-	const col = client.db(config.db).collection('Users')
-
-	let usee = await col.findOne({user: msg.author.id})
-	return '```\n' + JSON.stringify(usee) + '\n```'
+	twitch.twitchStreamSub(msg, args, bot)
 })
 
 
