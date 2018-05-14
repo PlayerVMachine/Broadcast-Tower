@@ -9,7 +9,8 @@
     "mongodb": "^3.0.7",
     "npm": "^6.0.0",
     "swearjar": "^0.2.0",
-    "twitch-helix": "^1.0.7"
+    "twitch-helix": "^1.0.7",
+    "twitch-webhook": "^1.2.4"
   },
   "devDependencies": {},
   "scripts": {

@@ -2,6 +2,7 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 const TwitchHelix = require("twitch-helix")
+const TwitchWebhook = require('twitch-webhook')
 
 // project files required
 const config = require('./config.json')
@@ -19,6 +20,18 @@ const twitchApi = new TwitchHelix({
     clientSecret: config.twitchSecret
 })
 
+//twitch webhook
+const twitchWebhook = new TwitchWebhook({
+    client_id: config.twitchID,
+    callback: 'http://localhost:8080/',
+    secret: config.twitchSecret, // default: false
+    listen: {
+        port: 8080,
+        host: '127.0.0.1'
+    }
+})
+
+
 exports.twitchStreamSub = async (msg, args, bot) => {
 	let client = await MongoClient.connect(url)
 	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
@@ -31,6 +44,42 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	}
 
 	let streamer = await twitchApi.getTwitchUserByName(args[0])
-	bot.createMessage(msg.channel.id, JSON.stringify(streamer))
+	//bot.createMessage(msg.channel.id, JSON.stringify(streamer))
+
+	//if the streamer hasn't been followed by a user yet add them to the collection
+	let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
+	if (streamSubList === null){
+		let addStreamer = await twitchCol.insertOne({StreamerID: streamer.id, followers: []})
+		if (addStreamer.insertedCount === 1){
+			bot.createMessage(config.logChannelID, f('Streamer %s follwed', streamer.display_name))
+
+			//set listener for new streamer we care about
+			twitchWebhook.on('streams', ({ event }) => {
+    			console.log(JSON.stringify(event))
+			})
+
+			//subscribe
+			twitchWebhook.subscibe('streams', {user_id:streamer.id})
+
+			//resub on timeout (10 days)
+			twitchWebhook.on('unsubscibe', (obj) => {
+  				twitchWebhook.subscribe(obj['hub.topic'])
+			})
+
+		} else {
+			bot.createMessage(config.logChannelID, f('Streamer %s could not be follwed', streamer.display_name))
+		}
+	}
+
+	//add the user to the streamer's follower list
+	let addFollower = await twitchCol.findOneAndUpdate({StreamerID: streamer.id}, {$addToSet: {followers:usee._id}})
+	if(addFollower.ok !== 1) {
+		bot.createMessage(msg.channel.id, 'There was an error subscribing to twitch stream notifications O///O')
+		return
+	}
+
+	
+
+
 
 }
