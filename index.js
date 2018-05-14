@@ -8,8 +8,6 @@ const util = require('util')
 //project module imports
 const config = require('./config.json')
 const fns = require('./utilities.js') // useful functions
-const db = require('./queries.js') // database queries
-const commands = require('./commands.js'); //actual bot commands moduled for tidiness
 const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
