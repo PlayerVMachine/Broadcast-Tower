@@ -7,7 +7,7 @@ const app = express()
 var jsonParser = bodyParser.json()
 
 app.get('/', jsonParser, (req, res) => {
-	res.send(req.query.hub.challenge)
+	res.send(req.query['hub.challenge'])
 	console.log(req)
 })
 
