@@ -46,7 +46,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 			request.post('https://api.twitch.tv/helix/webhooks/hub')
 			.send({"hub.mode":"subscribe",
 				"hub.topic":topic,
-    			"hub.callback":"http://208.113.133.141:3000/",
+    			"hub.callback":"http://208.113.133.141:",
     			"hub.lease_seconds":"864000",
     			"hub.secret":config.twitchSecret})
 			.set('Client-ID', config.twitchID)
