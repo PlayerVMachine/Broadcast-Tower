@@ -59,7 +59,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 			})
 
 			//subscribe
-			twitchWebhook.subscibe('streams', {user_id:streamer.id})
+			twitchWebhook.subscribe('streams', {user_id:streamer.id})
 
 			//resub on timeout (10 days)
 			twitchWebhook.on('unsubscibe', (obj) => {
