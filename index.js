@@ -356,11 +356,12 @@ app.post('/twitch', jsonParser, async (req, res) => {
 			streamIDs.push(streamData.id)
 			let streamer = await twitchApi.getTwitchUserById(streamData.user_id)
 			let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
-			let thumbnailURL = streamData.thumbnail_url.replace('{width}', '256').replace('{height}', '256')
+			let gameData = await twitchApi.sendHelixRequest('games?id=' + streamData.game_id)
+			let thumbnailURL = gameData.box_art_url.replace('{width}', '256').replace('{height}', '256')
 
 			let embed = {
 				embed: {
-					title: '**Title:** ' + streamData.title,
+					title: '**Playing** ' + gameData.name + '\n **' + streamData.display_name + '** is now streaming! ' + streamData.title,
 					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
