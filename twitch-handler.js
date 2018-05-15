@@ -2,7 +2,7 @@
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 const TwitchHelix = require("twitch-helix")
-const TwitchWebhook = require('twitch-webhook')
+const request = require('superagent')
 
 // project files required
 const config = require('./config.json')
@@ -20,16 +20,6 @@ const twitchApi = new TwitchHelix({
     clientSecret: config.twitchSecret
 })
 
-//twitch webhook
-const twitchWebhook = new TwitchWebhook({
-    client_id: config.twitchID,
-    callback: 'http://208.113.133.141:8080/',
-    secret: config.twitchSecret,
-    listen: {
-        autoStart: true
-    }
-})
-
 
 exports.twitchStreamSub = async (msg, args, bot) => {
 	let client = await MongoClient.connect(url)
@@ -43,7 +33,6 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	}
 
 	let streamer = await twitchApi.getTwitchUserByName(args[0])
-	bot.createMessage(msg.channel.id, JSON.stringify(streamer))
 
 	//if the streamer hasn't been followed by a user yet add them to the collection
 	let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
@@ -51,21 +40,18 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 		let addStreamer = await twitchCol.insertOne({StreamerID: streamer.id, followers: []})
 		if (addStreamer.insertedCount === 1){
 			bot.createMessage(config.logChannelID, f('Streamer %s followed', streamer.display_name))
+			topic = "https://api.twitch.tv/helix/streams?user_id=" + streamer.id
 
-			//set listener for new streamer we care about
-			twitchWebhook.on('*', ({ topic, options, endpoint, event }) => {
- 				console.log('a stream happened!')
- 				console.log(topic, options, endpoint, event)
-			})
-
-			//subscribe
-			twitchWebhook.subscribe('streams', {user_id:streamer.id})
-			let hi = await twitchWebhook.isListening()
-			console.log(hi)
-
-			//resub on timeout (10 days)
-			twitchWebhook.on('unsubscibe', (obj) => {
-  				twitchWebhook.subscribe(obj['hub.topic'])
+			request.post('https://api.twitch.tv/helix/webhooks/hub')
+			.send({"hub.mode":"subscribe",
+				"hub.topic":topic,
+    			"hub.callback":"http://208.113.133.141:3000/",
+    			"hub.lease_seconds":"864000",
+    			"hub.secret":config.twitchSecret})
+			.set('Client-ID', config.twitchID)
+			.set('Content-Type', 'application/json').end((err, res) => {
+				console.log(res)
+				console.log(err)
 			})
 
 		} else {
@@ -82,3 +68,4 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 
 
 }
+
