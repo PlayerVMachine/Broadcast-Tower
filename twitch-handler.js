@@ -33,7 +33,6 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	}
 
 	let streamer = await twitchApi.getTwitchUserByName(args[0])
-	bot.createMessage(msg.channel.id, JSON.stringify(streamer))
 
 	//if the streamer hasn't been followed by a user yet add them to the collection
 	let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
