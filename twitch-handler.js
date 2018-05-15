@@ -51,7 +51,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
     			"hub.secret":config.twitchSecret})
 			.set('Client-ID', config.twitchID)
 			.set('Content-Type', 'application/json').end((err, res) => {
-				console.log(res)
+				console.log(res.statusCode)
 				console.log(err)
 			})
 
