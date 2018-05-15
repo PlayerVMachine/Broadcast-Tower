@@ -111,6 +111,18 @@ const ping = bot.registerCommand('ping', 'Pong!', {
 	usage: reply.ping.usage
 })
 
+const glitch = bot.registerCommand('glitch', `congrats you'm'st done broken the tower, test it on monday.`, {
+	cooldown: 10000,
+	description: 'A wild easter egg appears',
+	hidden: true
+})
+
+const raven = bot.registerCommand('Night', `Raven, says Make Python Great Again`, {
+	cooldown: 10000,
+	description: 'A wild easter egg appears',
+	hidden: true
+})
+
 const createAccount = bot.registerCommand('create', async (msg, args) => {
 	//call the function to create an account if one doesn't exist already
 	amgmt.create(msg, bot)
