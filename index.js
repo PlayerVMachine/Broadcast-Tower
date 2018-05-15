@@ -327,6 +327,7 @@ const twitchUnSub = bot.registerCommand('tunsub', async (msg, args) => {
 
 // parse application/json
 var jsonParser = bodyParser.json()
+let streamIDs = []
 
 //reply with the challenge to confirm subscription
 app.get('/twitch', jsonParser, (req, res) => {
@@ -341,20 +342,24 @@ app.post('/twitch', jsonParser, async (req, res) => {
 		let client = await MongoClient.connect(url)
 		const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
 		const usersCol = client.db(config.db).collection('Users') //Tower's users
-		console.log('we recieved a POST')
+
 		//get the stream data
 		if (req.body.data.length !== 0) {
-			console.log('the length was not 0')
 			let streamData = req.body.data[0]
+
+			if (streamIDs.includes(streamData.id))
+				return
+
+			streamIDs.push(streamData.id)
 			let streamer = await twitchApi.getTwitchUserById(streamData.user_id)
 			let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
 			let thumbnailURL = streamData.thumbnail_url.replace('{width}', '256').replace('{height}', '256')
 
 			let embed = {
 				embed: {
-					description: '**Title:** ' + streamData.title,
+					title: '**Title:** ' + streamData.title,
+					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
-					url: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
 					thumbnail: {url:thumbnailURL, height:256, width:256},
 					footer: {text:'Part of the Broadcast Tower Integration Network'}
