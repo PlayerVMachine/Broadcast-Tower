@@ -345,6 +345,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 		//get the stream data
 		if (req.body.data.length !== 0) {
+			console.log('hi')
 			let streamData = req.body.data[0]
 
 			if (streamIDs.includes(streamData.id))
