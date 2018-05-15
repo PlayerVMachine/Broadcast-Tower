@@ -328,7 +328,7 @@ app.get('/twitch', jsonParser, (req, res) => {
 })
 
 //dm users that are following
-app.post('/twitch', jsonParser, (req, res) => {
+app.post('/twitch', jsonParser, async (req, res) => {
 	let client = await MongoClient.connect(url)
 	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
 	const usersCol = client.db(config.db).collection('Users') //Tower's users
