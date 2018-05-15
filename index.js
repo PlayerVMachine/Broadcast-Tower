@@ -309,7 +309,7 @@ const twitchSub = bot.registerCommand('tsub', async (msg, args) => {
 	twitch.twitchStreamSub(msg, args, bot)
 })
 
-const twitchSub = bot.registerCommand('tunsub', async (msg, args) => {
+const twitchUnSub = bot.registerCommand('tunsub', async (msg, args) => {
 	twitch.twitchStreamUnSub(msg, args, bot)
 })
 
