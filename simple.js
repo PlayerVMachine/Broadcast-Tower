@@ -6,14 +6,14 @@ const app = express()
 // parse application/json
 var jsonParser = bodyParser.json()
 
-app.get('/', jsonParser, (req, res) => {
+app.get('/twitch', jsonParser, (req, res) => {
 	if(req.query['hub.challenge'] != null)
 		res.status(200).send(req.query['hub.challenge'])
 	else
 		console.log(req.body)
 })
 
-app.post('/', jsonParser, (req, res) => {
+app.post('/twitch', jsonParser, (req, res) => {
 	console.log(req.body)
 })
 

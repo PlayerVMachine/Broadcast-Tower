@@ -43,15 +43,10 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 			let topic = 'https://api.twitch.tv/helix/streams?user_id=' + streamer.id
 
 			request.post('https://api.twitch.tv/helix/webhooks/hub')
-			.send({"hub.mode":"subscribe",
-				"hub.topic":topic,
-    			"hub.callback":"http://208.113.133.141:",
-    			"hub.lease_seconds":"864000",
-    			"hub.secret":config.twitchSecret})
-			.set('Client-ID', config.twitchID)
-			.set('Content-Type', 'application/json').end((err, res) => {
-				console.log(res.statusCode)
-				console.log(err)
+			.send({"hub.mode":"subscribe","hub.topic":topic,"hub.callback":"http://208.113.133.141/twitch","hub.lease_seconds":"864000","hub.secret":config.twitchSecret})
+			.set('Client-ID', config.twitchID).set('Content-Type', 'application/json').end( (err, res) => {
+				if(err !== null)
+					console.log('Error following sreamer' + err)
 			})
 
 		} else {
@@ -66,5 +61,26 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 		return
 	}
 
+	bot.createMessage(msg.channel.id, f(`%s, you just subbed to %s's stream notifications!`, msg.author.username, streamer.display_name))
+}
 
+exports.twitchStreamUnSub = async (msg, args, bot) => {
+	
+
+	let usee = await usersCol.findOne({user: msg.author.id})
+	if (usee === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+		return
+	}
+
+	let streamer = await twitchApi.getTwitchUserByName(args[0])
+
+	let pullFollower = await twitchCol.findOneAndUpdate({StreamerID: streamer.id}, {$pull: {followers:usee._id}})
+
+	if(pullFollower.ok !== 1) {
+		bot.createMessage(msg.channel.id, 'There was an error unsubscribing from twitch stream notifications O///O')
+		return
+	}
+
+	bot.createMessage(msg.channel.id, f(`%s, you just unsubbed from %s's stream notifications.`, msg.author.username, streamer.display_name))
 }

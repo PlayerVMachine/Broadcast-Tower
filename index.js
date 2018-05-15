@@ -4,6 +4,8 @@ const f = require('util').format
 const Eris = require('eris')
 const Queue = require('better-queue')
 const util = require('util')
+const express = require('express')
+const bodyParser = require('body-parser')
 
 //project module imports
 const config = require('./config.json')
@@ -20,6 +22,9 @@ const user = encodeURIComponent(config.user)
 const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
+
+//express app
+const app = express()
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
@@ -170,6 +175,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 })
 
 const edit = bot.registerCommand('edit', (msg, args) => {
+	//edit
 	prof.edit(msg, edit, bot)
 }, {
 	cooldown: 2000,
@@ -180,6 +186,7 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 
 
 const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
+	//
 	prof.setTagline(msg, args, bot)
 }, {
 	aliases: ['-t'],
@@ -190,6 +197,7 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 })
 
 const editBio = edit.registerSubcommand('bio', async (msg, args) => {
+	//
 	prof.setBio(msg, args, bot)
 }, {
 	aliases: ['-b'],
@@ -200,6 +208,7 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 })
 
 const editMature = edit.registerSubcommand('mature', async (msg, args) => {
+	//
 	prof.setMature(msg, args, bot)
 }, {
 	aliases: ['-m'],
@@ -210,6 +219,7 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 })
 
 const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
+	//
 	prof.setDND(msg, args, bot)
 }, {
 	aliases: ['-d'],
@@ -220,6 +230,7 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 })
 
 const editColor = edit.registerSubcommand('color', async (msg, args) => {
+	//
 	prof.setColor(msg, args, bot)
 }, {
 	aliases: ['-c'],
@@ -230,6 +241,7 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 })
 
 const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
+	//
 	prof.setPrivate(msg, args, bot)
 }, {
 	aliases: ['-p'],
@@ -240,6 +252,7 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 })
 
 const view = bot.registerCommand('view', async (msg, args) => {
+	//
 	prof.view(msg, args, bot)
 }, {
 	aliases: ['profile', 'vw'],
@@ -250,6 +263,7 @@ const view = bot.registerCommand('view', async (msg, args) => {
 })
 
 const list = bot.registerCommand('list', async (msg, args) => {
+	//
 	prof.list(msg, args, bot)
 }, {
 	aliases: ['ls', 'li'],
@@ -260,6 +274,7 @@ const list = bot.registerCommand('list', async (msg, args) => {
 })
 
 const clearDMs = bot.registerCommand('clean', async (msg, args) => {
+	//
 	tools.clean(msg, args, bot)
 }, {
 	aliases: ['cls', 'clear'],
@@ -280,8 +295,8 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	usage: reply.post.usage
 })
 
-
 const help = bot.registerCommand('help', (msg, args) => {
+	//
 	tools.help(msg, args, bot)
 }, {
 	cooldown: 5000,
@@ -290,9 +305,61 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
-const testing = bot.registerCommand('test', async (msg, args) => {
+const twitchSub = bot.registerCommand('tsub', async (msg, args) => {
 	twitch.twitchStreamSub(msg, args, bot)
 })
+
+const twitchSub = bot.registerCommand('tunsub', async (msg, args) => {
+	twitch.twitchStreamUnSub(msg, args, bot)
+})
+
+
+////////////////////////////////////////////////////////////////////
+//EXPRESS WEBHOOK HANDLER                                        //
+//////////////////////////////////////////////////////////////////
+
+// parse application/json
+var jsonParser = bodyParser.json()
+
+//reply with the challenge to confirm subscription
+app.get('/twitch', jsonParser, (req, res) => {
+	if(req.query['hub.challenge'] != null)
+		res.status(200).send(req.query['hub.challenge'])
+})
+
+//dm users that are following
+app.post('/twitch', jsonParser, (req, res) => {
+	let client = await MongoClient.connect(url)
+	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
+	const usersCol = client.db(config.db).collection('Users') //Tower's users
+
+	//get the stream data
+	if (req.body.data.length !== 0) {
+		let streamData = req.body.data[0]
+		let streamer = await twitchApi.getTwitchUserById(streamData.id)
+		let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
+		let thumbnailURL = streamData.thumbnail_url.replace('{width}', '256').replace('{height}', '256')
+
+		let embed = {
+			embed: {
+				description: '**Title:** ' + streamData.title,
+				color: parseInt('0x6441A4', 16),
+				url: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name)
+				author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
+				thumbnail: {url:thumbnailURL, height:256, width:256},
+				footer: {text:'Part of the Broadcast Tower Integration Network'}
+			}
+		}
+		
+		for (var usr in streamSubList.followers) {
+			let user = await usersCol.findOne({_id:streamSubList.followers[usr]})
+			q.push({channelID:user.sendTo, msg:embed, recipient:user.user})
+		}
+	}
+})
+
+app.listen(3000, () => console.log('Example app listening on port 3000!'))
+
 
 
 //actually connect
