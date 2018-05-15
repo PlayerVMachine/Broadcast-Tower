@@ -327,11 +327,14 @@ const twitchUnSub = bot.registerCommand('tunsub', async (msg, args) => {
 
 // parse application/json
 var jsonParser = bodyParser.json()
+
+///////TWITCH/////////////////////
+
+//list of stream ids to prevent duplicates
 let streamIDs = []
 
 //reply with the challenge to confirm subscription
 app.get('/twitch', jsonParser, (req, res) => {
-	console.log('challenge accepted')
 	if(req.query['hub.challenge'] != null)
 		res.status(200).send(req.query['hub.challenge'])
 })
@@ -345,7 +348,6 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 		//get the stream data
 		if (req.body.data.length !== 0) {
-			console.log('hi')
 			let streamData = req.body.data[0]
 
 			if (streamIDs.includes(streamData.id))
@@ -377,8 +379,10 @@ app.post('/twitch', jsonParser, async (req, res) => {
 	}
 })
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+//////////////TWITCH//////////////
 
+//listen for requests
+app.listen(3000, () => console.log('Webhook handler listening on :3000!'))
 
 
 //actually connect
