@@ -8,7 +8,7 @@ var jsonParser = bodyParser.json()
 
 app.get('/', jsonParser, (req, res) => {
 	//res.send('Hello World!')
-	console.log(req.body)
+	console.log(req.body.query)
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
