@@ -323,6 +323,7 @@ var jsonParser = bodyParser.json()
 
 //reply with the challenge to confirm subscription
 app.get('/twitch', jsonParser, (req, res) => {
+	console.log('challenge accepted')
 	if(req.query['hub.challenge'] != null)
 		res.status(200).send(req.query['hub.challenge'])
 })
@@ -332,9 +333,10 @@ app.post('/twitch', jsonParser, async (req, res) => {
 	let client = await MongoClient.connect(url)
 	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
 	const usersCol = client.db(config.db).collection('Users') //Tower's users
-
+	console.log('we recieved a POST')
 	//get the stream data
 	if (req.body.data.length !== 0) {
+		console.log('the length was not 0')
 		let streamData = req.body.data[0]
 		let streamer = await twitchApi.getTwitchUserById(streamData.id)
 		let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
@@ -350,6 +352,8 @@ app.post('/twitch', jsonParser, async (req, res) => {
 				footer: {text:'Part of the Broadcast Tower Integration Network'}
 			}
 		}
+
+		console.log(embed)
 		
 		for (var usr in streamSubList.followers) {
 			let user = await usersCol.findOne({_id:streamSubList.followers[usr]})
