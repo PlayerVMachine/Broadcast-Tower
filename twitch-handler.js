@@ -30,6 +30,7 @@ const twitchWebhook = new TwitchWebhook({
         host: '208.113.133.141'
     }
 })
+twitchWebhook.listen()
 
 
 exports.twitchStreamSub = async (msg, args, bot) => {
@@ -61,6 +62,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 
 			//subscribe
 			twitchWebhook.subscribe('streams', {user_id:streamer.id})
+			twitchWebhook.isListening()
 
 			//resub on timeout (10 days)
 			twitchWebhook.on('unsubscibe', (obj) => {
@@ -68,7 +70,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 			})
 
 		} else {
-			bot.createMessage(config.logChannelID, f('Streamer %s could not be follwed', streamer.display_name))
+			bot.createMessage(config.logChannelID, f('Streamer %s could not be followed', streamer.display_name))
 		}
 	}
 
