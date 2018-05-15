@@ -52,7 +52,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	if (streamSubList === null){
 		let addStreamer = await twitchCol.insertOne({StreamerID: streamer.id, followers: []})
 		if (addStreamer.insertedCount === 1){
-			bot.createMessage(config.logChannelID, f('Streamer %s follwed', streamer.display_name))
+			bot.createMessage(config.logChannelID, f('Streamer %s followed', streamer.display_name))
 
 			//set listener for new streamer we care about
 			twitchWebhook.on('streams', ({ event }) => {
@@ -62,7 +62,8 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 
 			//subscribe
 			twitchWebhook.subscribe('streams', {user_id:streamer.id})
-			twitchWebhook.isListening()
+			let hi = await twitchWebhook.isListening()
+			console.log(hi)
 
 			//resub on timeout (10 days)
 			twitchWebhook.on('unsubscibe', (obj) => {
