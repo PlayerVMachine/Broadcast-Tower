@@ -13,4 +13,8 @@ app.get('/', jsonParser, (req, res) => {
 		console.log(req.body)
 })
 
+app.post('/', jsonParser, (req, res) => {
+	console.log(req.body)
+})
+
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
