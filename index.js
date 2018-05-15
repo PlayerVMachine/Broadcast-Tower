@@ -344,7 +344,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 			embed: {
 				description: '**Title:** ' + streamData.title,
 				color: parseInt('0x6441A4', 16),
-				url: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name)
+				url: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 				author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
 				thumbnail: {url:thumbnailURL, height:256, width:256},
 				footer: {text:'Part of the Broadcast Tower Integration Network'}
