@@ -346,7 +346,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 		if (req.body.data.length !== 0) {
 			console.log('the length was not 0')
 			let streamData = req.body.data[0]
-			let streamer = await twitchApi.getTwitchUserById(streamData.id)
+			let streamer = await twitchApi.getTwitchUserById(streamData.user_id)
 			let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
 			let thumbnailURL = streamData.thumbnail_url.replace('{width}', '256').replace('{height}', '256')
 
