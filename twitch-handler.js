@@ -26,11 +26,9 @@ const twitchWebhook = new TwitchWebhook({
     callback: 'http://208.113.133.141:8080/',
     secret: config.twitchSecret, // default: false
     listen: {
-        port: 8080,
-        host: '208.113.133.141'
+        autoStart: true
     }
 })
-twitchWebhook.listen()
 
 
 exports.twitchStreamSub = async (msg, args, bot) => {
@@ -55,9 +53,9 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 			bot.createMessage(config.logChannelID, f('Streamer %s followed', streamer.display_name))
 
 			//set listener for new streamer we care about
-			twitchWebhook.on('streams', ({ event }) => {
-				console.log('a stream happened!')
-    			console.log(JSON.stringify(event))
+			twitchWebhook.on('*', ({ topic, options, endpoint, event }) => {
+ 				console.log('a stream happened!')
+ 				console.log(topic, options, endpoint, event)
 			})
 
 			//subscribe
