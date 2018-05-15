@@ -27,7 +27,7 @@ const twitchWebhook = new TwitchWebhook({
     secret: config.twitchSecret, // default: false
     listen: {
         port: 8080,
-        host: '127.0.0.1'
+        host: '208.113.133.141'
     }
 })
 
@@ -55,6 +55,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 
 			//set listener for new streamer we care about
 			twitchWebhook.on('streams', ({ event }) => {
+				console.log('a stream happened!')
     			console.log(JSON.stringify(event))
 			})
 
