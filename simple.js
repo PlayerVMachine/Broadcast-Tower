@@ -7,8 +7,8 @@ const app = express()
 var jsonParser = bodyParser.json()
 
 app.get('/', jsonParser, (req, res) => {
-	//res.send('Hello World!')
-	console.log(req.query)
+	res.send(req.query.hub.challenge)
+	console.log(req)
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
