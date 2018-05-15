@@ -1,8 +1,8 @@
 // npm requires
 const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
-const TwitchHelix = require("twitch-helix")
-const TwitchWebhook = require('twitch-webhook')
+const TwitchHelix = require('twitch-helix')
+const request = require('superagent')
 
 // project files required
 const config = require('./config.json')
@@ -18,16 +18,6 @@ const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s'
 const twitchApi = new TwitchHelix({
     clientId: config.twitchID,
     clientSecret: config.twitchSecret
-})
-
-//twitch webhook
-const twitchWebhook = new TwitchWebhook({
-    client_id: config.twitchID,
-    callback: 'http://208.113.133.141/',
-    secret: config.twitchSecret,
-    listen: {
-        autoStart: true
-    }
 })
 
 
@@ -51,21 +41,18 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 		let addStreamer = await twitchCol.insertOne({StreamerID: streamer.id, followers: []})
 		if (addStreamer.insertedCount === 1){
 			bot.createMessage(config.logChannelID, f('Streamer %s followed', streamer.display_name))
+			let topic = 'https://api.twitch.tv/helix/streams?user_id=' + streamer.id
 
-			//set listener for new streamer we care about
-			twitchWebhook.on('streams', ({ event }) => {
- 				console.log('a stream happened!')
- 				console.log(JSON.strinngify(event))
-			})
-
-			//subscribe
-			twitchWebhook.subscribe('streams', {user_id:streamer.id})
-			let hi = await twitchWebhook.isListening()
-			console.log(hi)
-
-			//resub on timeout (10 days)
-			twitchWebhook.on('unsubscibe', (obj) => {
-  				twitchWebhook.subscribe(obj['hub.topic'])
+			request.post('https://api.twitch.tv/helix/webhooks/hub')
+			.send({"hub.mode":"subscribe",
+				"hub.topic":topic,
+    			"hub.callback":"http://208.113.133.141:3000/",
+    			"hub.lease_seconds":"864000",
+    			"hub.secret":config.twitchSecret})
+			.set('Client-ID', config.twitchID)
+			.set('Content-Type', 'application/json').end((err, res) => {
+				console.log(res)
+				console.log(err)
 			})
 
 		} else {
