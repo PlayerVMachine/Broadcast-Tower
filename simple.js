@@ -7,7 +7,8 @@ const app = express()
 var jsonParser = bodyParser.json()
 
 app.get('/', jsonParser, (req, res) => {
-	res.send(req.query['hub.challenge'])
+	if(req.query['hub.challenge'] != null)
+		res.status(200).send(req.query['hub.challenge'])
 	console.log(req)
 })
 
