@@ -24,7 +24,7 @@ const twitchApi = new TwitchHelix({
 const twitchWebhook = new TwitchWebhook({
     client_id: config.twitchID,
     callback: 'http://208.113.133.141:8080/',
-    secret: config.twitchSecret, // default: false
+    secret: config.twitchSecret,
     listen: {
         autoStart: true
     }
@@ -43,7 +43,7 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 	}
 
 	let streamer = await twitchApi.getTwitchUserByName(args[0])
-	//bot.createMessage(msg.channel.id, JSON.stringify(streamer))
+	bot.createMessage(msg.channel.id, JSON.stringify(streamer))
 
 	//if the streamer hasn't been followed by a user yet add them to the collection
 	let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
@@ -79,9 +79,6 @@ exports.twitchStreamSub = async (msg, args, bot) => {
 		bot.createMessage(msg.channel.id, 'There was an error subscribing to twitch stream notifications O///O')
 		return
 	}
-
-	
-
 
 
 }
