@@ -23,7 +23,7 @@ const twitchApi = new TwitchHelix({
 //twitch webhook
 const twitchWebhook = new TwitchWebhook({
     client_id: config.twitchID,
-    callback: 'http://localhost:8080/',
+    callback: 'http://208.113.133.141:8080/',
     secret: config.twitchSecret, // default: false
     listen: {
         port: 8080,
