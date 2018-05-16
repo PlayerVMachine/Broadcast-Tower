@@ -102,7 +102,7 @@ exports.getPlaylists = async (msg, args, bot) => {
 			let embed = {
 				embed : {
 					author: {title: spotifyMessage,  icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png'},
-					description: ,
+					description: list.join('\n'),
 					color: parseInt('0x1DB954', 16),
 					footer: {text:'Part of the Broadcast Tower Integration Network'}
 				}
