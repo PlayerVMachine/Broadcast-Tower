@@ -94,7 +94,7 @@ exports.getNotes = async (msg, args, bot) => {
 	} 
 }
 
-exports.unNote = (msg, args, bot) => {
+exports.unNote = async (msg, args, bot) => {
 	try{
 		let client = await MongoClient.connect(url)
 		const usersCol = client.db(config.db).collection('Users')
