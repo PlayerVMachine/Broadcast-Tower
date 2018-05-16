@@ -26,10 +26,9 @@ exports.getWeather = (msg, args, bot) => {
 
       let embed = {
         embed: {
-            author: {name: f("**Current Weather in %s**", result[0].location.name), icon_url: result[0].current.imageUrl},
+            author: {name: f("Current Weather in %s", result[0].location.name), icon_url: result[0].current.imageUrl},
             color: parseInt('0x4286f4', 16),
-            decription: f("Temperature: **%s**\nFeels like: **%s**\nSky: **%s**\nWind: **%s**\n", result[0].current.temperature + result[0].location.degreetype,
-              result[0].current.feelslike + result[0].location.degreetype, result[0].current.skytext, result[0].current.winddisplay),
+            description: f("Temperature: **%s**\nFeels like: **%s**\nSky: **%s**\nWind: **%s**\n", result[0].current.temperature + result[0].location.degreetype, result[0].current.feelslike + result[0].location.degreetype, result[0].current.skytext, result[0].current.winddisplay),
             footer: {text:'Part of the Broadcast Tower Integration Network'}
         }
       }
