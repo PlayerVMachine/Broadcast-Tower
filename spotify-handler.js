@@ -110,7 +110,7 @@ exports.tenList = async (msg, args, bot) => {
 			resolve(x)
 		else
 			reject('something bad happened')
-	}
+	})
 
 	let fields = await getfields()
 
