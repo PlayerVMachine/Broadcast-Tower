@@ -103,7 +103,7 @@ exports.tenList = async (msg, args, bot) => {
 	let data = await spotifyCol.find({position:{$lte:offset}})
 	let albums = await data.toArray()
 
-	let embed = {
+	let embed = await {
 		embed: {
 			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
 			color: parseInt('0x1DB954', 16),
