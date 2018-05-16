@@ -34,7 +34,7 @@ exports.getWeather = (msg, args, bot) => {
         }
       }
 
-      bot.createMessage(msg.channel.id, toSend)
+      bot.createMessage(msg.channel.id, embed)
     })
   } catch (e) {
     console.log(e)
