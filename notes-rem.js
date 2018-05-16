@@ -26,5 +26,9 @@ exports.noteToSelf = async (msg, args, bot) => {
 
 	let pinned = await toPin.pin()
 
+	let msgToDel = await toPin.channel.getMessages(1,undefined, toPin.id)
+
+	let deleted = await toPin.channel.deleteMessage(msgToDel[0].id)
+
 	bot.createMessage(msg.channel.id, `Got it boss, note made!`)
 }
