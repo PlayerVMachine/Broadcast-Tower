@@ -97,19 +97,13 @@ exports.tenList = async (msg, args, bot) => {
 		offset = 10 * (num - 1)
 	} 
 
-	let getfields = new Promise (async (resolve, reject) => {
-		let x = []
-	
-		for (i = 0; i++; i < 10) {
-			//get the album from the database
-			let album = await module.exports.getAlbum(i + offset)
-			x.push({title: album.postition, value:f('%sArtist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url), inline: false})
-		}
+	//get the album from the database
+	let albums = await spotifyCol.find({position:{$lte:offset}}).toArray()
 
-		setTimeout(() => { resolve(x) }, 2000)
-	})
+	let fields = []
+	for (a in albums)
+		fields.push({title: albums[a].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[a].artist, albums[a].name, albums[a].album_url), inline: false})
 
-	let fields = await getfields
 
 	let embed = {
 		embed: {
