@@ -33,6 +33,7 @@ exports.noteToSelf = async (msg, args, bot) => {
 
 		bot.createMessage(msg.channel.id, `Got it boss, note made!`)
 	} catch (err) {
+		console.log(err)
 		bot.createMessage(msg.channel.id, `Sorry boss my pencil broke`)
 	} 
 }
@@ -66,7 +67,7 @@ exports.getNotes = async (msg, args, bot) => {
 				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL},
 				fields: notes,
 				color: parseInt(usee.eColor, 16),
-				footer: {text: `Powered by the Broadcast Tower`}
+				footer: {text: `Powered by the Broadcast Tower`}	
 			}
 		}
 
