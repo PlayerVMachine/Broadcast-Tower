@@ -69,7 +69,7 @@ exports.getForecast = (msg, args, bot) => {
 
       let fields = []
       for (i = 2; i < 5; i++) {
-        if (result[0].forecast[i].percip === '')
+        if (result[0].forecast[i].precip === '')
           var precip = '0%'
         else
           var preicp = result[0].forecast[i].precip + '%'
