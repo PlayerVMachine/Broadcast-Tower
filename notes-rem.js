@@ -55,10 +55,22 @@ exports.getNotes = async (msg, args, bot) => {
 		let notes = []
 		for (m in noteMsgs) {
 			date = new Date(noteMsgs[m].timestamp)
-			notes.push(noteMsgs[m].content + f('Note made at: %s', date))
+			notes.push({name: 'Note', value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
 		}
 
-		bot.createMessage(msg.channel.id, f(`%s your current notes are:\n%s`, msg.author.username, notes.join('\n')))
+		if (notes.length === 0)
+			notes.push({name: 'Note', 'No notes found! Create a note with b.nts!', inline:false})
+
+		let embed = {
+			embed: {
+				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL}
+				fields: notes,
+				color: parseInt(usee.eColor, 16)
+				footer: {text: `Powered by the Broadcast Tower`}
+			}
+		}
+
+		bot.createMessage(msg.channel.id, embed)
 
 	} catch (err) {
 		bot.createMessage(msg.channel.id, `Sorry boss my pencil broke`)
