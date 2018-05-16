@@ -370,6 +370,12 @@ const weatherCmd = bot.registerCommand('weather', (msg, args) => {
 	aliases: ['w']
 })
 
+const forecastCmd = bot.registerCommand('forecast', (msg, args) => {
+	weather.getForecast(msg, args, bot)
+}, {
+	aliases: ['f']
+})
+
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
 //////////////////////////////////////////////////////////////////
