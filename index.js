@@ -352,6 +352,12 @@ const spotifyAlbumFromTopReleases = spotifyBase.registerSubcommand('-a', async (
 	aliases: ['album']
 })
 
+const spotifyPlaylists = spotifyBase.registerSubcommand('-p', async (msg, args) => {
+	spotify.getPlaylists(msg, args, bot)
+}, {
+	aliases: ['playlist']
+})
+
 
 
 ////////////////////////////////////////////////////////////////////

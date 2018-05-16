@@ -71,6 +71,55 @@ exports.getReleases = async () => {
 	}
 }
 
+
+exports.getPlaylists = async (msg, args, bot) => {
+	let data = config.spotifyID + ':' + config.spotifySecret;  
+	let buff = new Buffer.from(data);  
+	let base64data = buff.toString('base64');
+
+	try {
+		let response = await request.post('https://accounts.spotify.com/api/token')
+		.send({grant_type:'client_credentials'})
+		.set('Authorization', 'Basic ' + base64data)
+		.type('application/x-www-form-urlencoded')
+
+		let data = JSON.parse(response.text)
+		let token = 'Bearer ' + data.access_token
+
+		let getResponse = await request.get('https://api.spotify.com/v1/browse/featured-playlists?limit=5')
+		.set('Authorization', token)
+
+		let featuredPlayslistsRAW = JSON.parse(getResponse.text)
+		let info = featuredPlayslistsRAW.playlists.items
+		let spotifyMessage = featuredPlayslistsRAW.message
+
+		let list = []
+		for (i in info) {
+			list.push({name:f(`[%s](%s)`, info[i].name, info[i].external_urls.spotify), value:f(`%s Tracks`, info[i].tracks.total), inline:false})
+		}
+
+		if (args.length === 0) {
+			let embed = {
+				embed : {
+					author: {title: spotifyMessage,  icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png'},
+					description: `To get a playlist embed do: b.spotify -p <playlist id>`,
+					fields: list,
+					color: parseInt('0x1DB954', 16),
+					footer: {text:'Part of the Broadcast Tower Integration Network'}
+				}
+			}
+
+			bot.createMessage(msg.channel.id, embed)
+		} else if (parseInt(args[0]) >= 1 || parseInt(args[0]) <= 5){
+			bot.createMessage(msg.channel.id, info[parseInt(args[0])].external_urls.spotify)
+		}
+
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+
 getAlbum = async (position) => {
 	try {
 		let client = await MongoClient.connect(url)
