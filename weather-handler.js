@@ -9,11 +9,7 @@ exports.getWeather = (msg, args, bot) => {
     }
 
     let command = args.join(' ')
-
-    let location = command
-    if (command.split('-d')[0] !== 'undefined') {
-      let location = command.split('-d')[0].trim()
-    }
+    let location = command.split('-d')[0].trim()
 
     let degree = 'C'
     if (command.split('-d')[1] !== 'undefined') {
