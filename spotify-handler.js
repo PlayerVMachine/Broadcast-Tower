@@ -108,7 +108,7 @@ exports.tenList = async (msg, args, bot) => {
 	let embed = {
 		embed: {
 			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon3@2x.png' },
-			color: '0x1DB954',
+			color: parseInt('0x1DB954', 16),
 			fields: fields,
 			footer: {text:'Part of the Broadcast Tower Integration Network'}
 		}
