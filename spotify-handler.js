@@ -95,6 +95,8 @@ exports.albumDetail = async (msg, args, bot) => {
 				bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 100'), msg.author.username)
 				return
 			}
+
+			position = num
 		}
 
 		let album = await getAlbum(position)
