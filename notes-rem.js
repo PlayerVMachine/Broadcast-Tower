@@ -25,9 +25,8 @@ exports.noteToSelf = async (msg, args, bot) => {
 
 		let files = []
 		if (msg.attachments.length !== 0) {
-			console.log(JSON.stringify(msg.attachments[0].url))
 			for(i in msg.attachments) {
-				files.push(f(`\n[file %s](%s)`, i, msg.attachments.url))
+				files.push(f(`\n[file %s](%s)`, msg.attachments[i].filename, msg.attachments[i].url))
 			}
 		}
 
