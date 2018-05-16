@@ -389,6 +389,12 @@ const getNotes = bot.registerCommand('notes', (msg, args) => {
 	aliases: ['gnts']
 })
 
+const unNote = bot.registerCommand('delN', (msg, args) => {
+	notes.unNote(msg, args, bot)
+}, {
+	aliases: ['unNote']
+})
+
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
 //////////////////////////////////////////////////////////////////

@@ -32,7 +32,7 @@ exports.noteToSelf = async (msg, args, bot) => {
 
 		let embed = {
 			embed: {
-				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL},
+				author: {name: f(`%s made a note:`, msg.author.username), icon_url: msg.author.avatarURL},
 				description: f(`**Note:** %s%s`, args.join(' '), files.join(' ')),
 				color: parseInt(usee.eColor, 16),
 				footer: {text: `Powered by the Broadcast Tower`}
@@ -72,7 +72,7 @@ exports.getNotes = async (msg, args, bot) => {
 		let notes = []
 		for (m in noteMsgs) {
 			date = new Date(noteMsgs[m].timestamp)
-			notes.push({name: 'Note', value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
+			notes.push({name: 'Note ' + m, value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
 		}
 
 		if (notes.length === 0)
@@ -92,4 +92,34 @@ exports.getNotes = async (msg, args, bot) => {
 	} catch (err) {
 		bot.createMessage(msg.channel.id, `Sorry boss my pencil broke`)
 	} 
-} 
+}
+
+exports.unNote = (msg, args, bot) => {
+	try{
+		let client = await MongoClient.connect(url)
+		const usersCol = client.db(config.db).collection('Users')
+
+		let usee = await usersCol.findOne({user: msg.author.id})
+		if (usee === null) {
+			bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+			return
+		}
+
+		let dmChannel = await bot.getDMChannel(msg.author.id)
+
+		let noteMsgs = await dmChannel.getPins()
+
+		if (parseInt(args[0]) === NaN) {
+			bot.createMessage(msg.channel.id, `Sorry boss that's not a number!`)
+			return
+		}
+
+		let deleteMessage = dmChannel.deleteMessage(noteMsgs[parseInt(args[0])].id)
+
+		bot.createMessage(msg.channel.id, `Note deleted boss!`)
+
+	} catch (err) {
+		bot.createMessage(msg.channel.id, `Sorry boss my pencil broke`)
+	}
+
+}
