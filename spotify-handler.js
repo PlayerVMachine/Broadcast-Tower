@@ -91,17 +91,17 @@ exports.getPlaylists = async (msg, args, bot) => {
 
 		let featuredPlayslistsRAW = JSON.parse(getResponse.text)
 		let info = featuredPlayslistsRAW.playlists.items
-		let spotifyMessage = info.message
+		let spotifyMessage = featuredPlayslistsRAW.message
 
 		let list = [`To get a playlist embed do: \`b.spotify -p <playlist #>\``]
 		for (i in info) {
-			list.push(f(`%s. **%s**\n%s Tracks - [link](%s)`, i+1, info[i].name, info[i].tracks.total, info[i].external_urls.spotify))
+			list.push(f(`%s. **%s**\n%s Tracks - [link](%s)`, parseInt(i+1), info[i].name, info[i].tracks.total, info[i].external_urls.spotify))
 		}
 
 		if (args.length === 0) {
 			let embed = {
 				embed : {
-					author: {title: spotifyMessage,  icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png'},
+					author: {name: spotifyMessage,  icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png'},
 					description: list.join('\n'),
 					color: parseInt('0x1DB954', 16),
 					footer: {text:'Part of the Broadcast Tower Integration Network'}
