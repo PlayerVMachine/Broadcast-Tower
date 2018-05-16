@@ -10,13 +10,13 @@ const TwitchHelix = require('twitch-helix')
 
 //project module imports
 const config = require('./config.json')
-const fns = require('./utilities.js') // useful functions
 const reply = require('./proto_messages.json')
 const amgmt = require('./accountmgmt.js')
 const act = require('./actions.js')
 const prof = require('./profile.js')
 const tools = require('./tools.js')
 const twitch = require('./twitch-handler.js')
+const spotify = require('./spotify-handler.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -330,6 +330,20 @@ const twitchSub = bot.registerCommand('tsub', async (msg, args) => {
 
 const twitchUnSub = bot.registerCommand('tunsub', async (msg, args) => {
 	twitch.twitchStreamUnSub(msg, args, bot)
+})
+
+const spotifyBase = bot.registerCommand('spotify', 'Mooosic', {
+
+})
+
+const spotifyRefresh = spotifyBase.registerSubcommand('-r', async (msg, args) => {
+	spotify.getReleases()
+})
+
+const spotifyTopReleases = spotifyBase.registerSubcommand('-t', async (msg, args) => {
+	spotify.tenList(msg, args, bot)
+}, {
+	aliases: ['top']
 })
 
 
