@@ -97,19 +97,28 @@ exports.tenList = async (msg, args, bot) => {
 		offset = 10 * (num - 1)
 	} 
 
-	let fields = []
-	for (i = 0; i++; i < 10) {
-		//get the album from the database
-		let album = await module.exports.getAlbum(i + offset)
+	let getfields = new Promise ((resolve, reject) => {
+		let x = []
+	
+		for (i = 0; i++; i < 10) {
+			//get the album from the database
+			let album = await module.exports.getAlbum(i + offset)
+			x.push({title: album.postition, value:f('%sArtist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url), inline: false})
+		}
 
-		fields.push(f('%s\nArtist: **%s** | Album: [%s](%s)\n', album.postition, album.artist, album.name, album.album_url))
+		if (x.length === 10)
+			resolve(x)
+		else
+			reject('something bad happened')
 	}
+
+	let fields = await getfields
 
 	let embed = {
 		embed: {
 			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
 			color: parseInt('0x1DB954', 16),
-			description: fields.join(),
+			fields: fields,
 			footer: {text:'Part of the Broadcast Tower Integration Network'}
 		}
 	}
