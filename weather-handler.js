@@ -11,14 +11,13 @@ exports.getWeather = (msg, args, bot) => {
     let command = args.join(' ')
     let location = command.split('-d')[0].trim()
 
+    let degree = 'F'
     if (command.split('-d')[1] !== undefined) {
       if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
-        let degree = command.split('-d')[1].trim()
+        degree = command.split('-d')[1].trim()
       } else {
-        let degree ='F'
+        degree ='F'
       }
-    } else {
-      let degree ='F'
     }
 
     weather.find({search: location, degreeType: degree}, (err, result) => {
