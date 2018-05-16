@@ -406,7 +406,11 @@ app.post('/twitch', jsonParser, async (req, res) => {
 			let streamer = await twitchApi.getTwitchUserById(streamData.user_id)
 			let streamSubList = await twitchCol.findOne({StreamerID: streamer.id})
 			let gameData = await twitchApi.sendHelixRequest('games?id=' + streamData.game_id)
-			let thumbnailURL = gameData.box_art_url.replace('{width}', '256').replace('{height}', '256')
+			try {
+				let thumbnailURL = gameData.box_art_url.replace('{width}', '256').replace('{height}', '256')
+			} catch (e) {
+				let thumbnailURL = 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'
+			}
 
 			let embed = {
 				embed: {
