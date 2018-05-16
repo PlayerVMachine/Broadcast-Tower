@@ -71,7 +71,7 @@ exports.getReleases = async () => {
 	}
 }
 
-exports.getAlbum = async (position) => {
+getAlbum = async (position) => {
 	try {
 		let client = await MongoClient.connect(url)
 		const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
@@ -83,6 +83,39 @@ exports.getAlbum = async (position) => {
 	}
 }
 
+exports.albumDetail = async (msg, args, bot) => {
+	try {
+
+		let position = 1
+
+		if (args.length > 0) {
+			let num = parseInt(args[0])
+
+			if (num < 1 || num > 100) {
+				bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 100'), msg.author.username)
+				return
+			}
+		}
+
+		let album = await getAlbum(position)
+
+		let embed = {
+			embed: {
+				author: {name: 'Spotify New Release #' + position, icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+				color: parseInt('0x1DB954', 16),
+				image: {url:album.image_url_300, height:300, width:300},
+				description: f('Artist: **%s** | Album: [%s](%s)\nRelease date: %s\n[Artist page](%s)', album.artist, album.name, album.album_url, album.release_date, album.artist_url),
+				footer: {text:'Part of the Broadcast Tower Integration Network'}
+			}
+		}
+
+		bot.createMessage(msg.channel.id, embed)
+
+	} catch (err) {
+		console.log(err)
+	}
+}
+
 exports.tenList = async (msg, args, bot) => {
 	let client = await MongoClient.connect(url)
 	const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
@@ -90,7 +123,7 @@ exports.tenList = async (msg, args, bot) => {
 
 	if (args.length > 0) {
 		let num = parseInt(args[0])
-		
+
 		if (num < 1 || num > 10) {
 			bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
 			return

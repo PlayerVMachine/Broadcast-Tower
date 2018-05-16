@@ -346,6 +346,13 @@ const spotifyTopReleases = spotifyBase.registerSubcommand('-t', async (msg, args
 	aliases: ['top']
 })
 
+const spotifyAlbumFromTopReleases = spotifyBase.registerSubcommand('-a', async (msg, args) => {
+	spotify.albumDetail(msg, args, bot)
+}, {
+	aliases: ['album']
+})
+
+
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
