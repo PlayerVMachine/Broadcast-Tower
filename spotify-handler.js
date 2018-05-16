@@ -50,7 +50,7 @@ exports.getReleases = async () => {
 					position: position,
 					name: info.items[album].name,
 					artist: info.items[album].artists[0].name,
-					artist_url: info.items[album].artists[0].external_urls.spotify
+					artist_url: info.items[album].artists[0].external_urls.spotify,
 					album_url: info.items[album].external_urls.spotify,
 					image_url_300: info.items[album].images[1].url,
 					release_date: info.items[album].release_date 
