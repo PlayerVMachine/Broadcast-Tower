@@ -72,12 +72,12 @@ const getAlbum = async () => {
 		const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
 
 	
-		let album = await spotifyCol.find({position:1})
+		let album = await spotifyCol.findOne({position:1})
 		console.log(album)
 	} catch (e) {
 		console.log(e)
 	}
 }
 
-getReleases()
+//getReleases()
 getAlbum()
