@@ -59,7 +59,7 @@ exports.getNotes = async (msg, args, bot) => {
 		}
 
 		if (notes.length === 0)
-			notes.push({name: 'Note', 'No notes found! Create a note with b.nts!', inline:false})
+			notes.push({name: 'Note', value:`No notes found! Create a note with b.nts!`, inline:false})
 
 		let embed = {
 			embed: {
