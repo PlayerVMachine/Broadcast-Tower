@@ -26,11 +26,20 @@ exports.noteToSelf = async (msg, args, bot) => {
 		let files = []
 		if (msg.attachments.length !== 0) {
 			for(i in msg.attachments) {
-				files.push(f(`\n[file %s](%s)`, msg.attachments[i].filename, msg.attachments[i].url))
+				files.push(f(`\n[%s](%s)`, msg.attachments[i].filename, msg.attachments[i].url))
 			}
 		}
 
-		let toPin = await bot.createMessage(usee.sendTo, f(`Note: %s%s`, args.join(' '), files.join(' ')))
+		let embed = {
+			embed: {
+				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL},
+				description: f(`**Note:** %s%s`, args.join(' '), files.join(' ')),
+				color: parseInt(usee.eColor, 16),
+				footer: {text: `Powered by the Broadcast Tower`}
+			}
+		}
+
+		let toPin = await bot.createMessage(usee.sendTo, embed)
 
 		let pinned = await toPin.pin()
 
