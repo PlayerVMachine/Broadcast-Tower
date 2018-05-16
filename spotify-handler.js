@@ -102,7 +102,7 @@ exports.tenList = async (msg, args, bot) => {
 	//get the album from the database
 	spotifyCol.find({position:{$lte:offset}}).toArray((err, docs) => {
 		let fields = []
-		for (i = 0; i < docs.length, i++) {
+		for (i = 0; i < docs.length; i++) {
 			fields.push({title: albums[0].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[0].artist, albums[0].name, albums[0].album_url), inline: false})
 		}
 
