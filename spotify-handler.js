@@ -97,7 +97,7 @@ exports.tenList = async (msg, args, bot) => {
 		offset = 10 * (num - 1)
 	} 
 
-	let getfields = new Promise ((resolve, reject) => {
+	let getfields = new Promise (async (resolve, reject) => {
 		let x = []
 	
 		for (i = 0; i++; i < 10) {
@@ -112,7 +112,7 @@ exports.tenList = async (msg, args, bot) => {
 			reject('something bad happened')
 	}
 
-	let fields = await getfields
+	let fields = await getfields()
 
 	let embed = {
 		embed: {
