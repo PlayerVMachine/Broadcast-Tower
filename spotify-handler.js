@@ -106,10 +106,7 @@ exports.tenList = async (msg, args, bot) => {
 			x.push({title: album.postition, value:f('%sArtist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url), inline: false})
 		}
 
-		if (x.length === 10)
-			resolve(x)
-		else
-			reject('something bad happened')
+		setTimeout(() => { resolve(x) }, 2000)
 	})
 
 	let fields = await getfields()
