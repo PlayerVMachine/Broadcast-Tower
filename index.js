@@ -123,9 +123,7 @@ const raven = bot.registerCommand('Night', `Raven, says Make Python Great Again`
 	hidden: true
 })
 
-
-
-const raven = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
+const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
 	cooldown: 5000,
 	description: 'Invite link to this server'
 })
