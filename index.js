@@ -364,7 +364,7 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('-p', async (msg, args) 
 	aliases: ['playlist']
 })
 
-const spotifyBase = bot.registerCommand('weather', (msg, args) => {
+const weather = bot.registerCommand('weather', (msg, args) => {
 	weather.getWeather(msg, args, bot)
 }, {
 	aliases: ['w']
