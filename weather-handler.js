@@ -69,10 +69,10 @@ exports.getForecast = (msg, args, bot) => {
 
       let fields = []
       for (i = 2; i < 5; i++) {
+        let precip = result[0].forecast[i].precip + '%'
         if (result[0].forecast[i].precip === '')
-          var precip = '0%'
-        else
-          var preicp = result[0].forecast[i].precip + '%'
+          precip = '0%'
+          
 
         fields.push({name:result[0].forecast[i].day + f(' the %sth', result[0].forecast[i].date.slice(8)),
           value: f('High: **%s**\nLow: **%s**\nSky: **%s**\nPrecipitation: **%s**',
