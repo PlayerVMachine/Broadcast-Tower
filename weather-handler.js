@@ -16,7 +16,7 @@ exports.getWeather = (msg, args, bot) => {
       let degree = command.split('-d')[1].trim()
     }
 
-    weather.find({search: /*, degreeType: degree*/}, (err, result) => {
+    weather.find({search: location/*, degreeType: degree*/}, (err, result) => {
       if(err) {
         console.log(err)
         return
