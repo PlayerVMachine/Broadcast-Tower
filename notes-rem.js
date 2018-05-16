@@ -63,9 +63,9 @@ exports.getNotes = async (msg, args, bot) => {
 
 		let embed = {
 			embed: {
-				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL}
+				author: {name: f(`%s's notes:`, msg.author.username), icon_url: msg.author.avatarURL},
 				fields: notes,
-				color: parseInt(usee.eColor, 16)
+				color: parseInt(usee.eColor, 16),
 				footer: {text: `Powered by the Broadcast Tower`}
 			}
 		}
