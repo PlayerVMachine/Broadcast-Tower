@@ -100,28 +100,21 @@ exports.tenList = async (msg, args, bot) => {
 	} 
 
 	//get the album from the database
-	let data = await spotifyCol.find({position:{$lte:offset}})
-	let albums = await data.toArray()
-
-	let embed = await {
-		embed: {
-			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
-			color: parseInt('0x1DB954', 16),
-			fields: [
-				{title: albums[0].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[0].artist, albums[0].name, albums[0].album_url), inline: false},
-				{title: albums[1].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[1].artist, albums[1].name, albums[1].album_url), inline: false},
-				{title: albums[2].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[2].artist, albums[2].name, albums[2].album_url), inline: false},
-				{title: albums[3].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[3].artist, albums[3].name, albums[3].album_url), inline: false},
-				{title: albums[4].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[4].artist, albums[4].name, albums[4].album_url), inline: false},
-				{title: albums[5].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[5].artist, albums[5].name, albums[5].album_url), inline: false},
-				{title: albums[6].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[6].artist, albums[6].name, albums[6].album_url), inline: false},
-				{title: albums[7].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[7].artist, albums[7].name, albums[7].album_url), inline: false},
-				{title: albums[8].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[8].artist, albums[8].name, albums[8].album_url), inline: false},
-				{title: albums[9].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[9].artist, albums[9].name, albums[9].album_url), inline: false}
-			],
-			footer: {text:'Part of the Broadcast Tower Integration Network'}
+	spotifyCol.find({position:{$lte:offset}}).toArray((err, docs) => {
+		let fields = []
+		for (i = 0; i < docs.length, i++) {
+			fields.push({title: albums[0].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[0].artist, albums[0].name, albums[0].album_url), inline: false})
 		}
-	}
 
-	bot.createMessage(msg.channel.id, embed)
+		let embed = {
+			embed: {
+				author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
+				color: parseInt('0x1DB954', 16),
+				fields: fields,
+				footer: {text:'Part of the Broadcast Tower Integration Network'}
+			}
+		}
+
+		bot.createMessage(msg.channel.id, embed)
+	})
 }
