@@ -74,7 +74,7 @@ exports.getForecast = (msg, args, bot) => {
         else
           var pericp = result[0].forecast[i].percip + '%'
 
-        fields.push({name:result[0].forecast[i].day + f(' the %sth', result[0].forecast[i].Date.slice(8)),
+        fields.push({name:result[0].forecast[i].day + f(' the %sth', result[0].forecast[i].date.slice(8)),
           value: f('High: **%s**\nLow: **%s**\nSky: **%s**\nPercipitation: **%s**',
             result[0].forecast[i].high + degree, result[0].forecast[i].low + degree, result[0].forecast[i].skytextday, percip),
           inline:true
