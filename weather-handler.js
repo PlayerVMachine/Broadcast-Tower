@@ -7,7 +7,7 @@ exports.getWeather = (msg, args, bot) => {
     bot.createMessage(msg.channel.id, 'please enter a location and degree type')
     return
   } else if (args[1].toUpperCase() !== 'F' || args[1].toUpperCase() !== 'C') {
-    bot.createMessage(msg.channel.id, 'Degree type must be F or C')
+    bot.createMessage(msg.channel.id, 'Degree type must be F or C you entered: ' + args[1])
     return
   }
 
