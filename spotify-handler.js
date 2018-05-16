@@ -100,7 +100,8 @@ exports.tenList = async (msg, args, bot) => {
 	} 
 
 	//get the album from the database
-	let albums = await spotifyCol.find({position:{$lte:offset}}).toArray()
+	let data = await spotifyCol.find({position:{$lte:offset}})
+	let albums = data.toArray()
 
 	let embed = {
 		embed: {
