@@ -84,6 +84,8 @@ exports.getAlbum = async (position) => {
 }
 
 exports.tenList = async (msg, args, bot) => {
+	let client = await MongoClient.connect(url)
+	const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
 	let offset = 0
 
 	if (args.length > 0) {
