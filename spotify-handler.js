@@ -93,9 +93,10 @@ exports.getPlaylists = async (msg, args, bot) => {
 		let info = featuredPlayslistsRAW.playlists.items
 		let spotifyMessage = featuredPlayslistsRAW.message
 
-		let list = [`To get a playlist embed do: \`b.spotify -p <playlist #>\``]
+		let list = [`\`b.spotify -p <playlist #>\` To get a playlist embed`]
 		for (i in info) {
-			list.push(f(`%s. **%s**\n%s Tracks - [link](%s)`, parseInt(i+1), info[i].name, info[i].tracks.total, info[i].external_urls.spotify))
+			index = i + 1
+			list.push(f(`%s. **%s**\n%s Tracks - [link](%s)`, index, info[i].name, info[i].tracks.total, info[i].external_urls.spotify))
 		}
 
 		if (args.length === 0) {
