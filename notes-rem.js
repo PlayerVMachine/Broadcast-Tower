@@ -22,7 +22,7 @@ exports.noteToSelf = async (msg, args, bot) => {
 		return
 	}
 
-	let toPin = await bot.createMessage(usee.sendTo, `Note: ` + args.join(), msg.attachments)
+	let toPin = await bot.createMessage(usee.sendTo, `Note: ` + args.join(' '), msg.attachments)
 
 	let pinned = await toPin.pin()
 
