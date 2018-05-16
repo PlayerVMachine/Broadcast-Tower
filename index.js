@@ -18,6 +18,7 @@ const tools = require('./tools.js')
 const twitch = require('./twitch-handler.js')
 const spotify = require('./spotify-handler.js')
 const weather = require('./weather-handler.js')
+const notes = require('./notes-rem.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -374,6 +375,12 @@ const forecastCmd = bot.registerCommand('forecast', (msg, args) => {
 	weather.getForecast(msg, args, bot)
 }, {
 	aliases: ['f']
+})
+
+const noteToSelf = bot.registerCommand('nts', (msg, args) => {
+	notes.noteToSelf(msg, args, bot)
+}, {
+	aliases: ['note']
 })
 
 ////////////////////////////////////////////////////////////////////
