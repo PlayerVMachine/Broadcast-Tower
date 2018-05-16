@@ -23,7 +23,18 @@ exports.noteToSelf = async (msg, args, bot) => {
 			return
 		}
 
-		let toPin = await bot.createMessage(usee.sendTo, f(`Note: %s\n%s`, args.join(' '), JSON.stringify(msg.attachments)))
+		let files = []
+		if (msg.attachments.length !== 0) {
+			for(i in msg.attachments) {
+				files.push(f(`[file %s](%s)`, i, msg.attachments.url))
+			}
+		}
+
+		if (files.length === 0) {
+			let toPin = await bot.createMessage(usee.sendTo, f(`Note: %s`, args.join(' ')))
+		} else {
+			let toPin = await bot.createMessage(usee.sendTo, f(`Note: %s\n%s`, args.join(' '), files.join(' ')))
+		}
 
 		let pinned = await toPin.pin()
 
