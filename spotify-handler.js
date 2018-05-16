@@ -102,14 +102,14 @@ exports.tenList = async (msg, args, bot) => {
 		//get the album from the database
 		let album = await module.exports.getAlbum(i + offset)
 
-		fields.push({title: album.postition, value:f('Artist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url), inline: false})
+		fields.push(f('%s\nArtist: **%s** | Album: [%s](%s)\n', album.postition, album.artist, album.name, album.album_url))
 	}
 
 	let embed = {
 		embed: {
-			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon1@2x.png' },
+			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon4@2x.png' },
 			color: parseInt('0x1DB954', 16),
-			fields: fields,
+			description: fields.join(),
 			footer: {text:'Part of the Broadcast Tower Integration Network'}
 		}
 	}
