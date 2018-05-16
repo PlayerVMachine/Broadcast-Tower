@@ -90,7 +90,7 @@ exports.tenList = async (msg, args, bot) => {
 		let num = parseInt(args[0])
 		
 		if (num < 1 || num > 10) {
-			bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'))
+			bot.createMessage(msg.channel.id, f('%s, woah out of range buddy, number must be from 1 - 10'), msg.author.username)
 			return
 		}
 
@@ -102,12 +102,12 @@ exports.tenList = async (msg, args, bot) => {
 		//get the album from the database
 		let album = await module.exports.getAlbum(i + offset)
 
-		fields.push({title: album.postition, value:f('Artist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url)})
+		fields.push({title: album.postition, value:f('Artist: **%s** | Album: [%s](%s)', album.artist, album.name, album.album_url), inline: false})
 	}
 
 	let embed = {
 		embed: {
-			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon3@2x.png' },
+			author: {name: 'Spotify New Releases', icon_url: 'https://beta.developer.spotify.com/assets/branding-guidelines/icon1@2x.png' },
 			color: parseInt('0x1DB954', 16),
 			fields: fields,
 			footer: {text:'Part of the Broadcast Tower Integration Network'}
