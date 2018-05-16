@@ -109,7 +109,7 @@ exports.tenList = async (msg, args, bot) => {
 		setTimeout(() => { resolve(x) }, 2000)
 	})
 
-	let fields = await getfields()
+	let fields = await getfields
 
 	let embed = {
 		embed: {
