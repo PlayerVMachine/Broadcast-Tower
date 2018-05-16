@@ -68,22 +68,22 @@ exports.getForecast = (msg, args, bot) => {
       }
 
       let fields = []
-      for (i in result[0].forecast) {
+      for (i = 2; i < 5; i++) {
         if (result[0].forecast[i].percip === '')
-          var percip = '0%'
+          var precip = '0%'
         else
-          var pericp = result[0].forecast[i].percip + '%'
+          var preicp = result[0].forecast[i].precip + '%'
 
         fields.push({name:result[0].forecast[i].day + f(' the %sth', result[0].forecast[i].date.slice(8)),
-          value: f('High: **%s**\nLow: **%s**\nSky: **%s**\nPercipitation: **%s**',
-            result[0].forecast[i].high + degree, result[0].forecast[i].low + degree, result[0].forecast[i].skytextday, percip),
+          value: f('High: **%s**\nLow: **%s**\nSky: **%s**\nPrecipitation: **%s**',
+            result[0].forecast[i].high + degree, result[0].forecast[i].low + degree, result[0].forecast[i].skytextday, precip),
           inline:true
         })
       }
 
       let embed = {
         embed: {
-            author: {name: f("Weather forecast in %s for the next 5 days", result[0].location.name), icon_url: result[0].current.imageUrl},
+            author: {name: f("Weather forecast in %s for the next 3 days", result[0].location.name), icon_url: result[0].current.imageUrl},
             color: parseInt('0x4286f4', 16),
             fields: fields,
             footer: {text:'Part of the Broadcast Tower Integration Network'}
