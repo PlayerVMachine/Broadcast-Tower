@@ -14,7 +14,7 @@ exports.getWeather = (msg, args, bot) => {
     let degree = 'F'
     if (command.split('-d')[1] !== undefined) {
       if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
-        degree = command.split('-d')[1].trim().toUpperCase
+        degree = command.split('-d')[1].trim().toUpperCase()
       } else {
         degree ='F'
       }
