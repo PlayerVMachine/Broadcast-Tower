@@ -104,6 +104,7 @@ exports.tenList = async (msg, args, bot) => {
 		let fields = []
 		for (i = 0; i < albums.length; i++) {
 			fields.push({title: albums[0].postition, value:f('%sArtist: **%s** | Album: [%s](%s)', albums[0].artist, albums[0].name, albums[0].album_url), inline: false})
+		console.log(f('%sArtist: **%s** | Album: [%s](%s)', albums[0].artist, albums[0].name, albums[0].album_url))
 		}
 
 		let embed = {
