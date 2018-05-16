@@ -383,6 +383,12 @@ const noteToSelf = bot.registerCommand('nts', (msg, args) => {
 	aliases: ['note']
 })
 
+const getNotes = bot.registerCommand('notes', (msg, args) => {
+	notes.getNotes(msg, args, bot)
+}, {
+	aliases: ['gnts']
+})
+
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
 //////////////////////////////////////////////////////////////////
