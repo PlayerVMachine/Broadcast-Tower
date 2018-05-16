@@ -17,6 +17,7 @@ const prof = require('./profile.js')
 const tools = require('./tools.js')
 const twitch = require('./twitch-handler.js')
 const spotify = require('./spotify-handler.js')
+const weather = require('./weather-handler.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -363,7 +364,11 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('-p', async (msg, args) 
 	aliases: ['playlist']
 })
 
-
+const spotifyBase = bot.registerCommand('weather', (msg, args) => {
+	weather.getWeather(msg, args, bot)
+}, {
+	aliases: ['w']
+})
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
