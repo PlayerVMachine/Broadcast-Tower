@@ -187,8 +187,53 @@
 		"usage":"`b.twitch unsub <Streamer>`"
 	},
 	"edit" : {
-		"description":"Use to dee full broadcast station details.",
-		"fullDescription":"See your full details, use the subcommands to see or edit a specific detail.",
-		"usage":"`b.edit`, `b.edit -c #FF33aa`"
+		"description":"Use to see full broadcast station details.",
+		"fullDescription":"See your full account details, use the subcommands to see or edit a specific detail.",
+		"usage":"`b.edit`, `b.edit color #FF33aa`"
+	},
+	"spotify" : {
+		"description":"Get a list of available Spotify commands",
+		"fullDescription":"top: get top new releases, album: get album details, playlist: get 5 recommended playlists",
+		"usage":"`b.spotify`, `b.spotify <subcommand>`"
+	},
+	"album" : {
+		"description":"Get more info + album art of a new release in the top 100!",
+		"fullDescription":"Get more info + album art of a new release in the top 100!",
+		"usage":"`b.spotify album #`"
+	},
+	"playlist" : {
+		"description":"Get 5 playlist suggestions from Spotify!",
+		"fullDescription":"Get 5 playlist suggestions from Spotify! Use with a number from 1-5 to get the playlist's embed",
+		"usage":"`b.spotify playlists` or `b.spotify playlists #`"
+	},
+	"top" : {
+		"description":"Check the top 10 new releases of the week on Spotify!",
+		"fullDescription":"Check up to the top 100 new releases of the week on Spotify 10 at a time.",
+		"usage":"`b.top` or `b.top #`"
+	},
+	"weather" : {
+		"description":"Get the current weather for a given location.",
+		"fullDescription":"Get the current weather for a given location, use `-d C` to set degrees to celsius",
+		"usage":"`b.weather <place>` or `b.weather <place> -d C`"
+	},
+	"forecast" : {
+		"description":"Get a 3 day forecast for a given location.",
+		"fullDescription":"Get a 3 day forecast for a given location, use `-d C` to set degrees to celsius",
+		"usage":"`b.forecast <place>` or `b.forecast <place> -d C`"
+	},
+	"note" : {
+		"description":"Make a note to yourself!",
+		"fullDescription":"Make a note to yourself, can include links and file uploads, gets pinned in your DMs with the Tower",
+		"usage":"`b.nts <note text>`"
+	},
+	"unnote" : {
+		"description":"Remove a note.",
+		"fullDescription":"Remove a note, removes the pin and deletes the message",
+		"usage":"`b.unnote <note #>`"
+	},
+	"notes" : {
+		"description":"View your current notes to self.",
+		"fullDescription":"Will list your pinned messages with the Tower.",
+		"usage":"`b.notes`"
 	}
 }

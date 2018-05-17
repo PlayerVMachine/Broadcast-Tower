@@ -334,7 +334,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 })
 
 const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
-	twitch.showSubs(msg, args, bot)
+	//twitch.showSubs(msg, args, bot)
 }, {
 	cooldown: 5000,
 	description: reply.twitch.description,
@@ -362,30 +362,45 @@ const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => 
 	usage: reply.tunsub.usage
 })
 
-const spotifyBase = bot.registerCommand('spotify', 'Mooosic', {
+const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription, {
 
+}, {
+	description: reply.spotify.description,
+	fullDescription: reply.spotify.fullDescription,
+	usage: reply.spotify.usage
 })
 
 const spotifyRefresh = spotifyBase.registerSubcommand('-r', async (msg, args) => {
 	spotify.getReleases()
+}, {
+	hidden: true
 })
 
-const spotifyTopReleases = spotifyBase.registerSubcommand('-t', async (msg, args) => {
+const spotifyTopReleases = spotifyBase.registerSubcommand('top', async (msg, args) => {
 	spotify.tenList(msg, args, bot)
 }, {
-	aliases: ['top']
+	aliases: ['-t'],
+	description: reply.top.description,
+	fullDescription: reply.top.fullDescription,
+	usage: reply.top.usage
 })
 
-const spotifyAlbumFromTopReleases = spotifyBase.registerSubcommand('-a', async (msg, args) => {
+const spotifyAlbumFromTopReleases = spotifyBase.registerSubcommand('album', async (msg, args) => {
 	spotify.albumDetail(msg, args, bot)
 }, {
-	aliases: ['album']
+	aliases: ['-a'],
+	description: reply.album.description,
+	fullDescription: reply.album.fullDescription,
+	usage: reply.album.usage
 })
 
-const spotifyPlaylists = spotifyBase.registerSubcommand('-p', async (msg, args) => {
+const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, args) => {
 	spotify.getPlaylists(msg, args, bot)
 }, {
-	aliases: ['playlist']
+	aliases: ['-p'],
+	description: reply.playlist.description,
+	fullDescription: reply.playlist.fullDescription,
+	usage: reply.playlist.usage
 })
 
 const weatherCmd = bot.registerCommand('weather', (msg, args) => {
@@ -397,25 +412,37 @@ const weatherCmd = bot.registerCommand('weather', (msg, args) => {
 const forecastCmd = bot.registerCommand('forecast', (msg, args) => {
 	weather.getForecast(msg, args, bot)
 }, {
-	aliases: ['f']
+	aliases: ['f'],
+	description: reply.weather.description,
+	fullDescription: reply.weather.fullDescription,
+	usage: reply.weather.usage
 })
 
 const noteToSelf = bot.registerCommand('nts', (msg, args) => {
 	notes.noteToSelf(msg, args, bot)
 }, {
-	aliases: ['note']
+	aliases: ['note'],
+	description: reply.note.description,
+	fullDescription: reply.note.fullDescription,
+	usage: reply.note.usage
 })
 
 const getNotes = bot.registerCommand('notes', (msg, args) => {
 	notes.getNotes(msg, args, bot)
 }, {
-	aliases: ['gnts']
+	aliases: ['getNotes'],
+	description: reply.notes.description,
+	fullDescription: reply.notes.fullDescription,
+	usage: reply.notes.usage
 })
 
-const unNote = bot.registerCommand('delN', (msg, args) => {
+const unNote = bot.registerCommand('unnote', (msg, args) => {
 	notes.unNote(msg, args, bot)
 }, {
-	aliases: ['unNote']
+	aliases: ['rem'],
+	description: reply.unnote.description,
+	fullDescription: reply.unnote.fullDescription,
+	usage: reply.unnote.usage
 })
 
 ////////////////////////////////////////////////////////////////////

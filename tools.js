@@ -104,7 +104,7 @@ exports.clean = async (msg, args, bot) => {
 	let messages = await msg.channel.getMessages(maxGet);
 
 	let i = 0
-	while (i < messages.length) {
+	while (i < maxGet) {
 		try {
 			if(messages[i].author.id !== msg.author.id) {
 				msg.channel.deleteMessage(messages[i].id)
