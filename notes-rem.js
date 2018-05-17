@@ -70,9 +70,9 @@ exports.getNotes = async (msg, args, bot) => {
 		let noteMsgs = await dmChannel.getPins()
 
 		let notes = []
-		for (m in noteMsgs) {
+		for (m = 0; m < noteMsgs.length; m++) {
 			date = new Date(noteMsgs[m].timestamp)
-			notes.push({name: 'Note ' + m, value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
+			notes.push({name: 'Note ' + m+1, value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
 		}
 
 		if (notes.length === 0)
@@ -114,7 +114,7 @@ exports.unNote = async (msg, args, bot) => {
 			return
 		}
 
-		let deleteMessage = dmChannel.deleteMessage(noteMsgs[parseInt(args[0])].id)
+		let deleteMessage = dmChannel.deleteMessage(noteMsgs[parseInt(args[0]) - 1].id)
 
 		bot.createMessage(msg.channel.id, `Note deleted boss!`)
 

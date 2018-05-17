@@ -331,12 +331,33 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
-const twitchSub = bot.registerCommand('tsub', async (msg, args) => {
-	twitch.twitchStreamSub(msg, args, bot)
+const twitchBase = bot.registerCommand('twitch' async (msg, args) => {
+	twitch.showSubs(msg, args, bot)
+}, {
+	cooldown: 5000,
+	description: reply.twitch.description,
+	fullDescription: reply.twitch.fullDescription,
+	usage: reply.twitch.usage
 })
 
-const twitchUnSub = bot.registerCommand('tunsub', async (msg, args) => {
+const twitchSub = twitchBase.registerSubCommand('sub', async (msg, args) => {
+	twitch.twitchStreamSub(msg, args, bot)
+}, {
+	aliases: ['-s'],
+	cooldown: 5000,
+	description: reply.tsub.description,
+	fullDescription: reply.tsub.fullDescription,
+	usage: reply.tsub.usage
+})
+
+const twitchUnSub = twitchBase.registerSubCommand('unsub', async (msg, args) => {
 	twitch.twitchStreamUnSub(msg, args, bot)
+}, {
+	aliases: ['-u'],
+	cooldown: 5000,
+	description: reply.tunsub.description,
+	fullDescription: reply.tunsub.fullDescription,
+	usage: reply.tunsub.usage
 })
 
 const spotifyBase = bot.registerCommand('spotify', 'Mooosic', {

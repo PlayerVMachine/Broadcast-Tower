@@ -170,5 +170,20 @@
 		"description":"Use with a command name to get more information about the command.",
 		"fullDescription":"Use as `b.help` for a list of commands, use as `b.help commandname` for details on that command.",
 		"usage":"`b.help` or `b.help list`"
+	},
+	"twitch" : {
+		"description":"List of streamers you've subcribed to recieve DMs about.",
+		"fullDescription":"Use `b.twitch sub <Streamer>` to subscribe!",
+		"usage":"`b.twitch`"
+	},
+	"tsub" : {
+		"description":"Subcribe to get a DM when a streamer goes live.",
+		"fullDescription":"Use `b.twitch unsub <Streamer>` to unsubscribe.",
+		"usage":"`b.twitch sub <Streamer>`"
+	},
+	"tUnsub" : {
+		"description":"Use to unsubscribe from stream notifications for a streamer.",
+		"fullDescription":"Use when they're no longer your third favourite streamer.",
+		"usage":"`b.twitch unsub <Streamer>`"
 	}
 }
