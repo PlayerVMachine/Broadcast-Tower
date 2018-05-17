@@ -472,7 +472,6 @@ const checkReminders = async () => {
 			for (r in reminders) {
 				due = new Date(reminders[r].due)
 				timeout = due.getTime() - Date.now()
-				console.log(timeout)
 				setTimeout(async () => {
 					q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
 					let delRem = await remCol.deleteOne({_id: reminders[r]._id})
