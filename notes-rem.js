@@ -120,6 +120,16 @@ exports.unNote = async (msg, args, bot) => {
 
 //function to connect to the db and add a reminder, need to parse time into date
 exports.remindMe = (msg, args, bot) => {
+
+	let client = await MongoClient.connect(url)
+	const usersCol = client.db(config.db).collection('Users')
+
+	let usee = await usersCol.findOne({user: msg.author.id})
+	if (usee === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+		return
+	}
+
 	let format = new RegExp(/[0-9]*[yMdhm]{1,4}/)
 	let wrongM = new RegExp(/[0-9]*m(?=[0-9]*d)/)
 
