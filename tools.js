@@ -115,5 +115,5 @@ exports.clean = async (msg, args, bot) => {
 		}
 	}
 
-	bot.createMessage(msg.channel.id, f('%s messages were deleted!' i))
+	bot.createMessage(msg.channel.id, f('%s messages were deleted!', i))
 }
