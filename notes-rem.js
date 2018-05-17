@@ -131,7 +131,7 @@ exports.remindMe = async (msg, args, bot) => {
 			return
 		}
 
-		let format = new RegExp(/[0-9]*[yMdhm]{1,4}/)
+		let format = new RegExp(/[0-9]*[yMdhm]{1,5}/)
 		let wrongM = new RegExp(/[0-9]*m(?=[0-9]*d)/)
 
 		let message = args.join(' ')

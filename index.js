@@ -448,8 +448,44 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	notes.remindMe(msg, args, bot)
 }, {
-	aliases: ['remind', '-R']
+	aliases: ['remind']
+	description: reply.remindMe.description,
+	fullDescription: reply.remindMe.fullDescription,
+	usage: reply.remindMe.usage
 })
+
+/////////////////////////////////////////////////////////////////////
+//REMINDER SCHEDULER                                              //
+///////////////////////////////////////////////////////////////////
+
+//check for reminders inside a minute of expiry
+const checkReminders = async () => {
+	console.log('checking reminders')
+	try {
+		let client = await MongoClient.connect(url)
+		const remCol = client.db(config.db).collection('Reminders')
+
+		now = new Date()
+		twoMinutesLater = new Date(now.getTime() + (2*60*1000))
+
+		let reminders = await remCOl.find({due: {$lte: twoMinutesLater}})
+
+		for (r in reminders) {
+			due = new Date(reminders[r].due)
+			timeout = due.getTime - Date.now()
+			setTimeout(async () => {
+				q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
+				let delRem = await remCol.deleteOne({_id: reminders[r]._id})
+				if (delRem.deletedCount !== 1)
+					console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+			}, timeout)
+		}
+	} catch (err) {
+		console.log(err)
+	}
+} 
+
+setInterval(checkReminders, 2*60*1000)
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
@@ -518,7 +554,6 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 //listen for requests
 app.listen(3000, () => console.log('Webhook handler listening on :3000!'))
-
 
 //actually connect
 bot.connect()

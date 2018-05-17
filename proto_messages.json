@@ -235,5 +235,10 @@
 		"description":"View your current notes to self.",
 		"fullDescription":"Will list your pinned messages with the Tower.",
 		"usage":"`b.notes`"
+	},
+	"remindMe" : {
+		"description":"Set reminders for yourself",
+		"fullDescription":"Will remind you of your message at the specified time, all time arguments are optional however at least one must be specified",
+		"usage":"`b.remind <reminder> in #y#M#d#h#m`"
 	}
 }
