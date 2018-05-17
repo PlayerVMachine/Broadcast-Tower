@@ -185,5 +185,10 @@
 		"description":"Use to unsubscribe from stream notifications for a streamer.",
 		"fullDescription":"Use when they're no longer your third favourite streamer.",
 		"usage":"`b.twitch unsub <Streamer>`"
+	},
+	"edit" : {
+		"description":"Use to dee full broadcast station details.",
+		"fullDescription":"See your full details, use the subcommands to see or edit a specific detail.",
+		"usage":"`b.edit`, `b.edit -c #FF33aa`"
 	}
 }

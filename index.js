@@ -114,20 +114,22 @@ const ping = bot.registerCommand('ping', 'Pong!', {
 })
 
 const glitch = bot.registerCommand('glitch', `congrats you'm'st done broken the tower, test it on monday.`, {
-	cooldown: 10000,
-	description: 'A wild easter egg appears',
+	cooldown: 5000,
 	hidden: true
 })
 
-const raven = bot.registerCommand('Night', `Raven, says Make Python Great Again`, {
-	cooldown: 10000,
-	description: 'A wild easter egg appears',
+const raven = bot.registerCommand('Night', (msg, args) => {
+	return f('Raven, %s', args.join(' '))
+}, {
+	cooldown: 5000,
 	hidden: true
 })
 
 const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
 	cooldown: 5000,
-	description: 'Invite link to this server'
+	description: `Invite link to the Tower's server`,
+	fullDescription: `What more can I say this is the invite like to the Tower's server.`,
+	usage: '`b.invite`'
 })
 
 const createAccount = bot.registerCommand('create', async (msg, args) => {
@@ -176,6 +178,17 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 	usage: reply.unfollow.usage
 })
 
+const post = bot.registerCommand('post', async (msg, args) => {
+	//function to send posts
+	act.post(msg, args, bot, q)
+}, {
+	aliases: ['cast', 'send'],
+	cooldown: 5000,
+	description: reply.post.description,
+	fullDescription: reply.post.fullDescription,
+	usage: reply.post.usage
+})
+
 const blockUser = bot.registerCommand('block', async (msg, args) => {
 	//block a user
 	act.block(msg, args, bot)
@@ -205,9 +218,9 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 	prof.edit(msg, edit, bot)
 }, {
 	cooldown: 2000,
-	description: 'todo',
-	fullDescription: 'todo',
-	usage:'todo'
+	description: reply.edit.description,
+	fullDescription: reply.edit.fullDescription,
+	usage: reply.edit.usage
 })
 
 
@@ -308,17 +321,6 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 	description: reply.clearDMs.description,
 	fullDescription: reply.clearDMs.fullDescription,
 	usage: reply.clearDMs.usage
-})
-
-const post = bot.registerCommand('post', async (msg, args) => {
-	//function to send posts
-	act.post(msg, args, bot, q)
-}, {
-	aliases: ['cast', 'send'],
-	cooldown: 5000,
-	description: reply.post.description,
-	fullDescription: reply.post.fullDescription,
-	usage: reply.post.usage
 })
 
 const help = bot.registerCommand('help', (msg, args) => {

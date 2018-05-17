@@ -26,14 +26,16 @@ exports.help = async (msg, args, bot) => {
 
 		let arg = ''
 		if(args.length > 0) {
-			 arg = args[0].toLowerCase()
+			arg = args[0].toLowerCase()
 		}
 
 		let commandList = []
 		if (args.length === 0) {
 			for (var cmd in bot.commands) {
-				var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase() + bot.commands[cmd].label.slice(1))
-				commandList.push(f(reply.help.listFormat, name, bot.commands[cmd].description))
+				if(!bot.commands[cmd].hidden) {
+					var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase() + bot.commands[cmd].label.slice(1))
+					commandList.push(f(reply.help.listFormat, name, bot.commands[cmd].description))
+				}
 			}
 
 			let embed = {
@@ -101,12 +103,17 @@ exports.clean = async (msg, args, bot) => {
 
 	let messages = await msg.channel.getMessages(maxGet);
 
-	for (i = 0; i < maxGet; i++) {
+	let i = 0
+	while (i < messages.length) {
 		try {
-			if(messages[i].author.id !== msg.author.id)
+			if(messages[i].author.id !== msg.author.id) {
 				msg.channel.deleteMessage(messages[i].id)
+				i++
+			}
 		} catch (e) {
 			console.log(e.message)
 		}
 	}
+
+	bot.createMessage(msg.channel.id, f('%s messages were deleted!' i))
 }
