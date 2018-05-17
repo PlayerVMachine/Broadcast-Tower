@@ -71,8 +71,9 @@ exports.getNotes = async (msg, args, bot) => {
 
 		let notes = []
 		for (m = 0; m < noteMsgs.length; m++) {
+			index = m + 1
 			date = new Date(noteMsgs[m].timestamp)
-			notes.push({name: 'Note ' + m+1, value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
+			notes.push({name: 'Note ' + index, value: f(`%s | created %s`, noteMsgs[m].content, date.toDateString()), inline:false})
 		}
 
 		if (notes.length === 0)
