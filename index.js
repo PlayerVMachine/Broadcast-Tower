@@ -471,7 +471,7 @@ const checkReminders = async () => {
 		remCol.find({due: {$lte: twoMinutesLater}}).toArray(async (err, reminders) => {
 			for (r in reminders) {
 				due = new Date(reminders[r].due)
-				timeout = due.getTime - Date.now()
+				timeout = due.getTime() - Date.now()
 				console.log(timeout)
 				setTimeout(async () => {
 					q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
