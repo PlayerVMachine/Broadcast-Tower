@@ -30,16 +30,7 @@ exports.noteToSelf = async (msg, args, bot) => {
 			}
 		}
 
-		let embed = {
-			embed: {
-				author: {name: f(`%s made a note:`, msg.author.username), icon_url: msg.author.avatarURL},
-				description: f(`**Note:** %s%s`, args.join(' '), files.join(' ')),
-				color: parseInt(usee.eColor, 16),
-				footer: {text: `Powered by the Broadcast Tower`}
-			}
-		}
-
-		let toPin = await bot.createMessage(usee.sendTo, embed)
+		let toPin = await bot.createMessage(usee.sendTo, f(`**Note:** %s%s`, args.join(' '), files.join(' ')))
 
 		let pinned = await toPin.pin()
 
