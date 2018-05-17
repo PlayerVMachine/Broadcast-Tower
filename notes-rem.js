@@ -173,13 +173,5 @@ exports.remindMe = (msg, args, bot) => {
 	}
 }
 
-module.exports.remindMe('to check the oven in 1y2M3d3h2m')
-module.exports.remindMe('to check the oven in 2y 5M 12d 45m')
-module.exports.remindMe('to check the oven in 2y 12d')
-module.exports.remindMe('to check the oven in 2y 5m 12d 45m')
-module.exports.remindMe('to check the oven in 2p')
-// [0-9]*[yMdm]{1,4}
-// [0-9]*m(?=[0-9]*d?)?
-
 //function to pull all reminders expiring in 1 minute or less and create timeouts for them that push messages to the q
 //index.js will call this function every minute
