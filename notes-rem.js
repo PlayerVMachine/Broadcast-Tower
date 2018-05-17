@@ -115,3 +115,70 @@ exports.unNote = async (msg, args, bot) => {
 	}
 
 }
+
+//reminders time!
+
+//function to connect to the db and add a reminder, need to parse time into date
+exports.remindMe = (msg, args, bot) => {
+
+	let format = new RegExp(/[0-9]*[yMdhm]{1,4}/)
+	let wrongM = new RegExp(/[0-9]*m(?=[0-9]*d)/)
+
+	//parse message
+	let eom = message.lastIndexOf('in')
+	let reminder = message.slice(0, eom).trim()
+	let rawDate = message.slice(eom+2, message.length).trim().replace(/\s/g, '')
+
+	if (wrongM.test(rawDate)) {
+		bot.createMessage(msg.channel.id, 'Detected minutes before days!')
+	} else if (!format.test(rawDate)) {
+		bot.createMessage(msg.channel.id, 'Sorry I don\'t understand the format is yMdm')
+	} else {
+		let timeTypes = rawDate.split(/[0-9]*/).filter(val => val.length > 0)
+		let timeAmounts = rawDate.split(/[yMdhm]/).filter(val => val.length > 0)
+		let curDate = new Date()
+		let remYear = curDate.getFullYear()
+		let remMonth = curDate.getMonth()
+		let remDay = curDate.getDate()
+		let remHours = curDate.getHours()
+		let remMins = curDate.getMinutes()
+
+		if (timeTypes.indexOf('y') > -1)
+			remYear += parseInt(timeAmounts[timeTypes.indexOf('y')])
+
+		if (timeTypes.indexOf('M') > -1)
+			remMonth += parseInt(timeAmounts[timeTypes.indexOf('M')])
+
+		if (timeTypes.indexOf('d') > -1)
+			remDay += parseInt(timeAmounts[timeTypes.indexOf('d')])
+		
+		if (timeTypes.indexOf('h') > -1)
+			remHours += parseInt(timeAmounts[timeTypes.indexOf('h')])
+
+		if (timeTypes.indexOf('m') > -1)
+			remMins += parseInt(timeAmounts[timeTypes.indexOf('m')])
+
+		let remDate = new Date( remYear, remMonth, remDay, remHours, remMins)
+
+		let reminderObj = {
+			user: usee.user,
+			sendTo: usee.sendTo,
+			content: reminder,
+			due: remDate,
+		}
+
+		bot.createMessage(msg.channel.id, 'Your reminder would be stored as: \n' + JSON.stringify(reminderObj))
+		
+	}
+}
+
+module.exports.remindMe('to check the oven in 1y2M3d3h2m')
+module.exports.remindMe('to check the oven in 2y 5M 12d 45m')
+module.exports.remindMe('to check the oven in 2y 12d')
+module.exports.remindMe('to check the oven in 2y 5m 12d 45m')
+module.exports.remindMe('to check the oven in 2p')
+// [0-9]*[yMdm]{1,4}
+// [0-9]*m(?=[0-9]*d?)?
+
+//function to pull all reminders expiring in 1 minute or less and create timeouts for them that push messages to the q
+//index.js will call this function every minute

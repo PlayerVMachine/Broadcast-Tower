@@ -445,6 +445,12 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 	usage: reply.unnote.usage
 })
 
+const remindMe = bot.registerCommand('remindme' (msg, args) => {
+	notes.remindMe(msg, args, bot)
+}, {
+	aliases: ['remind', '-R']
+})
+
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
 //////////////////////////////////////////////////////////////////
