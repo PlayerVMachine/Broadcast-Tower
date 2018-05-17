@@ -340,7 +340,7 @@ const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 	usage: reply.twitch.usage
 })
 
-const twitchSub = twitchBase.registerSubCommand('sub', async (msg, args) => {
+const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
 	twitch.twitchStreamSub(msg, args, bot)
 }, {
 	aliases: ['-s'],
@@ -350,7 +350,7 @@ const twitchSub = twitchBase.registerSubCommand('sub', async (msg, args) => {
 	usage: reply.tsub.usage
 })
 
-const twitchUnSub = twitchBase.registerSubCommand('unsub', async (msg, args) => {
+const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => {
 	twitch.twitchStreamUnSub(msg, args, bot)
 }, {
 	aliases: ['-u'],
