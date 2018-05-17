@@ -448,7 +448,7 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	notes.remindMe(msg, args, bot)
 }, {
-	aliases: ['remind']
+	aliases: ['remind'],
 	description: reply.remindMe.description,
 	fullDescription: reply.remindMe.fullDescription,
 	usage: reply.remindMe.usage
