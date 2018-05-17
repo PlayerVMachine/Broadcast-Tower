@@ -468,18 +468,18 @@ const checkReminders = async () => {
 		now = new Date()
 		twoMinutesLater = new Date(now.getTime() + (2*60*1000))
 
-		let reminders = await remCol.find({due: {$lte: twoMinutesLater}})
-
-		for (r in reminders) {
-			due = new Date(reminders[r].due)
-			timeout = due.getTime - Date.now()
-			setTimeout(async () => {
-				q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
-				let delRem = await remCol.deleteOne({_id: reminders[r]._id})
-				if (delRem.deletedCount !== 1)
-					console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
-			}, timeout)
-		}
+		remCol.find({due: {$lte: twoMinutesLater}}).toArray( (err, reminders) => {
+			for (r in reminders) {
+				due = new Date(reminders[r].due)
+				timeout = due.getTime - Date.now()
+				setTimeout(async () => {
+					q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
+					let delRem = await remCol.deleteOne({_id: reminders[r]._id})
+					if (delRem.deletedCount !== 1)
+						console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+				}, timeout)
+			}
+		})
 	} catch (err) {
 		console.log(err)
 	}
