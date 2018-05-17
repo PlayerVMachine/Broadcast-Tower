@@ -119,7 +119,7 @@ exports.unNote = async (msg, args, bot) => {
 //reminders time!
 
 //function to connect to the db and add a reminder, need to parse time into date
-exports.remindMe = (msg, args, bot) => {
+exports.remindMe = async (msg, args, bot) => {
 
 	let client = await MongoClient.connect(url)
 	const usersCol = client.db(config.db).collection('Users')
