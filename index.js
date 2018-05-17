@@ -331,7 +331,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
-const twitchBase = bot.registerCommand('twitch' async (msg, args) => {
+const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 	twitch.showSubs(msg, args, bot)
 }, {
 	cooldown: 5000,
