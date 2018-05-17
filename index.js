@@ -468,7 +468,7 @@ const checkReminders = async () => {
 		now = new Date()
 		twoMinutesLater = new Date(now.getTime() + (2*60*1000))
 
-		remCol.find({due: {$lte: twoMinutesLater}}).toArray( (err, reminders) => {
+		remCol.find({due: {$lte: twoMinutesLater}}).toArray(async (err, reminders) => {
 			for (r in reminders) {
 				due = new Date(reminders[r].due)
 				timeout = due.getTime - Date.now()
