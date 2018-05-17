@@ -181,7 +181,7 @@
 		"fullDescription":"Use `b.twitch unsub <Streamer>` to unsubscribe.",
 		"usage":"`b.twitch sub <Streamer>`"
 	},
-	"tUnsub" : {
+	"tunsub" : {
 		"description":"Use to unsubscribe from stream notifications for a streamer.",
 		"fullDescription":"Use when they're no longer your third favourite streamer.",
 		"usage":"`b.twitch unsub <Streamer>`"
