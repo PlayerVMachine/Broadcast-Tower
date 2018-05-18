@@ -49,7 +49,10 @@ exports.create = async (msg, bot) => {
 			if (created.insertedCount === 1) { 
 				bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
 
-				bot.createMessage(dmChannel.id, {embed: {description:f(reply.generic.hello, msg.author.username)}})
+				bot.createMessage(dmChannel.id, {embed: {
+					color: config.eColors,
+					description:f(reply.generic.hello, msg.author.username)
+				}})
 				fns.log(f(reply.create.logSuccess, msg.author.mention), bot)
 			} else { 
 				bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
