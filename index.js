@@ -460,7 +460,6 @@ const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 
 //check for reminders inside a minute of expiry
 const checkReminders = async () => {
-	console.log('checking reminders')
 	try {
 		let client = await MongoClient.connect(url)
 		const remCol = client.db(config.db).collection('Reminders')

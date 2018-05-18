@@ -120,6 +120,12 @@ exports.unNote = async (msg, args, bot) => {
 
 //function to connect to the db and add a reminder, need to parse time into date
 exports.remindMe = async (msg, args, bot) => {
+
+	if (!args.includes('in')) {
+		bot.createMessage(msg.channel.id, 'Missing keyword `in` cannot guess when you want to be reminded')
+		return
+	}
+
 	try { 
 		let client = await MongoClient.connect(url)
 		const usersCol = client.db(config.db).collection('Users')
