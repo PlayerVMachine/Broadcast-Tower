@@ -138,3 +138,7 @@ exports.close = async (msg, bot) => {
     	bot.on('messageCreate', confirmation)
     }
 }
+
+exports.heckingBan = (msg, args, bot) => {
+	
+}
