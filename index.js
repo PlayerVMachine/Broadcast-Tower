@@ -125,6 +125,10 @@ const raven = bot.registerCommand('Night', (msg, args) => {
 	hidden: true
 })
 
+const hello = bot.registerCommand('hello', (msg, args) => {
+	bot.createMessage(dmChannel.id, embed: {description:f(reply.generic.hello, msg.author.username)})
+})
+
 const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
 	cooldown: 5000,
 	description: `Invite link to the Tower's server`,

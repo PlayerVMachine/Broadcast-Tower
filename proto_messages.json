@@ -8,7 +8,8 @@
 		"cooldownMessage":"Your frequency is too high please lower it! wait `%ds`",
 		"cannotDoToBots":"%s, this action is not supported on bots!",
 		"cannotDoToSelf":"%s, this action is not supported on yourself!",
-		"userUnknown":"%s, The user %s has never tuned into the Tower's singals."
+		"userUnknown":"%s, The user %s has never tuned into the Tower's singals.",
+		"hello":"**Hi %s!**\n\nWelcome to your DMs with the Broadcast Tower, this is where you'll send/recieve most messages with the Tower. Unlike most bots you don't need to invite the Tower to your server to use it! You just need to share a server with the Tower to create your account.\n**Social Functions**\n__Post__: send a post to your followers! (Profanity is not allowed by default but you can change that with edit)\n__Follow__: follow a user to recieve their posts!\n__Edit__: add a tagline and bio to your profile, set your account to private\n__View__: check out a users profile!\nOf course unfollow, block and unblock are available as well, be sure to report suspected abuse!\n\n**Notification Functions**\n__Twitch__: get stream notifications for your favourite streamers!\n__Spotify__: get notified of new releases every Friday!\n__Weather__: get the daily forecast delivered to your DMs every day!\n__Reminders__: set reminders for yourself for anytime in the future!\n\n**Utility Functions**\n__Note__: make notes for yourself the Tower will keep track of them in your pins\n\nFor a complete list of commands do `b.help`. These are just the currently available features, more are planned and if you have any suggestions please feel free to make them!"
 	},
 	"ping" : {
 		"description":"No one asks how the bot is, only ping?",
