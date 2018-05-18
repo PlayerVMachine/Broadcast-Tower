@@ -94,26 +94,19 @@ exports.clean = async (msg, args, bot) => {
 		return
 	}
 
-	let maxGet = 50
-	if (args.length > 0) {
-		let num = parseInt(args[0])
-		if (num < 50)
-			maxGet = num
-	}
+	let messages = await msg.channel.getMessages(10);
 
-	let messages = await msg.channel.getMessages(maxGet);
-
-	let i = 0
-	while (i < maxGet) {
+	let count = 0
+	for (i = 0; i < 10; i++) {
 		try {
 			if(messages[i].author.id !== msg.author.id) {
 				msg.channel.deleteMessage(messages[i].id)
-				i++
+				count ++
 			}
-		} catch (e) {
-			console.log(e.message)
+		} catch (err) {
+			console.log(err)
 		}
 	}
 
-	bot.createMessage(msg.channel.id, f('%s messages were deleted!', i))
+	bot.createMessage(msg.channel.id, f('%s messages were deleted!', count))
 }
