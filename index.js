@@ -127,7 +127,7 @@ const raven = bot.registerCommand('Night', (msg, args) => {
 
 const hello = bot.registerCommand('hello', (msg, args) => {
 	bot.createMessage(msg.channel.id, {embed: {
-					color: config.eColors,
+					color: config.eColor,
 					description:f(reply.generic.hello, msg.author.username)
 				}})
 })
