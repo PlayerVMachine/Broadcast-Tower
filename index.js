@@ -211,7 +211,7 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 	aliases: ['fol'],
 	argsRequired: true,
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.follow.description,
 	fullDescription: reply.follow.fullDescription,
 	usage: reply.follow.usage
@@ -224,7 +224,7 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 	aliases: ['unfol', 'uf'],
 	argsRequired: true,
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.unfollow.description,
 	fullDescription: reply.unfollow.fullDescription,
 	usage: reply.unfollow.usage
@@ -236,7 +236,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 }, {
 	aliases: ['cast', 'send'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.post.description,
 	fullDescription: reply.post.fullDescription,
 	usage: reply.post.usage
@@ -249,7 +249,7 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 	aliases: ['bl'],
 	argsRequired: true,
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.block.description,
 	fullDescription: reply.block.fullDescription,
 	usage: reply.block.usage
@@ -262,7 +262,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 	aliases: ['unb'],
 	argsRequired:true,
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.unblock.description,
 	fullDescription: reply.unblock.fullDescription,
 	usage:reply.unblock.usage
@@ -273,7 +273,7 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 	prof.edit(msg, edit, bot)
 }, {
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.edit.description,
 	fullDescription: reply.edit.fullDescription,
 	usage: reply.edit.usage
@@ -286,7 +286,7 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 }, {
 	aliases: ['-t'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.tagline.description,
 	fullDescription: reply.tagline.fullDescription,
 	usage: reply.tagline.usage
@@ -298,7 +298,7 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 }, {
 	aliases: ['-b'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.bio.description,
 	fullDescription: reply.bio.fullDescription,
 	usage: reply.bio.usage
@@ -310,7 +310,7 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 }, {
 	aliases: ['-m'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.mature.description,
 	fullDescription: reply.mature.fullDescription,
 	usage: reply.mature.usage
@@ -322,7 +322,7 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 }, {
 	aliases: ['-d'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.dnd.description,
 	fullDescription: reply.dnd.fullDescription,
 	usage: reply.dnd.usage
@@ -334,7 +334,7 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 }, {
 	aliases: ['-c'],
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.color.description,
 	fullDescription: reply.color.fullDescription,
 	usage: reply.color.usage
@@ -346,7 +346,7 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 }, {
 	aliases: ['-p'],
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.private.description,
 	fullDescription: reply.private.fullDescription,
 	usage: reply.private.usage
@@ -369,7 +369,7 @@ const list = bot.registerCommand('list', async (msg, args) => {
 }, {
 	aliases: ['ls', 'li'],
 	cooldown: 2000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.list.description,
 	fullDescription: reply.list.fullDescription,
 	usage: reply.list.usage
@@ -381,7 +381,7 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 }, {
 	aliases: ['cls', 'clear'],
 	cooldown: 20000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.clearDMs.description,
 	fullDescription: reply.clearDMs.fullDescription,
 	usage: reply.clearDMs.usage
@@ -415,7 +415,7 @@ const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
 }, {
 	aliases: ['-s'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.tsub.description,
 	fullDescription: reply.tsub.fullDescription,
 	usage: reply.tsub.usage
@@ -426,7 +426,7 @@ const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => 
 }, {
 	aliases: ['-u'],
 	cooldown: 5000,
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.tunsub.description,
 	fullDescription: reply.tunsub.fullDescription,
 	usage: reply.tunsub.usage
@@ -504,7 +504,7 @@ const noteToSelf = bot.registerCommand('nts', (msg, args) => {
 	notes.noteToSelf(msg, args, bot)
 }, {
 	aliases: ['note'],
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.note.description,
 	fullDescription: reply.note.fullDescription,
 	usage: reply.note.usage
@@ -514,7 +514,7 @@ const getNotes = bot.registerCommand('notes', (msg, args) => {
 	notes.getNotes(msg, args, bot)
 }, {
 	aliases: ['getNotes'],
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.notes.description,
 	fullDescription: reply.notes.fullDescription,
 	usage: reply.notes.usage
@@ -524,7 +524,7 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 	notes.unNote(msg, args, bot)
 }, {
 	aliases: ['rem'],
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.unnote.description,
 	fullDescription: reply.unnote.fullDescription,
 	usage: reply.unnote.usage
@@ -538,7 +538,7 @@ const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	notes.remindMe(msg, args, bot)
 }, {
 	aliases: ['remind'],
-	requirements.custom: hasUnbannedAccount,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.remindMe.description,
 	fullDescription: reply.remindMe.fullDescription,
 	usage: reply.remindMe.usage
