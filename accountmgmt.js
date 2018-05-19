@@ -116,7 +116,7 @@ exports.close = async (msg, bot, client) => {
     }
 }
 
-exports.heckingBan = (msg, args, bot, client) => {
+exports.heckingBan = async (msg, args, bot, client) => {
 	const col = client.db(config.db).collection('Users')
 
 	let usee = await col.findOne({user: args[0]})
@@ -135,7 +135,7 @@ exports.heckingBan = (msg, args, bot, client) => {
 	}
 }
 
-exports.unBan = (msg, args, bot, client) => {
+exports.unBan = async (msg, args, bot, client) => {
 	const col = client.db(config.db).collection('Users')
 
 	let usee = await col.findOne({$and: {user: args[0]}, {status: 'banned'}})
