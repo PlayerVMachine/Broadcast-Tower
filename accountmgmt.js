@@ -125,7 +125,7 @@ exports.heckingBan = async (msg, args, bot, client) => {
 		return
 	}
 	
-	let ban = await col.updateOne({user: usee.id}, {status: 'banned'})
+	let ban = await col.updateOne({user: usee.id}, {$set: {status: 'banned'}})
 	let clearFF = await col.updateMany({following: usee.id}, {$pull: {following: usee.id, followers: usee.id}})
 
 	if (ban.result.ok === 1 && clearFF.result.ok === 1) {
@@ -144,7 +144,7 @@ exports.unBan = async (msg, args, bot, client) => {
 		return
 	}
 	
-	let unban = await col.updateOne({user: usee.id}, {status: 'active'})
+	let unban = await col.updateOne({user: usee.id}, {$set: {status: 'active'}})
 
 	if (unban.result.ok === 1) {
 		bot.createMessage(msg.channel.id, f(reply.unban.success, usee.id))
