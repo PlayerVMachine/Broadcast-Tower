@@ -239,5 +239,13 @@
 		"description":"Set reminders for yourself",
 		"fullDescription":"Will remind you of your message at the specified time, all time arguments are optional however at least one must be specified",
 		"usage":"`b.remind <reminder> in #y#M#d#h#m`"
+	},
+	"ban" : {
+		"success":"**%s was banned!**",
+		"error":"There was an error banning %s, please try again later."
+	},
+	"unban" : {
+		"success":"%s was unbanned!",
+		"error":"There was an error unbanning %s, please try again later."
 	}
 }

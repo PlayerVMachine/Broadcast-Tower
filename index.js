@@ -128,6 +128,38 @@ bot.on("ready", () => { // When the bot is ready
 });
 
 /////////////////////////////////////////////////////////////////////
+//ADMIN COMMANDS                                                  //
+///////////////////////////////////////////////////////////////////
+
+const ban = bot.registerCommand('ban', async (msg, args) => {
+	try{
+		let client = await MongoClient.connect(url)
+		amgmt.heckingBan(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)	
+	}
+}, {
+	aliases: ['heck'],
+	requirements: {userIDs: [config.creator]},
+	hidden: true
+})
+
+const unban = bot.registerCommand('unban', async (msg, args) => {
+	try{
+		let client = await MongoClient.connect(url)
+		amgmt.unBan(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)	
+	}
+}, {
+	aliases: ['unheck'],
+	requirements: {userIDs: [config.creator]},
+	hidden: true
+})
+
+/////////////////////////////////////////////////////////////////////
 //COMMANDS                                                        //
 ///////////////////////////////////////////////////////////////////
 

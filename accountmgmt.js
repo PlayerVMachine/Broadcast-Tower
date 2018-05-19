@@ -117,6 +117,38 @@ exports.close = async (msg, bot, client) => {
 }
 
 exports.heckingBan = (msg, args, bot, client) => {
-	const userCol = client.db(config.db).collection('Users')
-	const banCol = client.db(config.db).collection('Bans')
+	const col = client.db(config.db).collection('Users')
+
+	let usee = await col.findOne({user: args[0]})
+	if (usee === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, args[0]))
+		return
+	}
+	
+	let ban = await col.updateOne({user: usee.id}, {status: 'banned'})
+	let clearFF = await col.updateMany({following: usee.id}, {$pull: {following: usee.id, followers: usee.id}})
+
+	if (ban.result.ok === 1 && clearFF.result.ok === 1) {
+		bot.createMessage(msg.channel.id, f(reply.ban.success, usee.id))
+	} else {
+		bot.createMessage(msg.channel.id, f(reply.ban.error, usee.id))
+	}
+}
+
+exports.unBan = (msg, args, bot, client) => {
+	const col = client.db(config.db).collection('Users')
+
+	let usee = await col.findOne({$and: {user: args[0]}, {status: 'banned'}})
+	if (usee === null) {
+		bot.createMessage(msg.channel.id, f('Could not find a banned user with id: %s', args[0]))
+		return
+	}
+	
+	let unban = await col.updateOne({user: usee.id}, {status: 'active'})
+
+	if (unban.result.ok === 1) {
+		bot.createMessage(msg.channel.id, f(reply.unban.success, usee.id))
+	} else {
+		bot.createMessage(msg.channel.id, f(reply.unban.error, usee.id))
+	}
 }
