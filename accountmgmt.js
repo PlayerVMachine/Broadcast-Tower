@@ -124,6 +124,8 @@ exports.heckingBan = async (msg, args, bot, client) => {
 		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, args[0]))
 		return
 	}
+
+	console.log(usee)
 	
 	let ban = await col.updateOne({user: usee.id}, {$set: {status: 'banned'}})
 	let clearFF = await col.updateMany({following: usee.id}, {$pull: {following: usee.id, followers: usee.id}})
