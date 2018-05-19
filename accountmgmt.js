@@ -138,7 +138,7 @@ exports.heckingBan = async (msg, args, bot, client) => {
 exports.unBan = async (msg, args, bot, client) => {
 	const col = client.db(config.db).collection('Users')
 
-	let usee = await col.findOne({$and: {user: args[0]}, {status: 'banned'}})
+	let usee = await col.findOne({$and: [ {user: args[0]}, {status: 'banned'} ] })
 	if (usee === null) {
 		bot.createMessage(msg.channel.id, f('Could not find a banned user with id: %s', args[0]))
 		return
