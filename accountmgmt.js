@@ -146,11 +146,11 @@ exports.unBan = async (msg, args, bot, client) => {
 		return
 	}
 	
-	let unban = await col.updateOne({user: usee.id}, {$set: {status: 'active'}})
+	let unban = await col.updateOne({user: usee.user}, {$set: {status: 'active'}})
 
 	if (unban.result.ok === 1) {
-		bot.createMessage(msg.channel.id, f(reply.unban.success, usee.id))
+		bot.createMessage(msg.channel.id, f(reply.unban.success, usee.user))
 	} else {
-		bot.createMessage(msg.channel.id, f(reply.unban.error, usee.id))
+		bot.createMessage(msg.channel.id, f(reply.unban.error, usee.user))
 	}
 }
