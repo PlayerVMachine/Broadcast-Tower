@@ -127,13 +127,13 @@ exports.heckingBan = async (msg, args, bot, client) => {
 
 	console.log(usee)
 	
-	let ban = await col.updateOne({user: usee.id}, {$set: {status: 'banned'}})
-	let clearFF = await col.updateMany({following: usee.id}, {$pull: {following: usee.id, followers: usee.id}})
+	let ban = await col.updateOne({user: usee.user}, {$set: {status: 'banned'}})
+	let clearFF = await col.updateMany({following: usee.user}, {$pull: {following: usee.user, followers: usee.user}})
 
 	if (ban.result.ok === 1 && clearFF.result.ok === 1) {
-		bot.createMessage(msg.channel.id, f(reply.ban.success, usee.id))
+		bot.createMessage(msg.channel.id, f(reply.ban.success, usee.user))
 	} else {
-		bot.createMessage(msg.channel.id, f(reply.ban.error, usee.id))
+		bot.createMessage(msg.channel.id, f(reply.ban.error, usee.user))
 	}
 }
 
