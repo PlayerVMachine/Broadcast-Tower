@@ -37,12 +37,6 @@ exports.postEmbed = (msg, user) => {
   return embed
 }
 
-exports.rand4Digit = () => {
-  var min = Math.ceil(1000)
-  var max = Math.floor(9999)
-  return Math.floor(Math.random() * (max - min)) + min // The maximum is exclusive and the minimum is inclusive
-}
-
 exports.log = (message, bot) => {
   let date = new Date().toLocaleString('en-GB', { timeZone: 'America/New_York' })
   console.log(util.format(date, message))

@@ -37,7 +37,7 @@ const twitchApi = new TwitchHelix({
 
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
 
-//cd function
+//Cooldown function
 const delAfterCD = (message) => {
 	setTimeout(async (message) => {
 		let messages = await bot.getMessages(message.channel.id,5,undefined,message.id)
@@ -49,7 +49,30 @@ const delAfterCD = (message) => {
 	return f(reply.generic.cooldownMessage, message.command.cooldown/1000)
 }
 
-//comand client
+//Check if user exists and is not banned
+const hasUnbannedAccount = async (msg) => {
+	let client = await MongoClient.connect(url)
+	let col = client.db(config.db).collection('Users')
+
+	let found = await col.findOne({user: msg.author.id})
+	if (found === null) {
+		bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
+		return false
+	}
+
+	if (found.status === 'banned') {
+		return false
+	}
+
+	//if user exists and is not banned they may use the command
+	return true
+
+} 
+
+/////////////////////////////////////////////////////////////////////
+//COMMAND CLIENT                                                  //
+///////////////////////////////////////////////////////////////////
+
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	defaultImageSize:256
 }, {
@@ -63,7 +86,10 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 	}
 })
 
-//
+/////////////////////////////////////////////////////////////////////
+//MESSAGE QUEUER                                                  //
+///////////////////////////////////////////////////////////////////
+
 var longQ
 
 //Define Message queue
@@ -101,9 +127,9 @@ bot.on("ready", () => { // When the bot is ready
     console.log("The Tower of Power is online!") // Log "Ready!"
 });
 
-////////////////////////
-//Bot commands!      //
-//////////////////////
+/////////////////////////////////////////////////////////////////////
+//COMMANDS                                                        //
+///////////////////////////////////////////////////////////////////
 
 const ping = bot.registerCommand('ping', 'Pong!', {
 	caseInsensitive: true,
@@ -127,9 +153,11 @@ const raven = bot.registerCommand('Night', (msg, args) => {
 
 const hello = bot.registerCommand('hello', (msg, args) => {
 	bot.createMessage(msg.channel.id, {embed: {
-					color: parseInt(config.color, 16),
-					description:f(reply.generic.hello, msg.author.username)
-				}})
+		color: parseInt(config.color, 16),
+		description:f(reply.generic.hello, msg.author.username)
+	}})
+}, {
+	cooldown: 10000
 })
 
 const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
@@ -139,11 +167,20 @@ const invite = bot.registerCommand('invite', `Invite your friends here so they c
 	usage: '`b.invite`'
 })
 
+/////////////////////////////////////////////////////////////////////
+//SOCIAL MEDIA                                                    //
+///////////////////////////////////////////////////////////////////
+
 const createAccount = bot.registerCommand('create', async (msg, args) => {
-	//call the function to create an account if one doesn't exist already
-	amgmt.create(msg, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		amgmt.create(msg, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+	}
 }, {
-	aliases: ['signup', 'join', 'register'],
+	aliases: ['signup', 'register'],
 	cooldown: 10000,
 	description: reply.create.description,
 	fullDescription: reply.create.fullDescription,
@@ -151,11 +188,17 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 })
 
 const deleteAccount = bot.registerCommand('close', async (msg, args) => {
-	//call the function to close an account if one doesn't exist already
-	amgmt.close(msg, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		amgmt.close(msg, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+	}
 }, {
 	aliases: ['delete', 'rm', 'del'],
 	cooldown: 10000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.close.description,
 	fullDescription: reply.close.fullDescription,
 	usage: reply.close.usage
@@ -168,6 +211,7 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 	aliases: ['fol'],
 	argsRequired: true,
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.follow.description,
 	fullDescription: reply.follow.fullDescription,
 	usage: reply.follow.usage
@@ -180,6 +224,7 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 	aliases: ['unfol', 'uf'],
 	argsRequired: true,
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.unfollow.description,
 	fullDescription: reply.unfollow.fullDescription,
 	usage: reply.unfollow.usage
@@ -191,6 +236,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 }, {
 	aliases: ['cast', 'send'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.post.description,
 	fullDescription: reply.post.fullDescription,
 	usage: reply.post.usage
@@ -203,6 +249,7 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 	aliases: ['bl'],
 	argsRequired: true,
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.block.description,
 	fullDescription: reply.block.fullDescription,
 	usage: reply.block.usage
@@ -215,6 +262,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 	aliases: ['unb'],
 	argsRequired:true,
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.unblock.description,
 	fullDescription: reply.unblock.fullDescription,
 	usage:reply.unblock.usage
@@ -225,6 +273,7 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 	prof.edit(msg, edit, bot)
 }, {
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.edit.description,
 	fullDescription: reply.edit.fullDescription,
 	usage: reply.edit.usage
@@ -237,6 +286,7 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 }, {
 	aliases: ['-t'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.tagline.description,
 	fullDescription: reply.tagline.fullDescription,
 	usage: reply.tagline.usage
@@ -248,6 +298,7 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 }, {
 	aliases: ['-b'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.bio.description,
 	fullDescription: reply.bio.fullDescription,
 	usage: reply.bio.usage
@@ -259,6 +310,7 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 }, {
 	aliases: ['-m'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.mature.description,
 	fullDescription: reply.mature.fullDescription,
 	usage: reply.mature.usage
@@ -270,6 +322,7 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 }, {
 	aliases: ['-d'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.dnd.description,
 	fullDescription: reply.dnd.fullDescription,
 	usage: reply.dnd.usage
@@ -281,6 +334,7 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 }, {
 	aliases: ['-c'],
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.color.description,
 	fullDescription: reply.color.fullDescription,
 	usage: reply.color.usage
@@ -292,6 +346,7 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 }, {
 	aliases: ['-p'],
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.private.description,
 	fullDescription: reply.private.fullDescription,
 	usage: reply.private.usage
@@ -314,6 +369,7 @@ const list = bot.registerCommand('list', async (msg, args) => {
 }, {
 	aliases: ['ls', 'li'],
 	cooldown: 2000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.list.description,
 	fullDescription: reply.list.fullDescription,
 	usage: reply.list.usage
@@ -325,6 +381,7 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 }, {
 	aliases: ['cls', 'clear'],
 	cooldown: 20000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.clearDMs.description,
 	fullDescription: reply.clearDMs.fullDescription,
 	usage: reply.clearDMs.usage
@@ -340,6 +397,10 @@ const help = bot.registerCommand('help', (msg, args) => {
 	usage: reply.help.usage
 })
 
+/////////////////////////////////////////////////////////////////////
+//TWITCH                                                          //
+///////////////////////////////////////////////////////////////////
+
 const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 	//twitch.showSubs(msg, args, bot)
 }, {
@@ -354,6 +415,7 @@ const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
 }, {
 	aliases: ['-s'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.tsub.description,
 	fullDescription: reply.tsub.fullDescription,
 	usage: reply.tsub.usage
@@ -364,10 +426,15 @@ const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => 
 }, {
 	aliases: ['-u'],
 	cooldown: 5000,
+	requirements.custom: hasUnbannedAccount,
 	description: reply.tunsub.description,
 	fullDescription: reply.tunsub.fullDescription,
 	usage: reply.tunsub.usage
 })
+
+/////////////////////////////////////////////////////////////////////
+//SPOTIFY                                                         //
+///////////////////////////////////////////////////////////////////
 
 const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription, {
 
@@ -410,6 +477,10 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, 
 	usage: reply.playlist.usage
 })
 
+/////////////////////////////////////////////////////////////////////
+//WEATHER                                                         //
+///////////////////////////////////////////////////////////////////
+
 const weatherCmd = bot.registerCommand('weather', (msg, args) => {
 	weather.getWeather(msg, args, bot)
 }, {
@@ -425,10 +496,15 @@ const forecastCmd = bot.registerCommand('forecast', (msg, args) => {
 	usage: reply.weather.usage
 })
 
+/////////////////////////////////////////////////////////////////////
+//NOTES                                                           //
+///////////////////////////////////////////////////////////////////
+
 const noteToSelf = bot.registerCommand('nts', (msg, args) => {
 	notes.noteToSelf(msg, args, bot)
 }, {
 	aliases: ['note'],
+	requirements.custom: hasUnbannedAccount,
 	description: reply.note.description,
 	fullDescription: reply.note.fullDescription,
 	usage: reply.note.usage
@@ -438,6 +514,7 @@ const getNotes = bot.registerCommand('notes', (msg, args) => {
 	notes.getNotes(msg, args, bot)
 }, {
 	aliases: ['getNotes'],
+	requirements.custom: hasUnbannedAccount,
 	description: reply.notes.description,
 	fullDescription: reply.notes.fullDescription,
 	usage: reply.notes.usage
@@ -447,15 +524,21 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 	notes.unNote(msg, args, bot)
 }, {
 	aliases: ['rem'],
+	requirements.custom: hasUnbannedAccount,
 	description: reply.unnote.description,
 	fullDescription: reply.unnote.fullDescription,
 	usage: reply.unnote.usage
 })
 
+/////////////////////////////////////////////////////////////////////
+//REMINDERS                                                       //
+///////////////////////////////////////////////////////////////////
+
 const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	notes.remindMe(msg, args, bot)
 }, {
 	aliases: ['remind'],
+	requirements.custom: hasUnbannedAccount,
 	description: reply.remindMe.description,
 	fullDescription: reply.remindMe.fullDescription,
 	usage: reply.remindMe.usage
@@ -491,7 +574,7 @@ const checkReminders = async () => {
 	}
 } 
 
-setInterval(checkReminders, 2*60*1000)
+setInterval(checkReminders, 60*1000)
 
 ////////////////////////////////////////////////////////////////////
 //EXPRESS WEBHOOK HANDLER                                        //
