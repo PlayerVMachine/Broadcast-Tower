@@ -45,8 +45,8 @@ const safetyChecks = async (msg, secondID, col, bot) => {
 	let followeeHasAccount = await col.findOne({user: secondID})
 
 	if (followeeHasAccount === 0) {
-		let secondUsername = await fns.getUsername(secondID, bot)
-		bot.createMessage(msg.channel.id, f(reply.generic.UserNoAccount, msg.author.username, secondUsername))
+		let second = await bot.users.get(secondID)
+		bot.createMessage(msg.channel.id, f(reply.generic.UserNoAccount, msg.author.username, second.username))
 		return false
 	}
 
@@ -150,7 +150,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 			return	//something was wrong with the input and the user was told
 
 		//grab their username
-		let second = await fns.getUsername(secondID, bot)
+		let second = bot.users.get(secondID)
 
 		//check if they've been blocked
 		let isInBlocked = await col.findOne({user: secondID, blocked: msg.author.id})
@@ -195,7 +195,7 @@ exports.block = async(msg, args, bot, cleint) => {
 			return	//something was wrong with the input and the user was told
 
 		//grab their username
-		let second = await fns.getUsername(secondID, bot)
+		let second = await bot.users.get(secondID)
 
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
@@ -229,13 +229,13 @@ exports.unblock = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 
 		//check for undesirable conditions
-		let secondID = fns.isID(args[0])
+		let secondID = isID(args[0])
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
 
 		//grab their username
-		let second = await fns.getUsername(secondID, bot)
+		let second = await bot.users.get(secondID)
 
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
