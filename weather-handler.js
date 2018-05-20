@@ -1,6 +1,8 @@
 const weather = require('weather-js');
 const f = require('util').format
 
+const config = require('./config.json')
+
 exports.getWeather = async (msg, args, bot, client) => {
   const col = client.db(config.db).collection('Users')
   let usee = await col.findOne({user: msg.author.id})
