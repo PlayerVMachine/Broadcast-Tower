@@ -395,7 +395,7 @@ exports.setColor = async (msg, args, bot, client) => {
 		}
 
 		//check is usee is premium
-		if (usee.premium === 0) {
+		if (usee.premium < 1) {
 			bot.createMessage(msg.channel.id, f(reply.color.premium, msg.author.username))
 			return
 		}
