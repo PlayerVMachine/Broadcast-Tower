@@ -635,7 +635,14 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, 
 ///////////////////////////////////////////////////////////////////
 
 const weatherCmd = bot.registerCommand('weather', (msg, args) => {
-	weather.getWeather(msg, args, bot, client)
+	try {
+		let client = await MongoClient.connect(url)
+		weather.getWeather(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['w']
 })

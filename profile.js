@@ -182,7 +182,7 @@ exports.setWeather = async (msg, args, bot, client) => {
 
 	let usee = await col.findOne({user: msg.author.id})
 	if (args.length === 0) {
-		bot.createMessage(msg.channel.id, f(reply.tagline.current, msg.author.username, usee.weather))
+		bot.createMessage(msg.channel.id, f(reply.defWeather.current, msg.author.username, JSON.stringify(usee.weather)))
 		return
 	}
 
@@ -201,9 +201,9 @@ exports.setWeather = async (msg, args, bot, client) => {
 	//findone and update their tagline
 	let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {weather:{location:location, deg:degree}}})
 	if (update.ok === 1) {
-		bot.createMessage(msg.channel.id, f(reply.weather.success, msg.author.username, location, degree))
+		bot.createMessage(msg.channel.id, f(reply.defWeather.success, msg.author.username, location, degree))
 	} else {
-		bot.createMessage(msg.channel.id, f(reply.weather.error, msg.author.username, location, degree))
+		bot.createMessage(msg.channel.id, f(reply.defWeather.error, msg.author.username, location, degree))
 	}
 }
 //edit bio

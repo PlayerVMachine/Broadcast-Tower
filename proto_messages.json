@@ -138,6 +138,7 @@
 		"usage":"`b.edit private y|n`"
 	},
 	"defWeather" : {
+		"current":"%s your weather preferences are set to: %s",
 		"success":"%s your default weather prefences are now %s and %s",
 		"error":"%s could not set your default weather prefences to %s and %s",
 		"description":"Sets your default location and degree preference",
