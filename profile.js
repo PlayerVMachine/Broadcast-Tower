@@ -199,7 +199,7 @@ exports.setWeather = async (msg, args, bot, client) => {
     }
 
 	//findone and update their tagline
-	let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {weather:{location:location, deg:degree}}}})
+	let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {weather:{location:location, deg:degree}}})
 	if (update.ok === 1) {
 		bot.createMessage(msg.channel.id, f(reply.weather.success, msg.author.username, location, degree))
 	} else {
