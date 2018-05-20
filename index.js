@@ -137,7 +137,8 @@ const ban = bot.registerCommand('ban', async (msg, args) => {
 		amgmt.heckingBan(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
-		bot.createMessage(config.logChannelID, err.message)	
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
 	}
 }, {
 	aliases: ['heck'],
@@ -151,12 +152,28 @@ const unban = bot.registerCommand('unban', async (msg, args) => {
 		amgmt.unBan(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
-		bot.createMessage(config.logChannelID, err.message)	
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
 	}
 }, {
 	aliases: ['unheck'],
 	requirements: {userIDs: [config.creator]},
 	hidden: true
+})
+
+const premium = bot.registerCommand('setPrem', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setPremium(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))	
+	}
+}, {
+	aliases: ['sp'],
+	requirements: {userIDs: [config.creator]},
+	hidden: true	
 })
 
 /////////////////////////////////////////////////////////////////////
@@ -210,6 +227,7 @@ const createAccount = bot.registerCommand('create', async (msg, args) => {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	aliases: ['signup', 'register'],
@@ -226,6 +244,7 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	aliases: ['delete', 'rm', 'del'],
@@ -237,8 +256,14 @@ const deleteAccount = bot.registerCommand('close', async (msg, args) => {
 })
 
 const followUser = bot.registerCommand('follow', async (msg, args) => { 
-	//call function to follow a user
-	act.follow(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		act.follow(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['fol'],
 	argsRequired: true,
@@ -250,8 +275,14 @@ const followUser = bot.registerCommand('follow', async (msg, args) => {
 })
 
 const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
-	//command to unfollow user
-	act.unfollow(msg, args ,bot)
+	try {
+		let client = await MongoClient.connect(url)
+		act.unfollow(msg, args ,bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['unfol', 'uf'],
 	argsRequired: true,
@@ -263,8 +294,14 @@ const unfollowUser = bot.registerCommand('unfollow', async (msg, args) => {
 })
 
 const post = bot.registerCommand('post', async (msg, args) => {
-	//function to send posts
-	act.post(msg, args, bot, q)
+	try {
+		let client = await MongoClient.connect(url)
+		act.post(msg, args, bot, q, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['cast', 'send'],
 	cooldown: 5000,
@@ -275,8 +312,14 @@ const post = bot.registerCommand('post', async (msg, args) => {
 })
 
 const blockUser = bot.registerCommand('block', async (msg, args) => {
-	//block a user
-	act.block(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		act.block(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['bl'],
 	argsRequired: true,
@@ -288,8 +331,14 @@ const blockUser = bot.registerCommand('block', async (msg, args) => {
 })
 
 const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
-	//unblock a user
-	act.unblock(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		act.unblock(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['unb'],
 	argsRequired:true,
@@ -300,9 +349,15 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 	usage:reply.unblock.usage
 })
 
-const edit = bot.registerCommand('edit', (msg, args) => {
-	//edit
-	prof.edit(msg, edit, bot)
+const edit = bot.registerCommand('edit', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		prof.edit(msg, edit, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	cooldown: 2000,
 	requirements: {custom: hasUnbannedAccount},
@@ -313,8 +368,14 @@ const edit = bot.registerCommand('edit', (msg, args) => {
 
 
 const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
-	//
-	prof.setTagline(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setTagline(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-t'],
 	cooldown: 5000,
@@ -325,8 +386,14 @@ const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 })
 
 const editBio = edit.registerSubcommand('bio', async (msg, args) => {
-	//
-	prof.setBio(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setBio(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-b'],
 	cooldown: 5000,
@@ -337,8 +404,14 @@ const editBio = edit.registerSubcommand('bio', async (msg, args) => {
 })
 
 const editMature = edit.registerSubcommand('mature', async (msg, args) => {
-	//
-	prof.setMature(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setMature(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-m'],
 	cooldown: 5000,
@@ -349,8 +422,14 @@ const editMature = edit.registerSubcommand('mature', async (msg, args) => {
 })
 
 const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
-	//
-	prof.setDND(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setDND(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-d'],
 	cooldown: 5000,
@@ -361,8 +440,14 @@ const editDND = edit.registerSubcommand('dnd', async (msg, args) => {
 })
 
 const editColor = edit.registerSubcommand('color', async (msg, args) => {
-	//
-	prof.setColor(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setColor(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-c'],
 	cooldown: 2000,
@@ -373,8 +458,14 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 })
 
 const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
-	//
-	prof.setPrivate(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setPrivate(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['-p'],
 	cooldown: 2000,
@@ -384,11 +475,35 @@ const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 	usage: reply.private.usage
 })
 
-const view = bot.registerCommand('view', async (msg, args) => {
-	//
-	prof.view(msg, args, bot)
+const editWeather = edit.registerSubcommand('weather', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setWeather(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
-	aliases: ['profile', 'vw'],
+	aliases: ['-w'],
+	cooldown: 2000,
+	requirements: {custom: hasUnbannedAccount},
+	description: reply.defWeather.description,
+	fullDescription: reply.defWeather.fullDescription,
+	usage: reply.defWeather.usage
+})
+
+const view = bot.registerCommand('view', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		prof.view(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['profile'],
 	cooldown: 5000,
 	description: reply.view.description,
 	fullDescription: reply.view.fullDescription,
@@ -396,8 +511,14 @@ const view = bot.registerCommand('view', async (msg, args) => {
 })
 
 const list = bot.registerCommand('list', async (msg, args) => {
-	//
-	prof.list(msg, args, bot)
+	try {
+		let client = await MongoClient.connect(url)
+		prof.list(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['ls', 'li'],
 	cooldown: 2000,
@@ -514,7 +635,7 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, 
 ///////////////////////////////////////////////////////////////////
 
 const weatherCmd = bot.registerCommand('weather', (msg, args) => {
-	weather.getWeather(msg, args, bot)
+	weather.getWeather(msg, args, bot, client)
 }, {
 	aliases: ['w']
 })

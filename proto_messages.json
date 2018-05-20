@@ -9,6 +9,7 @@
 		"cannotDoToBots":"%s, this action is not supported on bots!",
 		"cannotDoToSelf":"%s, this action is not supported on yourself!",
 		"userUnknown":"%s, The user %s has never tuned into the Tower's singals.",
+		"error":"Sorry %s, a fuse blew somewhere! Try again later, if this message persists please report it.",
 		"hello":"**Hi %s!**\n\nWelcome to your DMs with the Broadcast Tower, this is where you'll send/recieve most messages with the Tower. Unlike most bots you don't need to invite the Tower to your server to use it! You just need to share a server with the Tower to create your account.\n\n**Social Functions**\n__Post__: send a post to your followers! (Profanity is not allowed by default but you can change that with edit)\n__Follow__: follow a user to recieve their posts!\n__Edit__: add a tagline and bio to your profile, set your account to private\n__View__: check out a users profile!\nOf course unfollow, block and unblock are available as well, be sure to report suspected abuse!\n\n**Notification Functions**\n__Twitch__: get stream notifications for your favourite streamers!\n__Spotify__: get notified of new releases every Friday!\n__Weather__: get the daily forecast delivered to your DMs every day!\n__Reminders__: set reminders for yourself for anytime in the future!\n\n**Utility Functions**\n__Note__: make notes for yourself the Tower will keep track of them in your pins\n\nFor a complete list of commands do `b.help`. These are just the currently available features, more are planned and if you have any suggestions please feel free to make them!"
 	},
 	"ping" : {
@@ -25,8 +26,6 @@
 		"usage":"`b.create`"
 	},
 	"close" : {
-		"logSuccess":": Account deleted for %s",
-		"logError":": Error occured deleting account for %s",
 		"success":"%s, your account has been closed! The airwaves will miss your broadcasts.",
 		"error":"%s, there was an error closing your account, please try again later.",
 		"confirmation":"%s, are you sure you want to close your account? Confirm with: `%d`, cancel with `cancel`",
@@ -40,7 +39,6 @@
 	"follow" : {
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
-		"profMismatch":"%s, your profanity preference is set to no and %s's is set to yes, you cannot follow them!",
 		"request":"You recieved a follow request from %s! Approve with :white_check_mark: Deny with :x:",
 		"privDeny":"Follow request from %s declined!",
 		"privAck":"Follow request from %s accepted!",
@@ -120,6 +118,7 @@
 		"unexpected":"%s, color must be a 6 hex-digit string like `#ff0000` not: %s",
 		"success":"%s, your embed color is now set to `%s`.",
 		"error":"%s, there was an error setting your embed preference.",
+		"color":"%s, you need to be a Patreon supportor to change your embed color.",
 		"description":"Set your embed color",
 		"fullDescription":"Set your embed color",
 		"usage":"`b.edit color #ff0000`"
@@ -137,6 +136,13 @@
 		"description":"Set your private account preference",
 		"fullDescription":"Set your private account preference i.e. can people add you without confirmation?",
 		"usage":"`b.edit private y|n`"
+	},
+	"defWeather" : {
+		"success":"%s your default weather prefences are now %s and %s",
+		"error":"%s could not set your default weather prefences to %s and %s",
+		"description":"Sets your default location and degree preference",
+		"fullDescription":"Sets the location and degree preference for when you use weather commands without any arguments.",
+		"usage":"`b.edit -w <location> -d <F|C>`"
 	},
 	"clearDMs" : {
 		"description":"Clears up to 50 posts from the bot in DMs",

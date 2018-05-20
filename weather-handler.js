@@ -1,22 +1,31 @@
 const weather = require('weather-js');
 const f = require('util').format
 
-exports.getWeather = (msg, args, bot) => {
+exports.getWeather = async (msg, args, bot, client) => {
   try {
+
+    const col = client.db(config.db).collection('Users')
+    let usee = await col.findOne({user: msg.author.id})
+
     if (args.length === 0) {
-      bot.createMessage(msg.channel.id, 'please enter a location and degree type')
-      return
-    }
-
-    let command = args.join(' ')
-    let location = command.split('-d')[0].trim()
-
-    let degree = 'F'
-    if (command.split('-d')[1] !== undefined) {
-      if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
-        degree = command.split('-d')[1].trim().toUpperCase()
+      if (usee === null || usee.weather.location === '') {
+        bot.createMessage(msg.channel.id, 'please enter a location and degree type')
+        return
       } else {
-        degree ='F'
+        let location = usee.weather.location
+        let degree = usee.weather.deg
+      }
+    } else {
+      let command = args.join(' ')
+      let location = command.split('-d')[0].trim()
+
+      let degree = 'F'
+      if (command.split('-d')[1] !== undefined) {
+        if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
+          degree = command.split('-d')[1].trim().toUpperCase()
+        } else {
+          degree ='F'
+        }
       }
     }
 

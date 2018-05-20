@@ -1,18 +1,9 @@
 // npm requires
-const MongoClient = require('mongodb').MongoClient
 const f = require('util').format
 
 // project files required
 const config = require('./config.json')
 const reply = require('./proto_messages.json')
-const fns = require('./utilities.js')
-
-// mongodb login
-const user = encodeURIComponent(config.user)
-const password = encodeURIComponent(config.pass)
-const authMechanism = 'DEFAULT'
-
-const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
 exports.create = async (msg, bot, client) => {
 	const col = client.db(config.db).collection('Users')
