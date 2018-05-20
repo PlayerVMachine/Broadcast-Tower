@@ -436,8 +436,8 @@ exports.list = async (msg, args, bot, client) => {
 		} else {
 			for (var usr in usee[args[0]]) {
 				let user = bot.users.get(usee[args[0]][usr])
-				console.log(user)
-				list.push(user.username)
+				if(user !== undefined)
+					list.push(user.username)
 			}
 		}
 
