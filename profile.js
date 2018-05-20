@@ -8,6 +8,8 @@ const reply = require('./proto_messages.json')
 
 //regex
 const isHex = new RegExp(/^#[0-9A-F]{6}$/, 'i')
+const matchUserMention = new RegExp('<@[0-9]{18}>')
+const matchUserString = new RegExp('^[0-9]{18}')
 
 const isID = (arg) => {
 	if (matchUserString.test(arg)) { 
