@@ -5,7 +5,6 @@ const f = require('util').format
 // project files required
 const config = require('./config.json')
 const reply = require('./proto_messages.json')
-const fns = require('./utilities.js')
 
 // mongodb login
 const user = encodeURIComponent(config.user)
@@ -83,7 +82,7 @@ exports.help = async (msg, args, bot) => {
 
 
 	} catch (err) {
-		fns.log(f(reply.generic.logError, err), bot)
+		console.log(err)
 	}
 }
 
