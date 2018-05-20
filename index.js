@@ -66,7 +66,6 @@ const hasUnbannedAccount = async (msg) => {
 
 	//if user exists and is not banned they may use the command
 	return true
-
 } 
 
 /////////////////////////////////////////////////////////////////////
@@ -647,8 +646,15 @@ const weatherCmd = bot.registerCommand('weather', async (msg, args) => {
 	aliases: ['w']
 })
 
-const forecastCmd = bot.registerCommand('forecast', (msg, args) => {
-	weather.getForecast(msg, args, bot)
+const forecastCmd = bot.registerCommand('forecast', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		weather.getForecast(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
 }, {
 	aliases: ['f'],
 	description: reply.weather.description,

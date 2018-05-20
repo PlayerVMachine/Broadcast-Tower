@@ -4,68 +4,84 @@ const f = require('util').format
 const config = require('./config.json')
 
 exports.getWeather = async (msg, args, bot, client) => {
-  const col = client.db(config.db).collection('Users')
-  let usee = await col.findOne({user: msg.author.id})
+  try {
+    const col = client.db(config.db).collection('Users')
+    let usee = await col.findOne({user: msg.author.id})
 
-  let location = 'Montreal, QC'
-  let degree = 'F'
+    let location = 'Montreal, QC'
+    let degree = 'F'
 
-  if (args.length === 0) {
-    if (usee === null || usee.weather.location === '') {
-      bot.createMessage(msg.channel.id, 'please enter a location and degree type')
-      return
-    } else {
-      location = usee.weather.location
-      degree = usee.weather.deg
-    }
-  } else {
-    let command = args.join(' ')
-    location = command.split('-d')[0].trim()
-
-    if (command.split('-d')[1] !== undefined) {
-      if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
-        degree = command.split('-d')[1].trim().toUpperCase()
+    if (args.length === 0) {
+      if (usee === null || usee.weather.location === '') {
+        bot.createMessage(msg.channel.id, 'please enter a location and degree type')
+        return
       } else {
-        degree ='F'
+        location = usee.weather.location
+        degree = usee.weather.deg
+      }
+    } else {
+      let command = args.join(' ')
+      location = command.split('-')[0].trim()
+
+      if (command.split('-')[1] !== undefined) {
+        if (command.split('-')[1].trim().toUpperCase() === 'C' || command.split('-')[1].trim().toUpperCase() === 'F') {
+          degree = command.split('-')[1].trim().toUpperCase()
+        } else {
+          degree ='F'
+        }
       }
     }
+
+    weather.find({search: location, degreeType: degree}, (err, result) => {
+      if(err) {
+        bot.createMessage(msg.channel.id, err)
+        return
+      }
+
+      let embed = {
+        embed: {
+            author: {name: f("Current Weather in %s", result[0].location.name), icon_url: result[0].current.imageUrl},
+            color: parseInt('0x4286f4', 16),
+            description: f("Temperature: **%s**\nFeels like: **%s**\nSky: **%s**\nWind: **%s**\n", result[0].current.temperature + degree, result[0].current.feelslike + degree, result[0].current.skytext, result[0].current.winddisplay),
+            footer: {text:'Part of the Broadcast Tower Integration Network'}
+        }
+      }
+
+      bot.createMessage(msg.channel.id, embed)
+    })
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
   }
-
-  weather.find({search: location, degreeType: degree}, (err, result) => {
-    if(err) {
-      bot.createMessage(msg.channel.id, err)
-      return
-    }
-
-    let embed = {
-      embed: {
-          author: {name: f("Current Weather in %s", result[0].location.name), icon_url: result[0].current.imageUrl},
-          color: parseInt('0x4286f4', 16),
-          description: f("Temperature: **%s**\nFeels like: **%s**\nSky: **%s**\nWind: **%s**\n", result[0].current.temperature + degree, result[0].current.feelslike + degree, result[0].current.skytext, result[0].current.winddisplay),
-          footer: {text:'Part of the Broadcast Tower Integration Network'}
-      }
-    }
-
-    bot.createMessage(msg.channel.id, embed)
-  })
 }
 
-exports.getForecast = (msg, args, bot) => {
+exports.getForecast = async (msg, args, bot, client) => {
   try {
-    if (args.length === 0) {
-      bot.createMessage(msg.channel.id, 'please enter a location and degree type')
-      return
-    }
+    const col = client.db(config.db).collection('Users')
+    let usee = await col.findOne({user: msg.author.id})
 
-    let command = args.join(' ')
-    let location = command.split('-d')[0].trim()
-
+    let location = 'Montreal, QC'
     let degree = 'F'
-    if (command.split('-d')[1] !== undefined) {
-      if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
-        degree = command.split('-d')[1].trim()
+
+    if (args.length === 0) {
+      if (usee === null || usee.weather.location === '') {
+        bot.createMessage(msg.channel.id, 'please enter a location and degree type')
+        return
       } else {
-        degree ='F'
+        location = usee.weather.location
+        degree = usee.weather.deg
+      }
+    } else {
+      let command = args.join(' ')
+      location = command.split('-')[0].trim()
+
+      if (command.split('-')[1] !== undefined) {
+        if (command.split('-')[1].trim().toUpperCase() === 'C' || command.split('-')[1].trim().toUpperCase() === 'F') {
+          degree = command.split('-')[1].trim().toUpperCase()
+        } else {
+          degree ='F'
+        }
       }
     }
 

@@ -138,12 +138,12 @@
 		"usage":"`b.edit private y|n`"
 	},
 	"defWeather" : {
-		"current":"%s your weather preferences are set to: %s",
+		"current":"%s your weather preferences are set to: %s in %s",
 		"success":"%s your default weather prefences are now %s and %s",
 		"error":"%s could not set your default weather prefences to %s and %s",
 		"description":"Sets your default location and degree preference",
 		"fullDescription":"Sets the location and degree preference for when you use weather commands without any arguments.",
-		"usage":"`b.edit -w <location> -d <F|C>`"
+		"usage":"`b.edit -w <location> -<F|C>`"
 	},
 	"clearDMs" : {
 		"description":"Clears up to 50 posts from the bot in DMs",
@@ -220,12 +220,12 @@
 	"weather" : {
 		"description":"Get the current weather for a given location.",
 		"fullDescription":"Get the current weather for a given location, use `-d C` to set degrees to celsius",
-		"usage":"`b.weather <place>` or `b.weather <place> -d C`"
+		"usage":"`b.weather <place>` or `b.weather <place> -C`"
 	},
 	"forecast" : {
 		"description":"Get a 3 day forecast for a given location.",
 		"fullDescription":"Get a 3 day forecast for a given location, use `-d C` to set degrees to celsius",
-		"usage":"`b.forecast <place>` or `b.forecast <place> -d C`"
+		"usage":"`b.forecast <place>` or `b.forecast <place> -C`"
 	},
 	"note" : {
 		"description":"Make a note to yourself!",
