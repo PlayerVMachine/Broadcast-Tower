@@ -72,7 +72,7 @@ exports.follow = async(msg, args, bot, client) => {
 
 		//already following
 		let isInList = usee.following.includes(secondID)
-		if (isInList !== null) {
+		if (isInList) {
 			bot.createMessage(msg.channel.id, f(reply.follow.already, msg.author.username, second.username))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$addToSet: {following: msg.author.id}})
 			return
@@ -80,7 +80,7 @@ exports.follow = async(msg, args, bot, client) => {
 
 		//you blocked them!
 		let isBlocked = usee.blocked.includes(secondID)
-		if (isBlocked !== null) {
+		if (isBlocked) {
 			bot.createMessage(msg.channel.id, f(reply.follow.followeeBlocked, msg.author.username, second.username))
 			return
 		}
@@ -161,7 +161,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 
 		//is not in list
 		let isInList = usee.following.includes(secondID)
-		if (isInList === null) {
+		if (!isInList) {
 			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 			return
@@ -199,7 +199,7 @@ exports.block = async(msg, args, bot, cleint) => {
 
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
-		if (isInList !== null) {
+		if (isInList) {
 			bot.createMessage(msg.channel.id, f(reply.block.already, msg.author.username, second))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 			let beSurex2 = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
@@ -239,7 +239,7 @@ exports.unblock = async(msg, args, bot, client) => {
 
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
-		if (isInList === null) {
+		if (!isInList) {
 			bot.createMessage(msg.channel.id, f(reply.unblock.notBlocked, msg.author.username, second))
 			return
 		}
