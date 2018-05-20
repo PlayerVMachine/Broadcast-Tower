@@ -7,19 +7,21 @@ exports.getWeather = async (msg, args, bot, client) => {
   const col = client.db(config.db).collection('Users')
   let usee = await col.findOne({user: msg.author.id})
 
+  let location = 'Montreal, QC'
+  let degree = 'F'
+
   if (args.length === 0) {
     if (usee === null || usee.weather.location === '') {
       bot.createMessage(msg.channel.id, 'please enter a location and degree type')
       return
     } else {
-      let location = usee.weather.location
-      let degree = usee.weather.deg
+      location = usee.weather.location
+      degree = usee.weather.deg
     }
   } else {
     let command = args.join(' ')
-    let location = command.split('-d')[0].trim()
+    location = command.split('-d')[0].trim()
 
-    let degree = 'F'
     if (command.split('-d')[1] !== undefined) {
       if (command.split('-d')[1].trim().toUpperCase() === 'C' || command.split('-d')[1].trim().toUpperCase() === 'F') {
         degree = command.split('-d')[1].trim().toUpperCase()
