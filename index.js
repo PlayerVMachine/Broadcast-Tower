@@ -7,6 +7,7 @@ const util = require('util')
 const express = require('express')
 const bodyParser = require('body-parser')
 const TwitchHelix = require('twitch-helix')
+const pc = require('swearjar')
 
 //project module imports
 const config = require('./config.json')
@@ -106,6 +107,9 @@ const q = new Queue(async function (data, cb) {
 		longQ.push(data)
 		cb(null)
 	} else if (!user.dnd) {
+		if (!user.mature) {
+			data.msg.description = pc.censor(data.msg.description)
+		}
 		bot.createMessage(data.channelID, data.msg)
 		cb(null)
 	}

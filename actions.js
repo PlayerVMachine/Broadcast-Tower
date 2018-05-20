@@ -5,7 +5,6 @@ const pc = require('swearjar')
 // project files required
 const config = require('./config.json')
 const reply = require('./proto_messages.json')
-const fns = require('./utilities.js')
 
 //regex
 const nonPrintingChars = new RegExp(/[\x00-\x09\x0B\x0C\x0E-\x1F\u200B]/g)
@@ -280,18 +279,24 @@ exports.post = async (msg, args, bot, q, client) => {
 			return
 		}
 
-		//swearjar
-		let isRude = pc.profane(message)
-		if (isRude && !usee.mature) {
-			bot.createMessage(msg.channel.id, f(reply.post.noProfanity, msg.author.username))
-			return
-		}
-
 		let sender = await col.findOne({user: msg.author.id})
 		let followers = sender.followers
 		let resChannel = sender.sendTo
 
-		let post = fns.postEmbed(message, msg.author)
+		let color = parseInt(config.color, 16)
+		if (usee.premium < 0) {
+			color = parseInt(usee.eColor, 16)
+		}
+
+		let embed = {
+    		embed: {
+    			title: 'New broadcast from: ' + msg.author.username, // Title of the embed
+      			description: message,
+      			author: { msg.author.username, icon_url: msg.author.avatarURL },
+      			color: color,
+      			footer: { text: 'Report abuse to Hal' }
+    		}
+    	}
 
 		const callback = async (message, emoji, userID) => {
 			if(userID === msg.author.id &&  emoji.name === '❌') {
@@ -317,7 +322,7 @@ exports.post = async (msg, args, bot, q, client) => {
 			for (i = 0; i < followers.length; i++) {
 				let recipient = await col.findOne({user: followers[i]})
 				channelID = recipient.sendTo
-				q.push({channelID:channelID, msg:post, recipient:recipient.user})
+				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
 			}
 			if (followers.length > 0)
 				q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
