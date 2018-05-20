@@ -95,6 +95,7 @@ exports.follow = async(msg, args, bot, client) => {
 		//follow a user whose account is private
 		let secondUsee = await col.findOne({user: secondID})
 		if (secondUsee.private) {
+			bot.createMessage(msg.channel.id, f(reply.follow.sent, msg.author.id, second.username))
 			let folReq = await bot.createMessage(secondUsee.sendTo, f(reply.follow.request, msg.author.username))
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '❌')
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '✅')
@@ -155,14 +156,14 @@ exports.unfollow = async(msg, args, bot, client) => {
 		//check if they've been blocked
 		let isInBlocked = await col.findOne({user: secondID, blocked: msg.author.id})
 		if (isInBlocked !== null) {
-			bot.createMessage(msg.channel.id, f(reply.unfollow.blocked, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unfollow.blocked, msg.author.username, second.username))
 			return
 		}
 
 		//is not in list
 		let isInList = usee.following.includes(secondID)
 		if (!isInList) {
-			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unfollow.notFollowing, msg.author.username, second.username))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 			return
 		}
@@ -171,9 +172,9 @@ exports.unfollow = async(msg, args, bot, client) => {
 		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
 		let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 		if (remFromFollowers.ok === 1 && remFromFollowing.ok) {
-			bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unfollow.success, msg.author.username, second.username))
 		} else {
-			bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unfollow.error, msg.author.username, second.username))
 		}
 	} catch (err) {
 		console.log(err)
@@ -200,7 +201,7 @@ exports.block = async(msg, args, bot, cleint) => {
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
 		if (isInList) {
-			bot.createMessage(msg.channel.id, f(reply.block.already, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.block.already, msg.author.username, second.username))
 			let beSure = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id}})
 			let beSurex2 = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID}})
 			return
@@ -211,9 +212,9 @@ exports.block = async(msg, args, bot, cleint) => {
 		let remFromFollowers = await col.findOneAndUpdate({user: secondID}, {$pull: {followers: msg.author.id, following: msg.author.id}})
 		let remFromFollowing = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {following: secondID, followers: secondID}})
 		if (blocked.ok === 1 && remFromFollowing.ok === 1 && remFromFollowers.ok === 1) {
-			bot.createMessage(msg.channel.id, f(reply.block.success, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.block.success, msg.author.username, second.username))
 		} else {
-			bot.createMessage(msg.channel.id, f(reply.block.error, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.block.error, msg.author.username, second.username))
 		}
 	} catch (err) {
 		console.log(err)
@@ -240,16 +241,16 @@ exports.unblock = async(msg, args, bot, client) => {
 		//is in list
 		let isInList = usee.blocked.includes(secondID)
 		if (!isInList) {
-			bot.createMessage(msg.channel.id, f(reply.unblock.notBlocked, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unblock.notBlocked, msg.author.username, second.username))
 			return
 		}
 
 		//unblock them
 		let remFromBlocked = await col.findOneAndUpdate({user: msg.author.id}, {$pull: {blocked: secondID}})
 		if (remFromBlocked.ok === 1) {
-			bot.createMessage(msg.channel.id, f(reply.unblock.success, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unblock.success, msg.author.username, second.username))
 		} else {
-			bot.createMessage(msg.channel.id, f(reply.unblock.error, msg.author.username, second))
+			bot.createMessage(msg.channel.id, f(reply.unblock.error, msg.author.username, second.uaername))
 		}
 	} catch (err) {
 		console.log(err)
