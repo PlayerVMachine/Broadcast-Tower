@@ -108,7 +108,7 @@ const q = new Queue(async function (data, cb) {
 		cb(null)
 	} else if (!user.dnd) {
 		if (!user.mature) {
-			data.msg.description = pc.censor(data.msg.description)
+			data.msg.embed.description = pc.censor(data.msg.embed.description)
 		}
 		bot.createMessage(data.channelID, data.msg)
 		cb(null)
