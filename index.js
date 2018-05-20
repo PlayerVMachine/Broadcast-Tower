@@ -634,7 +634,7 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, 
 //WEATHER                                                         //
 ///////////////////////////////////////////////////////////////////
 
-const weatherCmd = bot.registerCommand('weather', (msg, args) => {
+const weatherCmd = bot.registerCommand('weather', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
 		weather.getWeather(msg, args, bot, client)
