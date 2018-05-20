@@ -394,7 +394,7 @@ exports.list = async (msg, args, bot, client) => {
 	bot.createMessage(msg.channel.id, embed)
 }
 
-exports.setPremium = (msg, args, bot, client) => {
+exports.setPremium = async (msg, args, bot, client) => {
 	const col = client.db(config.db).collection('Users')
 
 	let secondID = isID(args[0])
