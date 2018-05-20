@@ -292,7 +292,7 @@ exports.post = async (msg, args, bot, q, client) => {
     		embed: {
     			title: 'New broadcast from: ' + msg.author.username, // Title of the embed
       			description: message,
-      			author: { msg.author.username, icon_url: msg.author.avatarURL },
+      			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
       			footer: { text: 'Report abuse to Hal' }
     		}
