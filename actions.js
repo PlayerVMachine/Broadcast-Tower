@@ -290,7 +290,7 @@ exports.post = async (msg, args, bot, q, client) => {
 		}
 
 		//msg id for searching
-		let rndBytes = crypto.randomBytes(8)
+		let rndBytes = crypto.randomBytes(4)
 		let msgid = rndBytes.toString('hex')
 
 		let embed = {
@@ -377,17 +377,22 @@ exports.reply = async (msg, args, bot, q, client) => {
 			color = parseInt(usee.eColor, 16)
 		}
 
-		message = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
-			f('**%s**: %s', msg.author.username, args.join(' '))
+		if (message.embeds[0].author.name !== msg.author.username || !message.embeds[0].description.indexOf(message.embeds[0].author.name)) {
+			replyMessage = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
+				f('**%s**: %s', msg.author.username, args.join(' '))
+		} else {
+			replyMessage = f('%s\n', message.embeds[0].description) +
+				f('**%s**: %s', msg.author.username, args.join(' '))
+		}
 
 		//msg id for searching
-		let rndBytes = crypto.randomBytes(6)
+		let rndBytes = crypto.randomBytes(4)
 		let msgid = rndBytes.toString('hex')
 
 		let embed = {
     		embed: {
     			title: 'New reply from: ' + msg.author.username,
-      			description: message,
+      			description: replyMessage,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
       			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + msgid}
@@ -399,9 +404,6 @@ exports.reply = async (msg, args, bot, q, client) => {
 				channelID = recipient.sendTo
 				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
 			}
-		if (replyFollowers.length > 0)
-			q.push({channelID:msg.channel.id, msg:f(reply.post.sentConfirm, message), recipient:''})
-
 
 	} catch (err) {
 		console.log(err)
