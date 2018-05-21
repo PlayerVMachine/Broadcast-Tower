@@ -352,9 +352,10 @@ exports.reply = async (msg, args, bot, q, client) => {
 			if (messages[i].embeds.length > 0) {
 				if (messages[i].embeds[0].footer !== undefined) {
 					let foot = messages[i].embeds[0].footer.split(' ')
-					if(foot.includes(args[0]))
-						let message = messages[i]
+					if(foot.includes(args[0])) {
+						message = messages[i]
 						break
+					}
 				}
 			}
 		}
