@@ -1,6 +1,7 @@
 // npm requires
 const f = require('util').format
 const pc = require('swearjar')
+const crypto = require('crypto')
 
 // project files required
 const config = require('./config.json')
@@ -288,13 +289,17 @@ exports.post = async (msg, args, bot, q, client) => {
 			color = parseInt(usee.eColor, 16)
 		}
 
+		//msg id for searching
+		let rndBytes = crypto.randomBytes(8)
+		let msgid = rndBytes.toString('hex')
+
 		let embed = {
     		embed: {
     			title: 'New broadcast from: ' + msg.author.username, // Title of the embed
       			description: message,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
-      			footer: { text: 'Author id: ' + msg.author.id }
+      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + msgid}
     		}
     	}
 
@@ -340,21 +345,26 @@ exports.reply = async (msg, args, bot, q, client) => {
 		const col = client.db(config.db).collection('Users')
 		let usee = await col.findOne({user: msg.author.id})
 
-		if (args.length === 0) {
-			let messages = await msg.channel.getMessages(3)
-			bot.createMessage(msg.channel.id, messages[0].id + ' ' + messages[1].id + ' ' + messages[2].id)
-			return
-		}
-
 		//get a message
-		let message = await msg.channel.getMessage(args[0])
+		let message = undefined
+		let messages = await msg.channel.getMessages(50, msg.id)
+		for (i in messages) {
+			if (messages[i].embeds.length > 0) {
+				if (messages[i].embeds[0].footer !== undefined) {
+					let foot = messages[i].embeds[0].footer.split(' ')
+					if(foot.includes(args[0]))
+						let message = messages[i]
+						break
+				}
+			}
+		}
 
-		if (message.embeds.length === 0 || message === undefined) {
-			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or there's no post in that message.`)
+		if (message === undefined) {
+			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or the post is more than fifty messages old.`)
 			return
 		}
 
-		let senderid = message.embeds[0].footer.text.slice(11)
+		let senderid = message.embeds[0].footer.text.slice(11, 30)
 		let sender = await col.findOne({user:senderid})
 		let replyFollowers = sender.followers
 		replyFollowers.push(senderid)
@@ -368,13 +378,17 @@ exports.reply = async (msg, args, bot, q, client) => {
 		message = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
 			f('**%s**: %s', msg.author.username, args.join(' '))
 
+		//msg id for searching
+		let rndBytes = crypto.randomBytes(8)
+		let msgid = rndBytes.toString('hex')
+
 		let embed = {
     		embed: {
     			title: 'New reply from: ' + msg.author.username, // Title of the embed
       			description: message,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
-      			footer: { text: 'Author id: ' + msg.author.id  }
+      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + msgid}
     		}
     	}
 
@@ -393,3 +407,5 @@ exports.reply = async (msg, args, bot, q, client) => {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }
+
+
