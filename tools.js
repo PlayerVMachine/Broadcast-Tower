@@ -88,7 +88,11 @@ exports.help = async (msg, args, bot) => {
 				}
 			}
 
-			bot.createMessage(msg.channel.id, [ embedb, embeds, embedp, embedi, embedr] )
+			bot.createMessage(msg.channel.id, embedb)
+			bot.createMessage(msg.channel.id, embeds)
+			bot.createMessage(msg.channel.id, embedp)
+			bot.createMessage(msg.channel.id, embedi)
+			bot.createMessage(msg.channel.id, embedr)
 
 		} else if (cmds.includes(arg)) {
 			let aliases = ''

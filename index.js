@@ -583,7 +583,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 	//
 	tools.help(msg, args, bot)
 }, {
-	cooldown: 5000,
+	cooldown: 20000,
 	description: reply.help.description,
 	fullDescription: reply.help.fullDescription,
 	usage: reply.help.usage
