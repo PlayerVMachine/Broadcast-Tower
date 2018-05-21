@@ -347,14 +347,13 @@ exports.reply = async (msg, args, bot, client) => {
 
 		//get a message
 		let message = await msg.channel.getMessage(args[0])
-		console.log(message)
 
 		if (message.embeds.length === 0 || message === undefined) {
 			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or there's no post in that message.`)
 			return
 		}
 
-		let senderid = msg.embeds[0].footer.text.slice(12)
+		let senderid = message.embeds[0].footer.text.slice(12)
 		let sender = col.findOne({user:senderid})
 		let replyFollowers = sender.followers
 		replyFollowers.push(senderid)
