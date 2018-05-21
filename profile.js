@@ -424,8 +424,11 @@ exports.list = async (msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
 
-		if (!['following', 'followers', 'blocked'].includes(args[0])) {
-			bot.createMessage(msg.channel.id, f(reply.list.notAlist, msg.author.username, args[0]))
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.list.notAlist, msg.author.username))
+			return
+		}	else if (!['following', 'followers', 'blocked'].includes(args[0])) {
+			bot.createMessage(msg.channel.id, f(reply.list.notAlist, msg.author.username))
 			return
 		}
 

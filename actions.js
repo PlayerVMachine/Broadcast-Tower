@@ -95,7 +95,7 @@ exports.follow = async(msg, args, bot, client) => {
 		//follow a user whose account is private
 		let secondUsee = await col.findOne({user: secondID})
 		if (secondUsee.private) {
-			bot.createMessage(msg.channel.id, f(reply.follow.sent, msg.author.id, second.username))
+			bot.createMessage(msg.channel.id, f(reply.follow.sent, msg.author.username, second.username))
 			let folReq = await bot.createMessage(secondUsee.sendTo, f(reply.follow.request, msg.author.username))
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '❌')
 			bot.addMessageReaction(secondUsee.sendTo, folReq.id, '✅')
@@ -264,7 +264,6 @@ exports.post = async (msg, args, bot, q, client) => {
 		const col = client.db(config.db).collection('Users')
 		var medit
 
-		//check is usee is a user
 		let usee = await col.findOne({user: msg.author.id})
 
 		//no blank posts
@@ -328,6 +327,21 @@ exports.post = async (msg, args, bot, q, client) => {
 			if (followers.length > 0)
 				q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
 		}, 5000, remMessage.id)
+
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}
+
+exports.reply = async (msg, args, bot, client) => {
+	try {
+		const col = client.db(config.db).collection('Users')
+		var medit
+
+		//check is usee is a user
+		let usee = await col.findOne({user: msg.author.id})
 
 	} catch (err) {
 		console.log(err)

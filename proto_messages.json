@@ -39,6 +39,7 @@
 	"follow" : {
 		"FollowerBlocked":"%s, has blocked you %s, you cannot follow them!",
 		"followeeBlocked":"%s, you blocked %s, you cannot follow them!",
+		"sent":"%s, your follow request has been sent to %s",
 		"request":"You recieved a follow request from %s! Approve with :white_check_mark: Deny with :x:",
 		"privDeny":"Follow request from %s declined!",
 		"privAck":"Follow request from %s accepted!",
@@ -151,7 +152,7 @@
 		"usage":"`b.clean`"
 	},
 	"list" : {
-		"notAlist":"%s, list must be one of following, followers, blocked, not: %s",
+		"notAlist":"%s, list must be one of following, followers, or blocked",
 		"followers":"List of users following %s",
 		"following":"List of users %s is following",
 		"blocked":"List of users blocked by %s",
