@@ -21,6 +21,7 @@ exports.help = async (msg, args, bot) => {
 				cmds.push(bot.commands[cmd].label)
 		}
 
+		//for avatar in embed
 		let botUser = await bot.getSelf()
 
 		let arg = ''
@@ -28,19 +29,53 @@ exports.help = async (msg, args, bot) => {
 			arg = args[0].toLowerCase()
 		}
 
-		let commandList = []
+		let basic = [], social = [], profile = [], integrations = [], reminders = []
+		let b = ['ping', 'hello', 'start', 'invite', 'clean', 'help', 'create', 'close']
+		let s = ['follow', 'unfollow', 'post', 'reply', 'report', 'block', 'unblock']
+		let p = ['edit', 'view', 'list']
+		let i = ['twitch', 'spotify', 'weather', 'forecast']
+		let r = ['nts', 'notes', 'unnote', 'remindme']
+
 		if (args.length === 0) {
 			for (var cmd in bot.commands) {
 				if(!bot.commands[cmd].hidden) {
-					var name = f(reply.generic.bold, bot.commands[cmd].label.charAt(0).toUpperCase() + bot.commands[cmd].label.slice(1))
-					commandList.push(f(reply.help.listFormat, name, bot.commands[cmd].description))
+					if (b.includes(bot.commands[cmd].label))
+						basic.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
+					else if (s.includes(bot.commands[cmd].label))
+						social.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
+					else if (p.includes(bot.commands[cmd].label))
+						profile.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
+					else if (i.includes(bot.commands[cmd].label))
+						integrations.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
+					else if (r.includes(bot.commands[cmd].label))
+						reminders.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
 				}
 			}
 
 			let embed = {
 				embed: {
 					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
-					description: commandList.join('\n'),
+					description: basic.join('\n'),
+					color: parseInt(config.color, 16)
+				},
+				embed: {
+					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					description: social.join('\n'),
+					color: parseInt(config.color, 16)
+				},
+				embed: {
+					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					description: profile.join('\n'),
+					color: parseInt(config.color, 16)
+				},
+				embed: {
+					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					description: integrations.join('\n'),
+					color: parseInt(config.color, 16)
+				},
+				embed: {
+					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					description: reminders.join('\n'),
 					color: parseInt(config.color, 16)
 				}
 			}

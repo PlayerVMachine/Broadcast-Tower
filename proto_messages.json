@@ -147,9 +147,9 @@
 		"usage":"`b.edit -w <location> -<F|C>`"
 	},
 	"clearDMs" : {
-		"description":"Clears up to 50 posts from the bot in DMs",
-		"fullDescription":"Clears up to 50 posts from the bot in DMs",
-		"usage":"`b.clean`"
+		"description":"Clears up to x posts from the bot in DMs in the last 50 messages",
+		"fullDescription":"Clears up to x posts from the bot in DMs in the last 50 messages",
+		"usage":"`b.clean <x>`"
 	},
 	"list" : {
 		"isOneOf":"%s, list is one of following, followers, or blocked.",
