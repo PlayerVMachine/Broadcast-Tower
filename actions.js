@@ -359,6 +359,10 @@ exports.reply = async (msg, args, bot, client) => {
 		replyFollowers.push(senderid)
 
 		let replyMsg = args.shift()
+		let color = parseInt(config.color, 16)
+		if (usee.premium < 0) {
+			color = parseInt(usee.eColor, 16)
+		}
 
 		message = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
 			f('**%s**: %s', msg.author.username, args.join(' '))
