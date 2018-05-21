@@ -420,7 +420,7 @@ exports.report = async (msg, args, bot, client) => {
 		for (i in messages) {
 			if (messages[i].embeds.length > 0) {
 				if (messages[i].embeds[0].footer !== undefined) {
-					let foot = messages[i].embeds[0].footer.split(' ')
+					let foot = messages[i].embeds[0].footer.text.split(' ')
 					if(foot.includes(args[0])) {
 						message = messages[i]
 						break
