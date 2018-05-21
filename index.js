@@ -827,7 +827,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 			let embed = {
 				embed: {
-					title: '**Playing** ' + gameData.data.name + '\n **' + streamer.display_name + '** is now streaming! ' + streamData.title,
+					title: '**Playing** ' + gameData.data[0].name + '\n **' + streamer.display_name + '** is now streaming! ' + streamData.title,
 					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
