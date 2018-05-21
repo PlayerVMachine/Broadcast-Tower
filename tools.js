@@ -29,70 +29,19 @@ exports.help = async (msg, args, bot) => {
 			arg = args[0].toLowerCase()
 		}
 
-		let basic = [], social = [], profile = [], integrations = [], reminders = []
-		let b = ['ping', 'hello', 'start', 'invite', 'clean', 'help', 'create', 'close']
-		let s = ['follow', 'unfollow', 'post', 'reply', 'report', 'block', 'unblock']
-		let p = ['edit', 'view', 'list']
-		let i = ['twitch', 'spotify', 'weather', 'forecast']
-		let r = ['nts', 'notes', 'unnote', 'remindme']
+		
+		let basic = ['ping', 'hello', 'start', 'invite', 'clean', 'help', 'create', 'close']
+		let social = ['follow', 'unfollow', 'post', 'reply', 'report', 'block', 'unblock']
+		let profile = ['edit', 'view', 'list']
+		let integrations = ['twitch', 'spotify', 'weather', 'forecast']
+		let reminders = ['nts', 'notes', 'unnote', 'remindme']
 
 		if (args.length === 0) {
-			for (var cmd in bot.commands) {
-				if(!bot.commands[cmd].hidden) {
-					if (b.includes(bot.commands[cmd].label))
-						basic.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
-					else if (s.includes(bot.commands[cmd].label))
-						social.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
-					else if (p.includes(bot.commands[cmd].label))
-						profile.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
-					else if (i.includes(bot.commands[cmd].label))
-						integrations.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
-					else if (r.includes(bot.commands[cmd].label))
-						reminders.push(f(reply.help.listFormat, bot.commands[cmd].label, bot.commands[cmd].description))
-				}
-			}
+			let helpIntro = '```md\nBroadcast Tower Commands\n------------------------```\nUse `b.help <commandName>` for more detailed help'
+			let helpList = f('%s\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_',
+				helpIntro, 'Basic', basic.join(', '), 'Social', social.join(', '), 'Profile', profile.join(', '), 'Integrations', integrations.join(', '), 'Reminders', reminders.join(', '))			
 
-			let embedb = {
-				embed: {
-					author: {name: botUser.username + `'s basic commands`, icon_url: botUser.avatarURL},
-					description: basic.join('\n'),
-					color: parseInt(config.color, 16)
-				}
-			}
-			let embeds = {
-				embed: {
-					author: {name: botUser.username + `'s social commands`, icon_url: botUser.avatarURL},
-					description: social.join('\n'),
-					color: parseInt(config.color, 16)
-				}
-			}
-			let embedp = {
-				embed: {
-					author: {name: botUser.username + `'s profile commands`, icon_url: botUser.avatarURL},
-					description: profile.join('\n'),
-					color: parseInt(config.color, 16)
-				}
-			}
-			let embedi = {
-				embed: {
-					author: {name: botUser.username + `'s integrations commands`, icon_url: botUser.avatarURL},
-					description: integrations.join('\n'),
-					color: parseInt(config.color, 16)
-				}
-			}
-			let embedr = {
-				embed: {
-					author: {name: botUser.username + `'s reminder commands`, icon_url: botUser.avatarURL},
-					description: reminders.join('\n'),
-					color: parseInt(config.color, 16)
-				}
-			}
-
-			bot.createMessage(msg.channel.id, embedb)
-			bot.createMessage(msg.channel.id, embeds)
-			bot.createMessage(msg.channel.id, embedp)
-			bot.createMessage(msg.channel.id, embedi)
-			bot.createMessage(msg.channel.id, embedr)
+			bot.createMessage(msg.channel.id, helpList)
 
 		} else if (cmds.includes(arg)) {
 			let aliases = ''
