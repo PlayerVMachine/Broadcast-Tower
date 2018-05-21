@@ -710,6 +710,7 @@ const noteToSelf = bot.registerCommand('nts', (msg, args) => {
 	notes.noteToSelf(msg, args, bot)
 }, {
 	aliases: ['note'],
+	cooldown: 5000,
 	requirements: {custom: hasUnbannedAccount},
 	description: reply.note.description,
 	fullDescription: reply.note.fullDescription,
@@ -720,6 +721,7 @@ const getNotes = bot.registerCommand('notes', (msg, args) => {
 	notes.getNotes(msg, args, bot)
 }, {
 	aliases: ['getNotes'],
+	cooldown: 5000,
 	requirements: {custom: hasUnbannedAccount},
 	description: reply.notes.description,
 	fullDescription: reply.notes.fullDescription,
@@ -730,6 +732,7 @@ const unNote = bot.registerCommand('unnote', (msg, args) => {
 	notes.unNote(msg, args, bot)
 }, {
 	aliases: ['rem'],
+	cooldown: 5000,
 	requirements: {custom: hasUnbannedAccount},
 	description: reply.unnote.description,
 	fullDescription: reply.unnote.fullDescription,

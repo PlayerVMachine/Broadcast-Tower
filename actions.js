@@ -377,10 +377,10 @@ exports.reply = async (msg, args, bot, q, client) => {
 			color = parseInt(usee.eColor, 16)
 		}
 
-		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) < 1) {
+		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) !== -1) {
 			replyMessage = f('%s\n', message.embeds[0].description) +
 				f('**%s**: %s', msg.author.username, args.join(' '))
-		} else if (message.embeds[0].description.indexOf(msg.author.username) < 1) {
+		} else if (message.embeds[0].description.indexOf(msg.author.username) !== -1) {
 			replyMessage = f('%s\n', message.embeds[0].description) +
 				f('**%s**: %s', msg.author.username, args.join(' '))
 		} else {
