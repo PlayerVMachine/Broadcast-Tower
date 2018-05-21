@@ -97,13 +97,9 @@ exports.clean = async (msg, args, bot) => {
 
 	let count = parseInt(args[0])
 	while (count > 0) {
-		try {
-			if(messages[i].author.id !== msg.author.id) {
-				msg.channel.deleteMessage(messages[i].id)
-				count --
-			}
-		} catch (err) {
-			console.log(err)
+		if(messages[i].author.id !== msg.author.id) {
+			msg.channel.deleteMessage(messages[i].id)
+			count = count - 1
 		}
 	}
 }
