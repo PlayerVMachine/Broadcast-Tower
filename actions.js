@@ -361,7 +361,7 @@ exports.reply = async (msg, args, bot, client) => {
 		let replyMsg = args.shift()
 
 		message = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
-			f('**%s**: %s', msg.author.username, replyMsg.join(' '))
+			f('**%s**: %s', msg.author.username, args.join(' '))
 
 		let embed = {
     		embed: {
