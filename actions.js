@@ -347,6 +347,7 @@ exports.reply = async (msg, args, bot, client) => {
 
 		//get a message
 		let message = await msg.channel.getMessage(args[0])
+		console.log(message)
 
 		if (message.embeds.length === 0 || message === undefined) {
 			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or there's no post in that message.`)
