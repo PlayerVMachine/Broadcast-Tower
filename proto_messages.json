@@ -172,9 +172,17 @@
 		"usage":"`b.post I just got my first Chicken Royale!`"
 	},
 	"reply" : {
+		"notMsg":"Sorry either that's not a message id or the post is more than fifty messages old.",
 		"description":"Reply to one of your followers' posts",
 		"fullDescription":"Reply to one of your followers' posts",
 		"usage":"`b.reply <post id> <reply>`"
+	},
+	"report" : {
+		"notMsg":"Sorry either that's not a message id or the post is more than fifty messages old.",
+		"submitted":"Thank you, your report has been submitted!",
+		"description":"Report a post if you suspect abuse of the system.",
+		"fullDescription":"Report posts that are against Discord's ToS or against common decency",
+		"usage":"`b.report <post id> <reason>`"
 	},
 	"help" : {
 		"listFormat":"%s: %s",

@@ -332,6 +332,24 @@ const postReply = bot.registerCommand('reply', async (msg, args) => {
 	usage: reply.reply.usage
 })
 
+const report = bot.registerCommand('report', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		act.report(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	cooldown: 5000,
+	dmOnly: true,
+	requirements: {custom: hasUnbannedAccount},
+	description: reply.report.description,
+	fullDescription: report.reply.fullDescription,
+	usage: reply.report.usage
+})
+
 const blockUser = bot.registerCommand('block', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)

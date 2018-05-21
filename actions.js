@@ -361,7 +361,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 		}
 
 		if (message === undefined) {
-			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or the post is more than fifty messages old.`)
+			bot.createMessage(msg.channel.id, reply.reply.notMsg)
 			return
 		}
 
@@ -385,7 +385,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 		let embed = {
     		embed: {
-    			title: 'New reply from: ' + msg.author.username, // Title of the embed
+    			title: 'New reply from: ' + msg.author.username,
       			description: message,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
@@ -409,4 +409,41 @@ exports.reply = async (msg, args, bot, q, client) => {
 	}
 }
 
+exports.report = async (msg, args, bot, client) => {
+	try {
+		const col = client.db(config.db).collection('Users')
+		let usee = await col.findOne({user: msg.author.id})
 
+		//get a message
+		let message = undefined
+		let messages = await msg.channel.getMessages(50, msg.id)
+		for (i in messages) {
+			if (messages[i].embeds.length > 0) {
+				if (messages[i].embeds[0].footer !== undefined) {
+					let foot = messages[i].embeds[0].footer.split(' ')
+					if(foot.includes(args[0])) {
+						message = messages[i]
+						break
+					}
+				}
+			}
+		}
+
+		if (message === undefined) {
+			bot.createMessage(msg.channel.id, reply.report.notMsg)
+			return
+		}
+
+		args.shift()
+
+		msg.channel.addMessageReaction(message.id, '🚓')
+		bot.createMessage('447987469678280705', message.embeds[0])
+		bot.createMessage('447987469678280705', msg.args.join(' '))
+		bot.createMessage(msg.channel.id, reply.report.submitted)
+
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}
