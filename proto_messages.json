@@ -152,7 +152,8 @@
 		"usage":"`b.clean`"
 	},
 	"list" : {
-		"notAlist":"%s, list must be one of following, followers, or blocked",
+		"isOneOf":"List is one of following, followers, or blocked.",
+		"notAlist":"%s, list must be one of following, followers, or blocked!",
 		"followers":"List of users following %s",
 		"following":"List of users %s is following",
 		"blocked":"List of users blocked by %s",
