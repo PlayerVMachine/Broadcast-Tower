@@ -346,7 +346,7 @@ const report = bot.registerCommand('report', async (msg, args) => {
 	dmOnly: true,
 	requirements: {custom: hasUnbannedAccount},
 	description: reply.report.description,
-	fullDescription: report.reply.fullDescription,
+	fullDescription: reply.report.fullDescription,
 	usage: reply.report.usage
 })
 
