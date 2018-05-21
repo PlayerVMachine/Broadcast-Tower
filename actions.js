@@ -388,8 +388,6 @@ exports.reply = async (msg, args, bot, q, client) => {
 				f('**%s**: %s', msg.author.username, args.join(' '))
 		}
 
-		let foot = message.embeds[0].footer.text.split(' ')
-
 		let embed = {
     		embed: {
     			title: 'New reply from: ' + msg.author.username,
