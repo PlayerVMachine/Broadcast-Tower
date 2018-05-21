@@ -377,7 +377,10 @@ exports.reply = async (msg, args, bot, q, client) => {
 			color = parseInt(usee.eColor, 16)
 		}
 
-		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) < 1 || message.embeds[0].description.indexOf(msg.author.username) < 1) {
+		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) < 1) {
+			replyMessage = f('%s\n', message.embeds[0].description) +
+				f('**%s**: %s', msg.author.username, args.join(' '))
+		} else if (message.embeds[0].description.indexOf(msg.author.username) < 1) {
 			replyMessage = f('%s\n', message.embeds[0].description) +
 				f('**%s**: %s', msg.author.username, args.join(' '))
 		} else {
@@ -385,13 +388,15 @@ exports.reply = async (msg, args, bot, q, client) => {
 				f('**%s**: %s', msg.author.username, args.join(' '))
 		}
 
+		let foot = message.embeds[0].footer.text.split(' ')
+
 		let embed = {
     		embed: {
     			title: 'New reply from: ' + msg.author.username,
       			description: replyMessage,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
-      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + args[0]}
+      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + foot[foot.length -1]}
     		}
     	}
 
