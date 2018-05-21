@@ -354,6 +354,7 @@ exports.reply = async (msg, args, bot, client) => {
 		}
 
 		let senderid = message.embeds[0].footer.text.slice(12)
+		console.log(senderid)
 		let sender = await col.findOne({user:senderid})
 		let replyFollowers = sender.followers
 		replyFollowers.push(senderid)
