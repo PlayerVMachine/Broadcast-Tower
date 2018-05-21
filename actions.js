@@ -436,9 +436,10 @@ exports.report = async (msg, args, bot, client) => {
 		}
 
 		args.shift()
+		let embed = message.embeds[0]
 
 		msg.channel.addMessageReaction(message.id, '🚓')
-		bot.createMessage('447987469678280705', { message.embeds[0] })
+		bot.createMessage('447987469678280705', {embed})
 		bot.createMessage('447987469678280705', args.join(' '))
 		bot.createMessage(msg.channel.id, reply.report.submitted)
 
