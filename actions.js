@@ -184,7 +184,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 	}
 }
 
-exports.block = async(msg, args, bot, cleint) => {
+exports.block = async(msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
 
@@ -351,7 +351,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 		for (i in messages) {
 			if (messages[i].embeds.length > 0) {
 				if (messages[i].embeds[0].footer !== undefined) {
-					let foot = messages[i].embeds[0].footer.split(' ')
+					let foot = messages[i].embeds[0].footer.text.split(' ')
 					if(foot.includes(args[0])) {
 						message = messages[i]
 						break
@@ -380,7 +380,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 			f('**%s**: %s', msg.author.username, args.join(' '))
 
 		//msg id for searching
-		let rndBytes = crypto.randomBytes(8)
+		let rndBytes = crypto.randomBytes(6)
 		let msgid = rndBytes.toString('hex')
 
 		let embed = {
