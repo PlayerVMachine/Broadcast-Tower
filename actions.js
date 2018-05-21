@@ -339,8 +339,13 @@ exports.reply = async (msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
 
-		//get a message
+		if (args.length === 0) {
+			let messages = await getMessages(3)
+			bot.createMessage(msg.channel.id, messages[0].id + ' ' + messages[1].id + ' ' + messages[2].id)
+			return
+		}
 
+		//get a message
 		let message = await msg.channel.getMessage(args[0])
 
 		if (message.embeds.length === 0 || message === undefined) {
