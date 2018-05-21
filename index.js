@@ -571,7 +571,7 @@ const clearDMs = bot.registerCommand('clean', async (msg, args) => {
 	tools.clean(msg, args, bot)
 }, {
 	aliases: ['cls', 'clear'],
-	cooldown: 20000,
+	cooldown: 10000,
 	dmOnly: true,
 	requirements: {custom: hasUnbannedAccount},
 	description: reply.clearDMs.description,
@@ -583,7 +583,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 	//
 	tools.help(msg, args, bot)
 }, {
-	cooldown: 20000,
+	cooldown: 5000,
 	description: reply.help.description,
 	fullDescription: reply.help.fullDescription,
 	usage: reply.help.usage
