@@ -377,17 +377,13 @@ exports.reply = async (msg, args, bot, q, client) => {
 			color = parseInt(usee.eColor, 16)
 		}
 
-		if (message.embeds[0].author.name !== msg.author.username || !message.embeds[0].description.indexOf(message.embeds[0].author.name)) {
-			replyMessage = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
-				f('**%s**: %s', msg.author.username, args.join(' '))
-		} else {
+		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) < 1 || message.embeds[0].description.indexOf(msg.author.username) < 1) {
 			replyMessage = f('%s\n', message.embeds[0].description) +
 				f('**%s**: %s', msg.author.username, args.join(' '))
+		} else {
+			replyMessage = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
+				f('**%s**: %s', msg.author.username, args.join(' '))
 		}
-
-		//msg id for searching
-		let rndBytes = crypto.randomBytes(4)
-		let msgid = rndBytes.toString('hex')
 
 		let embed = {
     		embed: {
@@ -395,7 +391,7 @@ exports.reply = async (msg, args, bot, q, client) => {
       			description: replyMessage,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
-      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + msgid}
+      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + args[0]}
     		}
     	}
 
