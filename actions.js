@@ -383,7 +383,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 				channelID = recipient.sendTo
 				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
 			}
-		if (followers.length > 0)
+		if (replyFollowers.length > 0)
 			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
 
 
