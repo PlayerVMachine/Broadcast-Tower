@@ -88,24 +88,22 @@ exports.help = async (msg, args, bot) => {
 
 exports.clean = async (msg, args, bot) => {
 	let dmchannel = await msg.author.getDMChannel();
-	if (msg.channel.id !== dmchannel.id) {
-		bot.createMessage(msg.channel.id, 'The tower only purges messages in DMs')
+	if (parseInt(args[0]) > 50 || parseInt(args[0]) === NaN) {
+		bot.createMessage(msg.channel.id, 'Sorry the maximum number of messages I can look through is 50')
 		return
 	}
 
-	let messages = await msg.channel.getMessages(10);
+	let messages = await msg.channel.getMessages(50);
 
-	let count = 0
-	for (i = 0; i < 10; i++) {
+	let count = parseInt(args[0])
+	while (count > 0) {
 		try {
 			if(messages[i].author.id !== msg.author.id) {
 				msg.channel.deleteMessage(messages[i].id)
-				count ++
+				count --
 			}
 		} catch (err) {
 			console.log(err)
 		}
 	}
-
-	bot.createMessage(msg.channel.id, f('%s messages were deleted!', count))
 }
