@@ -38,8 +38,8 @@ exports.help = async (msg, args, bot) => {
 
 		if (args.length === 0) {
 			let helpIntro = '```md\nBroadcast Tower Commands\n------------------------```\nUse `b.help <commandName>` for more detailed help'
-			let helpList = f('%s\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_\n**%s** _%s_',
-				helpIntro, 'Basic', basic.join(', '), 'Social', social.join(', '), 'Profile', profile.join(', '), 'Integrations', integrations.join(', '), 'Reminders', reminders.join(', '))			
+			let helpList = f('%s\n\n**%s:**  _%s_\n**%s:**  _%s_\n**%s:**  _%s_\n**%s:**  _%s_\n**%s:**  _%s_',
+				helpIntro, 'Basic', basic.join(',  '), 'Social', social.join(',  '), 'Profile', profile.join(',  '), 'Integrations', integrations.join(',  '), 'Reminders', reminders.join(',  '))			
 
 			bot.createMessage(msg.channel.id, helpList)
 
