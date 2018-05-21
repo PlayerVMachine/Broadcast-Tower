@@ -52,7 +52,7 @@ exports.help = async (msg, args, bot) => {
 				}
 			}
 
-			let embed = {
+			let embed = { [
 				embed: {
 					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
 					description: basic.join('\n'),
@@ -77,7 +77,7 @@ exports.help = async (msg, args, bot) => {
 					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
 					description: reminders.join('\n'),
 					color: parseInt(config.color, 16)
-				}
+				} ]
 			}
 
 			bot.createMessage(msg.channel.id, embed)
