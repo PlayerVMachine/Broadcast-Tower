@@ -152,7 +152,7 @@
 		"usage":"`b.clean`"
 	},
 	"list" : {
-		"isOneOf":"List is one of following, followers, or blocked.",
+		"isOneOf":"%s, list is one of following, followers, or blocked.",
 		"notAlist":"%s, list must be one of following, followers, or blocked!",
 		"followers":"List of users following %s",
 		"following":"List of users %s is following",
@@ -170,7 +170,12 @@
 		"description":"Send a post to your followers!",
 		"fullDescription":"Send a post to your followers, no blank posts, certain profanity prohibited.",
 		"usage":"`b.post I just got my first Chicken Royale!`"
-	}, 
+	},
+	"reply" : {
+		"description":"Reply to one of your followers' posts",
+		"fullDescription":"Reply to one of your followers' posts",
+		"usage":"`b.reply <post id> <reply>`"
+	},
 	"help" : {
 		"listFormat":"%s: %s",
 		"unexpected":"%s, %s is not a command!",

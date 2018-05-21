@@ -212,7 +212,7 @@ const hello = bot.registerCommand('hello', (msg, args) => {
 	cooldown: 10000
 })
 
-const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/AvDhveg`, {
+const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/NNFnjFA`, {
 	cooldown: 5000,
 	description: `Invite link to the Tower's server`,
 	fullDescription: `What more can I say this is the invite like to the Tower's server.`,
@@ -314,6 +314,24 @@ const post = bot.registerCommand('post', async (msg, args) => {
 	usage: reply.post.usage
 })
 
+const reply = bot.registerCommand('reply', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		act.reply(msg, args, bot, q, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	cooldown: 5000,
+	dmOnly: true,
+	requirements: {custom: hasUnbannedAccount},
+	description: reply.reply.description,
+	fullDescription: reply.reply.fullDescription,
+	usage: reply.reply.usage
+})
+
 const blockUser = bot.registerCommand('block', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
@@ -368,7 +386,6 @@ const edit = bot.registerCommand('edit', async (msg, args) => {
 	fullDescription: reply.edit.fullDescription,
 	usage: reply.edit.usage
 })
-
 
 const editTagline = edit.registerSubcommand('tagline', async (msg, args) => {
 	try {

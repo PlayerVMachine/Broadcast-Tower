@@ -294,7 +294,7 @@ exports.post = async (msg, args, bot, q, client) => {
       			description: message,
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
-      			footer: { text: 'Report abuse to Hal' }
+      			footer: { text: 'Author id: ' + msg.author.id }
     		}
     	}
 
@@ -338,10 +338,42 @@ exports.post = async (msg, args, bot, q, client) => {
 exports.reply = async (msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
-		var medit
 
-		//check is usee is a user
-		let usee = await col.findOne({user: msg.author.id})
+		//get a message
+
+		let message = await msg.channel.getMessage(args[0])
+
+		if (message.embeds.length === 0 || message === undefined) {
+			bot.createMessage(msg.channel.id, `Sorry either that's not a message id or there's no post in that message.`)
+			return
+		}
+
+		let senderid = msg.embeds[0].footer.text.slice(12)
+		let sender = col.findOne({user:senderid})
+		let replyFollowers = sender.followers
+		replyFollowers.push(senderid)
+
+		message = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
+			f('**%s**: %s', msg.author.username, args.shift().join(' '))
+
+		let embed = {
+    		embed: {
+    			title: 'New reply from: ' + msg.author.username, // Title of the embed
+      			description: message,
+      			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
+      			color: color,
+      			footer: { text: 'Author id: ' + msg.author.id  }
+    		}
+    	}
+
+    	for (i = 0; i < replyFollowers.length; i++) {
+				let recipient = await col.findOne({user: replyFollowers[i]})
+				channelID = recipient.sendTo
+				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
+			}
+		if (followers.length > 0)
+			q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
+
 
 	} catch (err) {
 		console.log(err)
