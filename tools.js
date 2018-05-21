@@ -52,35 +52,43 @@ exports.help = async (msg, args, bot) => {
 				}
 			}
 
-			let embed = { [
+			let embedb = {
 				embed: {
-					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s basic commands`, icon_url: botUser.avatarURL},
 					description: basic.join('\n'),
 					color: parseInt(config.color, 16)
-				},
+				}
+			}
+			let embeds = {
 				embed: {
-					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s social commands`, icon_url: botUser.avatarURL},
 					description: social.join('\n'),
 					color: parseInt(config.color, 16)
-				},
+				}
+			}
+			let embedp = {
 				embed: {
-					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s profile commands`, icon_url: botUser.avatarURL},
 					description: profile.join('\n'),
 					color: parseInt(config.color, 16)
-				},
+				}
+			}
+			let embedi = {
 				embed: {
-					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s integrations commands`, icon_url: botUser.avatarURL},
 					description: integrations.join('\n'),
 					color: parseInt(config.color, 16)
-				},
+				}
+			}
+			let embedr = {
 				embed: {
-					author: {name: botUser.username + `'s command list`, icon_url: botUser.avatarURL},
+					author: {name: botUser.username + `'s reminder commands`, icon_url: botUser.avatarURL},
 					description: reminders.join('\n'),
 					color: parseInt(config.color, 16)
-				} ]
+				}
 			}
 
-			bot.createMessage(msg.channel.id, embed)
+			bot.createMessage(msg.channel.id, [ embedb, embeds, embedp, embedi, embedr] )
 
 		} else if (cmds.includes(arg)) {
 			let aliases = ''
