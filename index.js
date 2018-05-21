@@ -317,7 +317,7 @@ const post = bot.registerCommand('post', async (msg, args) => {
 const postReply = bot.registerCommand('reply', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
-		act.reply(msg, args, bot, q, client)
+		act.reply(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
