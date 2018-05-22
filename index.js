@@ -203,14 +203,15 @@ const raven = bot.registerCommand('Night', (msg, args) => {
 	hidden: true
 })
 
-const hello = bot.registerCommand('hello', (msg, args) => {
-	bot.createMessage(msg.channel.id, {embed: {
+const hello = bot.registerCommand('hello', async(msg, args) => {
+	let dmChannel = await msg.author.getDMChannel()	
+
+	bot.createMessage(dmChannel.id, {embed: {
 		color: parseInt(config.color, 16),
 		description:f(reply.generic.hello, msg.author.username)
 	}})
 }, {
 	cooldown: 10000,
-	dmOnly: true
 })
 
 const start = bot.registerCommand('start', (msg, args) => {
