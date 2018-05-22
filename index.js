@@ -211,7 +211,7 @@ const hello = bot.registerCommand('hello', async(msg, args) => {
 		description:f(reply.generic.hello, msg.author.username)
 	}})
 }, {
-	aliases: ['hi', 'hey', 'bonjour']
+	aliases: ['hi', 'hey', 'bonjour'],
 	cooldown: 10000,
 })
 
