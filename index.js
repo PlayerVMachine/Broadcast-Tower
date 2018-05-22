@@ -766,6 +766,15 @@ const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	usage: reply.remindMe.usage
 })
 
+//////////////////////////////////////////////////////////////////////
+//test                                                             //
+////////////////////////////////////////////////////////////////////
+
+const test = bot.registerCommand('test', (msg,args) => {
+	console.log(bot.users.get(args[0]))
+})
+
+
 /////////////////////////////////////////////////////////////////////
 //REMINDER SCHEDULER                                              //
 ///////////////////////////////////////////////////////////////////
@@ -784,7 +793,14 @@ const checkReminders = async () => {
 				due = new Date(reminders[r].due)
 				timeout = due.getTime() - Date.now()
 				setTimeout(async () => {
-					q.push({channelID:reminders[r].sendTo, msg:reminders[r].content, recipient:reminders[r].user})
+
+					let packet = {
+						content: reminders[r].content,
+						destination: reminders[r].sendTo,
+    					type: 'system',
+					}
+
+					q.push(packet)
 					let delRem = await remCol.deleteOne({_id: reminders[r]._id})
 					if (delRem.deletedCount !== 1)
 						console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
@@ -843,7 +859,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 			let embed = {
 				embed: {
-					title: '**Playing** ' + gameData.data[0].name + '\n **' + streamer.display_name + '** is now streaming! ' + streamData.title,
+					title: '**Playing** ' + gameData.data.name + '\n **' + streamer.display_name + '** is now streaming! ' + streamData.title,
 					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
@@ -854,7 +870,14 @@ app.post('/twitch', jsonParser, async (req, res) => {
 			
 			for (var usr in streamSubList.followers) {
 				let user = await usersCol.findOne({_id:streamSubList.followers[usr]})
-				q.push({channelID:user.sendTo, msg:embed, recipient:user.user})
+
+				let packet = {
+					content: embed,
+					destination: user.sendTo,
+					type: 'subscription',
+				}
+
+				q.push(packet)
 			}
 		}
 	} catch (e) {

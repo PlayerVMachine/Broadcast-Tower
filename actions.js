@@ -326,11 +326,26 @@ exports.post = async (msg, args, bot, q, client) => {
 
 			for (i = 0; i < followers.length; i++) {
 				let recipient = await col.findOne({user: followers[i]})
-				channelID = recipient.sendTo
-				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
+
+				let packet = {
+    				content: embed,
+    				destination: recipient.sendTo,
+    				source: msg.author.id,
+    				type: 'post',
+				}
+
+				q.push(packet)
 			}
-			if (followers.length > 0)
-				q.push({channelID:resChannel, msg:f(reply.post.sentConfirm, message), recipient:''})
+			if (followers.length > 0) {
+
+				let packet = {
+    				content: f(reply.post.sentConfirm, message),
+    				destination: usee.sendTo,
+    				type: 'system',
+				}				
+
+				q.push(packet)
+			}
 		}, 5000, remMessage.id)
 
 	} catch (err) {
@@ -388,6 +403,14 @@ exports.reply = async (msg, args, bot, q, client) => {
 				f('**%s**: %s', msg.author.username, args.join(' '))
 		}
 
+		let lines = replyMessage.split('\n')
+		let replyNames = []
+		for (i = 1; i < lines.length; i++) {
+			let name = lines[i].split(' ')[0]
+			if (!replyNames.includes(name))
+				replyNames.push(name)
+		}
+
 		let embed = {
     		embed: {
     			title: 'New reply from: ' + msg.author.username,
@@ -400,7 +423,16 @@ exports.reply = async (msg, args, bot, q, client) => {
 
     	for (i = 0; i < replyFollowers.length; i++) {
 				let recipient = await col.findOne({user: replyFollowers[i]})
-				channelID = recipient.sendTo
+
+				let packet = {
+				    content: embed,
+				    destination: recipient.sendTo,
+				    source: msg.author.id,
+				    type: 'reply',
+				    participant_ids: replyFollowers,
+				    participant_names: replyNames
+				}
+
 				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
 			}
 
