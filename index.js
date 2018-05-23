@@ -129,21 +129,25 @@ const q = new Queue(async function (data, cb) {
 				cb(null)
 			}
 		} else if (data.type === 'reply') {
+			console.log(user.blocked.length)
 			if (user.blocked.length > 0) {
+				console.log('user has blocked people')
 				for (i in user.blocked) {
 					let discUser = bot.users.get(user.blocked[i])
 					//if one of the participants is a user the recipient has blocked
 					if (data.participants.includes(discUser.username)) {
 						let lines = data.content.embed.description.split('\n')
 						//check each line for the participant
-						for (j = 1; j < lines.length; j++) {
-							if (lines[j].startsWith(discUser.username))
+						for (j = 0; j < lines.length; j++) {
+							if (lines[j].startsWith('**' + discUser.username))
 								lines[j] = '__<Reply from a blocked user>__'
 						}
 						data.content.embed.description = lines.join('\n')
 					}
 				}
 			}
+
+			console.log('user hasn\'t blocked anyone')
 
 			//carry on with normal reply sending
 			if (user.dnd) {

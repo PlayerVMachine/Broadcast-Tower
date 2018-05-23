@@ -405,11 +405,12 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 		let lines = replyMessage.split('\n')
 		let replyNames = []
-		for (i = 1; i < lines.length; i++) {
+		for (i = 0; i < lines.length; i++) {
 			let name = lines[i].split(' ')[0]
 			if (!replyNames.includes(name))
-				replyNames.push(name)
+				replyNames.push(name.slice(2, name.length-4))
 		}
+		console.log(replyNames)
 
 		let embed = {
     		embed: {
