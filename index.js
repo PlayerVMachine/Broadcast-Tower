@@ -106,17 +106,20 @@ const q = new Queue(async function (data, cb) {
 		//db connection
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
+		//get user profile
+		let user = await col.findOne({sendTo: data.destination})
 
 		//check data type
 		if (data.type === 'system') {
 			//ignore DND and send message
 			bot.createMessage(data.destination, data.content)
+			user = null
 			cb(null)
 		} else if (data.type === 'post') {
-			let user = await col.findOne({sendTo: data.destination})
 			//respect DND and put in long queue to try again 30mins later if in DND
 			if (user.dnd) {
 				longQ.push(data)
+				user = null
 				cb(null)
 			} else {
 				//Censor profanity if user has their mature preferences set to false
@@ -124,10 +127,10 @@ const q = new Queue(async function (data, cb) {
 					data.content.embed.description = pc.censor(data.content.embed.description)
 				}
 				bot.createMessage(data.destination, data.content)
+				user = null
 				cb(null)
 			}
 		} else if (data.type === 'reply') {
-			let user = await col.findOne({sendTo: data.destination})
 			if (user.blocked.length > 0) {
 				for (i in user.blocked) {
 					let discUser = bot.users.get(user.blocked[i])
@@ -147,6 +150,7 @@ const q = new Queue(async function (data, cb) {
 			//carry on with normal reply sending
 			if (user.dnd) {
 				longQ.push(data)
+				user = null
 				cb(null)
 			} else {
 				//Censor profanity if user has their mature preferences set to false
@@ -154,16 +158,18 @@ const q = new Queue(async function (data, cb) {
 					data.content.embed.description = pc.censor(data.content.embed.description)
 				}
 				bot.createMessage(data.destination, data.content)
+				user = null
 				cb(null)
 			}
 
 		} else if (data.type === 'subscription') {
-			let user = await col.findOne({sendTo: data.destination})
 			if (user.dnd) {
 				longQ.push(data)
+				user = null
 				cb(null)
 			} else {
 				bot.createMessage(data.destination, data.content)
+				user = null
 				cb(null)
 			}
 		}
