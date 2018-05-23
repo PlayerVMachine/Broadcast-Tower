@@ -898,7 +898,7 @@ const checkReminders = async () => {
 
 						weather.dailyForecast(reminders[r].sendTo, client, q, bot)
 
-						date = new Date(Date.parrse(reminders[r].due) + 24*60*60*1000)
+						date = new Date(Date.parse(reminders[r].due) + 24*60*60*1000)
 						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {$set: {due:date}})
 						if (updateDue.ok !== 1)
 							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))
