@@ -109,8 +109,6 @@ const q = new Queue(async function (data, cb) {
 		//get user profile
 		let user = await col.findOne({sendTo: data.destination})
 
-		console.log(data.type)
-
 		//check data type
 		if (data.type === 'system') {
 			//ignore DND and send message
@@ -139,7 +137,7 @@ const q = new Queue(async function (data, cb) {
 						//check each line for the participant
 						for (j = 0; j < lines.length; j++) {
 							if (lines[j].startsWith('**' + discUser.username))
-								lines[j] = '__<Reply from a blocked user>__'
+								lines[j] = '_<Reply from a blocked user>_'
 						}
 						data.content.embed.description = lines.join('\n')
 					}
@@ -853,9 +851,17 @@ const checkReminders = async () => {
 					}
 
 					q.push(packet)
-					let delRem = await remCol.deleteOne({_id: reminders[r]._id})
-					if (delRem.deletedCount !== 1)
-						console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+
+					if (reminders[r].type === 'reminder') {
+						let delRem = await remCol.deleteOne({_id: reminders[r]._id})
+						if (delRem.deletedCount !== 1)
+							console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
+					} else if (reminders[r].type === 'subscription') {
+						date = new Date(Reminders[r].due + 24*60*60*1000)
+						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {set: {due:date}})
+						if (updateDue.ok !== 1)
+							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))
+					}
 				}, timeout)
 			}
 		})

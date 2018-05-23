@@ -183,6 +183,7 @@ exports.remindMe = async (msg, args, bot) => {
 				sendTo: usee.sendTo,
 				content: reminder,
 				due: remDate,
+				type: 'reminder'
 			}
 
 			let addRem = await remCol.insertOne(reminderObj)

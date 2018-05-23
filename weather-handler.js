@@ -116,11 +116,20 @@ exports.getForecast = async (msg, args, bot, client) => {
 
       bot.createMessage(msg.channel.id, embed)
     })
-  } catch (e) {
-    console.log(e)
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
   }
 }
 
 exports.dailySub = async (msg, args, bot, client) => {
-  
+  try {
+    const remCol = client.db(config.db).collection('Reminders')
+
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+  }
 }

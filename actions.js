@@ -383,6 +383,22 @@ exports.reply = async (msg, args, bot, q, client) => {
 		let foot = messages[i].embeds[0].footer.text.split(' ')
 		let senderid = foot[2]
 		let sender = await col.findOne({user:senderid})
+
+		if (sender.blocked.includes(usee.user)) {
+			bot.createMessage(msg.channel.id, reply.reply.theyBlocked)
+			return
+		}
+
+		if (usee.blocked.includes(sender.user)) {
+			bot.createMessage(msg.channel.id, reply.reply.youBlocked)
+			return
+		}
+
+		if (!sender.followers.includes(usee.user)) {
+			bot.createMessage(msg.channel.id, reply.reply.notFollowed)
+			return			
+		}
+		
 		let replyFollowers = sender.followers
 		replyFollowers.push(senderid)
 
