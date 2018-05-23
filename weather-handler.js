@@ -155,7 +155,7 @@ exports.dailySub = async (msg, args, bot, client) => {
     let weatherSub = {
       user: usee.user,
       sendTo: usee.sendTo,
-      due = due,
+      due: due,
       type: 'reminder'
     }
 
