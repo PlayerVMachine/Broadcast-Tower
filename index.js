@@ -874,7 +874,7 @@ const checkReminders = async () => {
 		const remCol = client.db(config.db).collection('Reminders')
 
 		now = new Date()
-		twoMinutesLater = new Date(now.getTime() + (2*60*1000))
+		twoMinutesLater = new Date(now.getTime() + (60*1000))
 
 		remCol.find({due: {$lte: twoMinutesLater}}).toArray(async (err, reminders) => {
 			for (r in reminders) {
@@ -898,8 +898,8 @@ const checkReminders = async () => {
 
 						weather.dailyForecast(reminders[r].sendTo, client, q, bot)
 
-						date = new Date(reminders[r].due + 24*60*60*1000)
-						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {set: {due:date}})
+						date = new Date(Date.parrse(reminders[r].due) + 24*60*60*1000)
+						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {$set: {due:date}})
 						if (updateDue.ok !== 1)
 							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))
 					}

@@ -178,10 +178,7 @@ exports.dailyForecast = async (destination, client, q, bot) => {
     const col = client.db(config.db).collection('Users')
     let usee = await col.findOne({sendTo: destination})
 
-    let location = usee.weather.location
-    let degree = usee.weather.deg
-
-    weather.find({search: location, degreeType: degree}, (err, result) => {
+    weather.find({search: usee.weather.location, degreeType: usee.weather.deg}, (err, result) => {
       if(err) {
         bot.createMessage(config.logChannelID, err)
         return
