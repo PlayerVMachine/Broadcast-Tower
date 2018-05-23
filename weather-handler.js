@@ -144,13 +144,17 @@ exports.dailySub = async (msg, args, bot, client) => {
 
     let now = new Date()
     let date = now.toISOString().slice(0,11)
+    console.log(date)
     let userTime = moment.tz([date, args[0]].join('') + ':00Z', usee.tz)
+    console.log(userTime)
     let scheduledTime = userTime.utc().format()
+    console.log(scheduledTime)
 
     if(Date.parse(scheduledTime) < Date.parse(now))
       scheduledTime = new Date(scheduledTime + 24*60*60*1000)
 
     let due = new Date(scheduledTime)
+    console.log(due)
 
     let weatherSub = {
       user: usee.user,
@@ -159,12 +163,12 @@ exports.dailySub = async (msg, args, bot, client) => {
       type: 'forecast'
     }
 
-    let addWeather = await remCol.insertOne(weatherSub)
+/*    let addWeather = await remCol.insertOne(weatherSub)
     if (addWeather.insertedCount === 1)
       bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
     else
       bot.createMessage(msg.channel.id, 'Could not subscibe to daily forecast updates sorry!')
-
+*/
 
   } catch (err) {
     console.log(err)
