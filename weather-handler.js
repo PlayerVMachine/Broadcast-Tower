@@ -146,7 +146,7 @@ exports.dailySub = async (msg, args, bot, client) => {
     let date = now.toISOString().slice(0,11)
     console.log(date)
     let userTime = moment.tz([date, args[0]].join('') + ':00Z', usee.tz)
-    console.log(userTime)
+    console.log(userTime.format())
     let scheduledTime = userTime.utc().format()
     console.log(scheduledTime)
 
