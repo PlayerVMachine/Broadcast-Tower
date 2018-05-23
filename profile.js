@@ -474,11 +474,11 @@ exports.setTimezone = async (msg, args, bot, client) => {
 			return
 		}
 
-		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {timezone:args[0]}})
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tz:args.join(' ')}})
 		if (update.ok === 1) {
-			bot.createMessage(msg.channel.id, f(reply.timezone.success, msg.author.username, args[0]))
+			bot.createMessage(msg.channel.id, f(reply.timezone.success, msg.author.username, args.join(' ')))
 		} else {
-			bot.createMessage(msg.channel.id, f(reply.timezone.error, msg.author.username, args[0]))
+			bot.createMessage(msg.channel.id, f(reply.timezone.error, msg.author.username, args.join(' ')))
 		}
 	} catch (err) {
 		console.log(err)
