@@ -150,10 +150,10 @@ exports.dailySub = async (msg, args, bot, client) => {
     let scheduledTime = userTime.utc().format()
     console.log(scheduledTime)
 
-    if(Date.parse(scheduledTime) < Date.parse(now))
-      scheduledTime = new Date(scheduledTime + 24*60*60*1000)
+    //if(Date.parse(scheduledTime) < Date.parse(now))
+    //  scheduledTime = new Date(scheduledTime + 24*60*60*1000)
 
-    let due = new Date(scheduledTime.format())
+    let due = new Date(scheduledTime.toString())
     console.log(due)
 
     let weatherSub = {
