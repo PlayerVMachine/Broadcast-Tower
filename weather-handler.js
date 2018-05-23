@@ -120,3 +120,7 @@ exports.getForecast = async (msg, args, bot, client) => {
     console.log(e)
   }
 }
+
+exports.dailySub = async (msg, args, bot, client) => {
+  
+}

@@ -98,8 +98,6 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 //     participants: replyNames
 // }
 
-
-
 var longQ
 
 //Define Message queue
@@ -133,7 +131,6 @@ const q = new Queue(async function (data, cb) {
 			}
 		} else if (data.type === 'reply') {
 			if (user.blocked.length > 0) {
-				console.log('user has blocked people')
 				for (i in user.blocked) {
 					let discUser = bot.users.get(user.blocked[i])
 					//if one of the participants is a user the recipient has blocked
@@ -148,7 +145,6 @@ const q = new Queue(async function (data, cb) {
 					}
 				}
 			}
-			console.log('user hasn\'t blocked anyone')
 
 			//carry on with normal reply sending
 			if (user.dnd) {
@@ -915,7 +911,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 			let embed = {
 				embed: {
-					title: streamer.display_name + '** is now streaming! ' + streamData.title,
+					title: '**' + streamer.display_name + '** is now streaming! ' + streamData.title,
 					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
