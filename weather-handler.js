@@ -157,7 +157,7 @@ exports.dailySub = async (msg, args, bot, client) => {
       user: usee.user,
       sendTo: usee.sendTo,
       due: due,
-      type: 'reminder'
+      type: 'forecast'
     }
 
     let addWeather = await remCol.insertOne(weatherSub)
