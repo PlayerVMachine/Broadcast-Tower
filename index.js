@@ -90,6 +90,16 @@ const bot = new Eris.CommandClient(config.BOT_TOKEN, {
 //MESSAGE QUEUER                                                  //
 ///////////////////////////////////////////////////////////////////
 
+// let packet = {
+//     content: embed,
+//     destination: recipient.sendTo,
+//     source: msg.author.id,
+//     type: 'reply',
+//     participants: replyNames
+// }
+
+
+
 var longQ
 
 //Define Message queue
@@ -97,21 +107,64 @@ const q = new Queue(async function (data, cb) {
 	//db connection
 	let client = await MongoClient.connect(url)
 	const col = client.db(config.db).collection('Users')
+	//get user profile
+	let user = await col.findOne({sendTo: data.destination})
 
-	//get recipient
-	let user = await col.findOne({user: data.recipient})
-	if(user === null) {
-		bot.createMessage(data.channelID, data.msg)
-		cb(null)
-	} else if (user.dnd) {
-		longQ.push(data)
-		cb(null)
-	} else if (!user.dnd) {
-		if (!user.mature) {
-			data.msg.embed.description = pc.censor(data.msg.embed.description)
+	//check data type
+	if (data.type === 'system') {
+		//ignore DND and send message
+		bot.createMessage(data.destination, data.content)
+	} else if (data.type === 'post') {
+		//respect DND and put in long queue to try again 30mins later if in DND
+		if (user.dnd) {
+			longQ.push(data)
+			cb(null)
+		} else {
+			//Censor profanity if user has their mature preferences set to false
+			if (!user.mature) {
+				data.content.embed.description = pc.censor(data.content.embed.description)
+			}
+			bot.createMessage(data.destination, data.content)
+			cb(null)
 		}
-		bot.createMessage(data.channelID, data.msg)
-		cb(null)
+	} else if (data.type === 'reply') {
+		if (user.blocked.length > 0) {
+			for (i in user.blocked) {
+				let discUser = bot.users.get(user.blocked[i])
+				//if one of the participants is a user the recipient has blocked
+				if (data.participants.includes(discUser.username)) {
+					let lines = data.content.embed.description.split('\n')
+					//check each line for the participant
+					for (j = 1; j < lines.length; j++) {
+						if (lines[j].startsWith(discUser.username))
+							lines[j] = '__<Reply from a blocked user>__'
+					}
+					data.content.embed.description = lines.join('\n')
+				}
+			}
+		}
+
+		//carry on with normal reply sending
+		if (user.dnd) {
+			longQ.push(data)
+			cb(null)
+		} else {
+			//Censor profanity if user has their mature preferences set to false
+			if (!user.mature) {
+				data.content.embed.description = pc.censor(data.content.embed.description)
+			}
+			bot.createMessage(data.destination, data.content)
+			cb(null)
+		}
+
+	} else if (data.type === 'subscription') {
+		if (user.dnd) {
+			longQ.push(data)
+			cb(null)
+		} else {
+			bot.createMessage(data.destination, data.content)
+			cb(null)
+		}
 	}
 }, {
 	afterProcessDelay:1000
@@ -765,15 +818,6 @@ const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 	fullDescription: reply.remindMe.fullDescription,
 	usage: reply.remindMe.usage
 })
-
-//////////////////////////////////////////////////////////////////////
-//test                                                             //
-////////////////////////////////////////////////////////////////////
-
-const test = bot.registerCommand('test', (msg,args) => {
-	console.log(bot.users.get(args[0]))
-})
-
 
 /////////////////////////////////////////////////////////////////////
 //REMINDER SCHEDULER                                              //

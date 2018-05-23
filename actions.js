@@ -429,11 +429,10 @@ exports.reply = async (msg, args, bot, q, client) => {
 				    destination: recipient.sendTo,
 				    source: msg.author.id,
 				    type: 'reply',
-				    participant_ids: replyFollowers,
-				    participant_names: replyNames
+				    participants: replyNames
 				}
 
-				q.push({channelID:channelID, msg:embed, recipient:recipient.user})
+				q.push(packet)
 			}
 
 	} catch (err) {
