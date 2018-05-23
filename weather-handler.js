@@ -3,6 +3,7 @@ const moment = require('moment-timezone')
 const f = require('util').format
 
 const config = require('./config.json')
+const reply = require('./proto_messages.json')
 
 exports.getWeather = async (msg, args, bot, client) => {
   try {
