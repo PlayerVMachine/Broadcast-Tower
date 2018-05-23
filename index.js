@@ -106,8 +106,6 @@ const q = new Queue(async function (data, cb) {
 		//db connection
 		let client = await MongoClient.connect(url)
 		const col = client.db(config.db).collection('Users')
-		//get user profile
-		let user = await col.findOne({sendTo: data.destination})
 
 		//check data type
 		if (data.type === 'system') {
@@ -115,6 +113,7 @@ const q = new Queue(async function (data, cb) {
 			bot.createMessage(data.destination, data.content)
 			cb(null)
 		} else if (data.type === 'post') {
+			let user = await col.findOne({sendTo: data.destination})
 			//respect DND and put in long queue to try again 30mins later if in DND
 			if (user.dnd) {
 				longQ.push(data)
@@ -128,6 +127,7 @@ const q = new Queue(async function (data, cb) {
 				cb(null)
 			}
 		} else if (data.type === 'reply') {
+			let user = await col.findOne({sendTo: data.destination})
 			if (user.blocked.length > 0) {
 				for (i in user.blocked) {
 					let discUser = bot.users.get(user.blocked[i])
@@ -158,6 +158,7 @@ const q = new Queue(async function (data, cb) {
 			}
 
 		} else if (data.type === 'subscription') {
+			let user = await col.findOne({sendTo: data.destination})
 			if (user.dnd) {
 				longQ.push(data)
 				cb(null)
@@ -173,8 +174,7 @@ const q = new Queue(async function (data, cb) {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
-	afterProcessDelay:1000,
-	batchSize:1
+	afterProcessDelay:1000
 })
 
 //put messages that hit dnd here to wait a long time
