@@ -150,10 +150,12 @@ exports.dailySub = async (msg, args, bot, client) => {
     if(Date.parse(scheduledTime) < Date.parse(now))
       scheduledTime = new Date(scheduledTime + 24*60*60*1000)
 
+    let due = new Date(scheduledTime)
+
     let weatherSub = {
       user: usee.user,
       sendTo: usee.sendTo,
-      due = new Date(scheduledTime),
+      due = due,
       type: 'reminder'
     }
 
