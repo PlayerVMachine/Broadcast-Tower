@@ -183,7 +183,7 @@ exports.dailyForecast = async (destination, client, q, bot) => {
 
     weather.find({search: location, degreeType: degree}, (err, result) => {
       if(err) {
-        bot.createMessage(msg.channel.id, err)
+        bot.createMessage(config.logChannelID, err)
         return
       }
 
