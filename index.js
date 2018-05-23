@@ -117,6 +117,7 @@ const q = new Queue(async function (data, cb) {
 		if (data.type === 'system') {
 			//ignore DND and send message
 			bot.createMessage(data.destination, data.content)
+			cb(null)
 		} else if (data.type === 'post') {
 			//respect DND and put in long queue to try again 30mins later if in DND
 			if (user.dnd) {
