@@ -144,8 +144,7 @@ exports.dailySub = async (msg, args, bot, client) => {
 
     let now = new Date()
     let date = now.toISOString().slice(0,11)
-    console.log([date, args[0]].join('T') + ':00Z')
-    let userTime = moment.tz([date, args[0]].join('T') + ':00Z', usee.tz)
+    let userTime = moment.tz([date, args[0]].join('') + ':00Z', usee.tz)
     let scheduledTime = userTime.utc().format()
 
     if(Date.parse(scheduledTime) < Date.parse(now))
@@ -218,6 +217,6 @@ exports.dailyForecast = async (destination, client, q, bot) => {
   } catch (err) {
     console.log(err)
     bot.createMessage(config.logChannelID, err.message)
-    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+    //bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
   }
 }
