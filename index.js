@@ -111,6 +111,8 @@ const q = new Queue(async function (data, cb) {
 		//get user profile
 		let user = await col.findOne({sendTo: data.destination})
 
+		console.log(data.type)
+
 		//check data type
 		if (data.type === 'system') {
 			//ignore DND and send message
@@ -129,7 +131,6 @@ const q = new Queue(async function (data, cb) {
 				cb(null)
 			}
 		} else if (data.type === 'reply') {
-			console.log(user.blocked.length)
 			if (user.blocked.length > 0) {
 				console.log('user has blocked people')
 				for (i in user.blocked) {
@@ -146,7 +147,6 @@ const q = new Queue(async function (data, cb) {
 					}
 				}
 			}
-
 			console.log('user hasn\'t blocked anyone')
 
 			//carry on with normal reply sending
@@ -914,7 +914,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 			let embed = {
 				embed: {
-					title: '**Playing** ' + gameData.data.name + '\n **' + streamer.display_name + '** is now streaming! ' + streamData.title,
+					title: streamer.display_name + '** is now streaming! ' + streamData.title,
 					description: f('[Check out the stream!](https://www.twitch.tv/%s)', streamer.display_name),
 					color: parseInt('0x6441A4', 16),
 					author: {name: 'Twitch Stream Notification', icon_url: 'https://www.twitch.tv/p/assets/uploads/glitch_474x356.png'},
