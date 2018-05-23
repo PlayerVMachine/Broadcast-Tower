@@ -148,12 +148,12 @@ exports.dailySub = async (msg, args, bot, client) => {
     let userTime = moment.tz([date, args[0]].join('') + ':00Z', usee.tz)
     console.log(userTime.format())
     let scheduledTime = userTime.utc().format()
-    console.log(scheduledTime.toString().slice(0,scheduledTime.length - 1))
+    console.log(scheduledTime)
 
     if(Date.parse(scheduledTime) < Date.parse(now))
       scheduledTime = new Date(scheduledTime + 24*60*60*1000)
 
-    let due = new Date(scheduledTime.toString().slice(0,scheduledTime.length - 1))
+    let due = new Date(scheduledTime.format())
     console.log(due)
 
     let weatherSub = {
