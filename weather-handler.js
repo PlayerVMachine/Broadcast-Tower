@@ -130,7 +130,7 @@ exports.dailySub = async (msg, args, bot, client) => {
     const remCol = client.db(config.db).collection('Reminders')
     const userCol = client.db(config.db).collection('Users')
 
-    let usee = await UserCol.findOne({user: msg.author.id})
+    let usee = await userCol.findOne({user: msg.author.id})
 
     if (usee.tz === undefined) {
       bot.createMessage(msg.channel.id, f(reply.forecast.noTZ, msg.author.username))
