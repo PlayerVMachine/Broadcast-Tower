@@ -127,6 +127,56 @@ exports.dailySub = async (msg, args, bot, client) => {
   try {
     const remCol = client.db(config.db).collection('Reminders')
 
+    let timeFormat = new RegExp(/[0-2][0-9]:[0-6][0-9]:[0-6][0-9]\s[A-Z]{3,5}/)
+
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+  }
+}
+
+exports.dailyForecast = async (destination, client, q) => {
+  try {
+    const col = client.db(config.db).collection('Users')
+    let usee = await col.findOne({sendTo: destination})
+
+    let location = usee.weather.location
+    let degree = usee.weather.deg
+
+    weather.find({search: location, degreeType: degree}, (err, result) => {
+      if(err) {
+        bot.createMessage(msg.channel.id, err)
+        return
+      }
+
+      let fields = []
+      let precip = result[0].forecast[1].precip + '%'
+      if (result[0].forecast[1].precip === '')
+        precip = '0%' 
+
+      fields.push({name:result[0].forecast[1].day + f(' the %sth', result[0].forecast[1].date.slice(8)),
+        value: f('High: **%s**\nLow: **%s**\nSky: **%s**\nPrecipitation: **%s**',
+          result[0].forecast[1].high + degree, result[0].forecast[1].low + degree, result[0].forecast[1].skytextday, precip),
+        inline:true})
+
+      let embed = {
+        embed: {
+            author: {name: f("Today's forecast in %s ", result[0].location.name), icon_url: result[0].current.imageUrl},
+            color: parseInt('0x4286f4', 16),
+            fields: fields,
+            footer: {text:'Part of the Broadcast Tower Integration Network'}
+        }
+      }
+
+      let packet = {
+        content: embed,
+        destination: destination,
+        type: 'subscription',
+      }
+
+      q.push(packet)
+    })
   } catch (err) {
     console.log(err)
     bot.createMessage(config.logChannelID, err.message)

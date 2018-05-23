@@ -173,7 +173,8 @@ const q = new Queue(async function (data, cb) {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
-	afterProcessDelay:1000
+	afterProcessDelay:1000,
+	batchSize:1
 })
 
 //put messages that hit dnd here to wait a long time
@@ -844,20 +845,23 @@ const checkReminders = async () => {
 				timeout = due.getTime() - Date.now()
 				setTimeout(async () => {
 
-					let packet = {
-						content: reminders[r].content,
-						destination: reminders[r].sendTo,
-    					type: 'system',
-					}
-
-					q.push(packet)
-
 					if (reminders[r].type === 'reminder') {
+						let packet = {
+							content: reminders[r].content,
+							destination: reminders[r].sendTo,
+	    					type: 'system',
+						}
+						q.push(packet)
+					
 						let delRem = await remCol.deleteOne({_id: reminders[r]._id})
 						if (delRem.deletedCount !== 1)
 							console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
-					} else if (reminders[r].type === 'subscription') {
-						date = new Date(Reminders[r].due + 24*60*60*1000)
+
+					} else if (reminders[r].type === 'forecast') {
+
+						weather.dailyForecast(reminders[r].sendTo, client, q)
+
+						date = new Date(reminders[r].due + 24*60*60*1000)
 						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {set: {due:date}})
 						if (updateDue.ok !== 1)
 							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))
