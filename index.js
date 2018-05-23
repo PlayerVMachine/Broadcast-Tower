@@ -896,7 +896,7 @@ const checkReminders = async () => {
 
 					} else if (reminders[r].type === 'forecast') {
 
-						weather.dailyForecast(reminders[r].sendTo, client, q)
+						weather.dailyForecast(reminders[r].sendTo, client, q, bot)
 
 						date = new Date(reminders[r].due + 24*60*60*1000)
 						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {set: {due:date}})

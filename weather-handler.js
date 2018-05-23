@@ -174,7 +174,7 @@ exports.dailySub = async (msg, args, bot, client) => {
   }
 }
 
-exports.dailyForecast = async (destination, client, q) => {
+exports.dailyForecast = async (destination, client, q, bot) => {
   try {
     const col = client.db(config.db).collection('Users')
     let usee = await col.findOne({sendTo: destination})
