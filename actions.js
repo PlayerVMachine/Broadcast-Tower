@@ -358,6 +358,7 @@ exports.post = async (msg, args, bot, q, client) => {
 exports.reply = async (msg, args, bot, q, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
+		
 		let usee = await col.findOne({user: msg.author.id})
 
 		//get a message

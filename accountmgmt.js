@@ -27,6 +27,7 @@ exports.create = async (msg, bot, client) => {
 			private: false,
 			mature: false,
 			dnd: false,
+			tz: undefined,
 			joined: new Date(),
 			eColor: config.color,
 			premium: 0

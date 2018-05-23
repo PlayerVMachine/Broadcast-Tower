@@ -29,6 +29,7 @@ const editView = (btUser, discUser) => {
 	let dnd = 'Do not disturb set to **off**'
 	let color = 'Embed color: #' + btUser.eColor.slice(2)
 	let weather = f('%s in degrees %s', btUser.weather.location, btUser.weather.deg)
+	let timezone = 'not set'
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -38,6 +39,8 @@ const editView = (btUser, discUser) => {
 		mature = 'Profanity **is** allowed'
 	if (btUser.dnd)
 		dnd = 'Do Not disturb set to **on**'
+	if (btUser.tz !== undefined)
+		timezone = btUser.tz
 
 	var embed = {
 		embed: {
@@ -52,6 +55,7 @@ const editView = (btUser, discUser) => {
 			{name: 'Do Not Disturb: ', value:dnd, inline: true},
 			{name: 'Color', value: color, inline: true},
 			{name: 'Weather:', value: weather, inline: true},
+			{name: 'Timezone:', value:timezone, inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
@@ -453,6 +457,29 @@ exports.list = async (msg, args, bot, client) => {
 		}
 
 		bot.createMessage(msg.channel.id, embed)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}
+
+exports.setTimezone = async (msg, args, bot, client) => {
+	try {
+		const col = client.db(config.db).collection('Users')
+
+		let usee = await col.findOne({user: msg.author.id})
+		if (args.length === 0) {
+			bot.createMessage(msg.channel.id, f(reply.timezone.current, msg.author.username, usee.timezone))
+			return
+		}
+
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {timezone:args[0]}})
+		if (update.ok === 1) {
+			bot.createMessage(msg.channel.id, f(reply.timezone.success, msg.author.username, args[0]))
+		} else {
+			bot.createMessage(msg.channel.id, f(reply.timezone.error, msg.author.username, args[0]))
+		}
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)

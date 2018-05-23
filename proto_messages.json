@@ -119,11 +119,19 @@
 		"current":"%s, your color is set to `%s`.",
 		"unexpected":"%s, color must be a 6 hex-digit string like `#ff0000` not: %s",
 		"success":"%s, your embed color is now set to `%s`.",
-		"error":"%s, there was an error setting your embed preference.",
+		"error":"%s, there was an error setting your embed color preference.",
 		"premium":"%s, you need to be a Patreon supportor to change your embed color.",
 		"description":"Set your embed color",
 		"fullDescription":"Set your embed color",
 		"usage":"`b.edit color #ff0000`"
+	},
+	"timezone" : {
+		"current":"%s, your timezone is set to `%s`.",
+		"success":"%s, your timezone is now set to `%s`.",
+		"error":"%s, there was an error setting your timezone preference.",
+		"description":"Set your timezone.",
+		"fullDescription":"Set your timezone (private) so that you can subscribe to daily/weekly notifications",
+		"usage":"`b.edit -tz America/New York`"
 	},
 	"view" : {
 		"description":"View your profile or a users profile.",
@@ -242,6 +250,8 @@
 		"usage":"`b.weather <place>` or `b.weather <place> -C`"
 	},
 	"forecast" : {
+		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
+		"noWeather":"%s, you need to set your weather location using `b.edit -w <location -C|F>` first!",
 		"description":"Get a 3 day forecast for a given location.",
 		"fullDescription":"Get a 3 day forecast for a given location, use `-d C` to set degrees to celsius",
 		"usage":"`b.forecast <place>` or `b.forecast <place> -C`"

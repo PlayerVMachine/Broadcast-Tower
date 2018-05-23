@@ -574,6 +574,24 @@ const editColor = edit.registerSubcommand('color', async (msg, args) => {
 	usage: reply.color.usage
 })
 
+const editTimezone = edit.registerSubcommand('-tz', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		prof.setTimezone(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['timezone'],
+	cooldown: 2000,
+	requirements: {custom: hasUnbannedAccount},
+	description: reply.timezone.description,
+	fullDescription: reply.timezone.fullDescription,
+	usage: reply.timezone.usage
+})
+
 const editPrivate = edit.registerSubcommand('private', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
@@ -763,6 +781,19 @@ const weatherCmd = bot.registerCommand('weather', async (msg, args) => {
 	}
 }, {
 	aliases: ['w']
+})
+
+const dailySub = bot.registerCommand('dailyForecast', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		weather.dailySub(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['df']
 })
 
 const forecastCmd = bot.registerCommand('forecast', async (msg, args) => {

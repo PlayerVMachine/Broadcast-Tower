@@ -1,4 +1,5 @@
 const weather = require('weather-js');
+const moment = require('moment-timezone')
 const f = require('util').format
 
 const config = require('./config.json')
@@ -126,8 +127,42 @@ exports.getForecast = async (msg, args, bot, client) => {
 exports.dailySub = async (msg, args, bot, client) => {
   try {
     const remCol = client.db(config.db).collection('Reminders')
+    const userCol = client.db(config.db).collection('Users')
 
-    let timeFormat = new RegExp(/[0-2][0-9]:[0-6][0-9]:[0-6][0-9]\s[A-Z]{3,5}/)
+    let usee = await UserCol.findOne({user: msg.author.id})
+
+    if (usee.tz === undefined) {
+      bot.createMessage(msg.channel.id, f(reply.forecast.noTZ, msg.author.username))
+      return
+    }
+
+    if (usee.weather === undefined || usee.weather === {location: '', deg: ''}) {
+      bot.createMessage(msg.channel.id, f(reply.forecast.noWeather, msg.author.username))
+      return
+    }
+
+    let now = new Date()
+    let date = now.toISOString().slice(0,11)
+
+    let userTime = moment.tz([date, args[0]].join(' '), usee.tz)
+    let scheduledTime = userTime.utc().format()
+
+    if(Date.parse(scheduledTime) < Date.parse(now))
+      scheduledTime = new Date(scheduledTime + 24*60*60*1000)
+
+    let weatherSub = {
+      user: usee.user,
+      sendTo: usee.sendTo,
+      due = new Date(scheduledTime),
+      type: 'reminder'
+    }
+
+    let addWeather = await remCol.insertOne(weatherSub)
+    if (addWeather.insertedCount === 1)
+      bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
+    else
+      bot.createMessage(msg.channel.id, 'Could not subscibe to daily forecast updates sorry!')
+
 
   } catch (err) {
     console.log(err)
