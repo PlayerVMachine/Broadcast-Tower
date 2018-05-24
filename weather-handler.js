@@ -151,7 +151,9 @@ exports.dailySub = async (msg, args, bot, client) => {
     //we make a new date object that's in UTC thanks to the correction
     let scheduledTime = new Date(Date.parse(postTime) + offset*60*1000)
 
-    if(Date.parse(scheduledTime) < Date.parse(now))
+    console.log(Date.now())
+    console.log(Date.parse(scheduledTime))
+    if(Date.parse(scheduledTime) < Date.now())
       console.log('it is before now')
     //  scheduledTime = new Date(scheduledTime + 24*60*60*1000)
     
