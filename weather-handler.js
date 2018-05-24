@@ -150,6 +150,8 @@ exports.dailySub = async (msg, args, bot, client) => {
     let offset = moment.tz.zone(usee.tz).utcOffset(postTime)
     //we make a new date object that's in UTC thanks to the correction
     let scheduledTime = new Date(Date.parse(postTime) + offset*60*1000)
+    if (scheduledTime.getDate() > now.getDate())
+      scheduledTime = new Date(Date.parse(scheduledTime) - 24*60*60*1000)
 
     let weatherSub = {
       user: usee.user,

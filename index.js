@@ -876,9 +876,9 @@ const checkReminders = async () => {
 		const remCol = client.db(config.db).collection('Reminders')
 
 		now = new Date()
-		twoMinutesLater = new Date(now.getTime() + (60*1000))
+		oneMinuteLater = new Date(now.getTime() + (60*1000))
 
-		remCol.find({due: {$lte: twoMinutesLater}}).toArray(async (err, reminders) => {
+		remCol.find({due: {$lte: oneMinuteLater}}).toArray(async (err, reminders) => {
 			for (r in reminders) {
 				due = new Date(reminders[r].due)
 				timeout = due.getTime() - Date.now()
