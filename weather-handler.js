@@ -166,7 +166,7 @@ exports.dailySub = async (msg, args, bot, client) => {
       type: 'forecast'
     }
 
-    let addWeather = await remCol.replaceOne({$and [{user: usee.user}, {type:'forecast'}]}, weatherSub, {upsert: true})
+    let addWeather = await remCol.replaceOne({$and: [{user: usee.user}, {type:'forecast'}]}, weatherSub, {upsert: true})
     if (addWeather.result.ok === 1)
       bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
     else
