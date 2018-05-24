@@ -725,18 +725,20 @@ const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => 
 //SPOTIFY                                                         //
 ///////////////////////////////////////////////////////////////////
 
+//gets new releases on Friday, check every 12 hours
+const spotifyRefresh = () => {
+	date = new Date()
+	if(date.getDay() === 5)
+		spotify.getReleases()
+}
+setInterval(spotifyRefresh, 12*60*60*1000)
+
 const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription, {
 
 }, {
 	description: reply.spotify.description,
 	fullDescription: reply.spotify.fullDescription,
 	usage: reply.spotify.usage
-})
-
-const spotifyRefresh = spotifyBase.registerSubcommand('-r', async (msg, args) => {
-	spotify.getReleases()
-}, {
-	hidden: true
 })
 
 const spotifyTopReleases = spotifyBase.registerSubcommand('top', async (msg, args) => {

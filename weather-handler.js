@@ -143,7 +143,6 @@ exports.dailySub = async (msg, args, bot, client) => {
     }
 
     let now = new Date()
-    console.log(now)
     let date = now.toISOString().slice(0,11)
     let postTime = new Date([date, args[0]].join('') + ':00Z')
     // now post time is today's date plus the time the user wants to be notified at
