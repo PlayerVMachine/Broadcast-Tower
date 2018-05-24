@@ -152,14 +152,6 @@ exports.dailySub = async (msg, args, bot, client) => {
     //we make a new date object that's in UTC thanks to the correction
     let scheduledTime = new Date(Date.parse(postTime) + offset*60*1000)
 
-    console.log(Date.now())
-    console.log(Date.parse(scheduledTime))
-    if(Date.parse(scheduledTime) < Date.now())
-      console.log('it is before now')
-    //  scheduledTime = new Date(scheduledTime + 24*60*60*1000)
-    
-    console.log(scheduledTime)
-
     let weatherSub = {
       user: usee.user,
       sendTo: usee.sendTo,
@@ -167,12 +159,11 @@ exports.dailySub = async (msg, args, bot, client) => {
       type: 'forecast'
     }
 
-/*    let addWeather = await remCol.insertOne(weatherSub)
+    let addWeather = await remCol.insertOne(weatherSub)
     if (addWeather.insertedCount === 1)
       bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
     else
       bot.createMessage(msg.channel.id, 'Could not subscibe to daily forecast updates sorry!')
-*/
 
   } catch (err) {
     console.log(err)
