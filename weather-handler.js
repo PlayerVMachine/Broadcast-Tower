@@ -144,16 +144,17 @@ exports.dailySub = async (msg, args, bot, client) => {
 
     let now = new Date()
     let date = now.toISOString().slice(0,11)
-    let userTime = moment.tz([date, args[0]].join('') + ':00Z', usee.tz)
-    console.log(userTime.format())
-    let scheduledTime = userTime.tz('Atlantic/Reykjavik').format()
-    console.log(scheduledTime)
+    let postTime = new Date([date, args[0]].join('') + ':00Z')
+    // now post time is today's date plus the time the user wants to be notified at
+    // next we get the user's timezone offset
+    let offset = moment.tz.zone(usee.tz).utcOffset(postTime)
+    //we make a new date object that's in UTC thanks to the correction
+    let scheduledTime = new Date(Date.parse(postTime) + offset*60*1000)
 
     //if(Date.parse(scheduledTime) < Date.parse(now))
     //  scheduledTime = new Date(scheduledTime + 24*60*60*1000)
-
-    let due = new Date(scheduledTime.toString())
-    console.log(due)
+    
+    console.log(scheduledTime)
 
     let weatherSub = {
       user: usee.user,
