@@ -4,6 +4,7 @@ const f = require('util').format
 
 const config = require('./config.json')
 const reply = require('./proto_messages.json')
+const timeFormat = new RegExp(/^[0-2][0-9]:[0-6][0-9]\b/)
 
 exports.getWeather = async (msg, args, bot, client) => {
   try {
@@ -133,12 +134,17 @@ exports.dailySub = async (msg, args, bot, client) => {
     let usee = await userCol.findOne({user: msg.author.id})
 
     if (usee.tz === undefined) {
-      bot.createMessage(msg.channel.id, f(reply.forecast.noTZ, msg.author.username))
+      bot.createMessage(msg.channel.id, f(reply.fsub.noTZ, msg.author.username))
       return
     }
 
     if (usee.weather === undefined || usee.weather === {location: '', deg: ''}) {
-      bot.createMessage(msg.channel.id, f(reply.forecast.noWeather, msg.author.username))
+      bot.createMessage(msg.channel.id, f(reply.fsub.noWeather, msg.author.username))
+      return
+    }
+
+    if (!timeFormat.test(args[0])) {
+      bot.createMessage(msg.channel.id, f(reply.fsub.wrongTime, msg.author.username))
       return
     }
 
@@ -160,8 +166,8 @@ exports.dailySub = async (msg, args, bot, client) => {
       type: 'forecast'
     }
 
-    let addWeather = await remCol.insertOne(weatherSub)
-    if (addWeather.insertedCount === 1)
+    let addWeather = await remCol.replaceOne({$and [{user: usee.user}, {type:'forecast'}]}, weatherSub, {upsert: true})
+    if (addWeather.result.ok === 1)
       bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
     else
       bot.createMessage(msg.channel.id, 'Could not subscibe to daily forecast updates sorry!')

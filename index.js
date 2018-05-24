@@ -785,7 +785,7 @@ const weatherCmd = bot.registerCommand('weather', async (msg, args) => {
 	aliases: ['w']
 })
 
-const dailySub = bot.registerCommand('dailyForecast', async (msg, args) => {
+const dailySub = bot.registerCommand('fsub', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
 		weather.dailySub(msg, args, bot, client)
@@ -795,7 +795,10 @@ const dailySub = bot.registerCommand('dailyForecast', async (msg, args) => {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
-	aliases: ['df']
+	aliases: ['fs'],
+	description: reply.fsub.description,
+	fullDescription: reply.fsub.fullDescription,
+	usage: reply.fsub.usage
 })
 
 const forecastCmd = bot.registerCommand('forecast', async (msg, args) => {

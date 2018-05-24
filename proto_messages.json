@@ -250,11 +250,17 @@
 		"usage":"`b.weather <place>` or `b.weather <place> -C`"
 	},
 	"forecast" : {
-		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
-		"noWeather":"%s, you need to set your weather location using `b.edit -w <location -C|F>` first!",
 		"description":"Get a 3 day forecast for a given location.",
 		"fullDescription":"Get a 3 day forecast for a given location, use `-d C` to set degrees to celsius",
 		"usage":"`b.forecast <place>` or `b.forecast <place> -C`"
+	},
+	"fsub" : {
+		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
+		"noWeather":"%s, you need to set your weather location using `b.edit -w <location -C|F>` first!",
+		"wrongTime":"%s, you need to enter the time you want to receive the forecast at in the 24 hour clock format: `HH:MM`.",
+		"description":"Subscribe to daily forecast updates at your preferred time",
+		"fullDescription":"Once you've set your timezone and weather prefences in your profile you can subscribe to daily forecast notifications at any time, the format is `HH:MM`, where HH is in 24-huor format.",
+		"usage":"`b.fsub <HH:MM>`"
 	},
 	"note" : {
 		"description":"Make a note to yourself!",
