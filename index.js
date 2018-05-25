@@ -741,10 +741,28 @@ const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription
 	usage: reply.spotify.usage
 })
 
+const spotifyTopReleases = spotifyBase.registerSubcommand('sub', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		spotify.weeklyNotif(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['-s'],
+	cooldown: 5000,
+	description: reply.sSub.description,
+	fullDescription: reply.sSub.fullDescription,
+	usage: reply.sSub.usage
+})
+
 const spotifyTopReleases = spotifyBase.registerSubcommand('top', async (msg, args) => {
 	spotify.tenList(msg, args, bot)
 }, {
 	aliases: ['-t'],
+	cooldown: 5000,
 	description: reply.top.description,
 	fullDescription: reply.top.fullDescription,
 	usage: reply.top.usage
@@ -754,6 +772,7 @@ const spotifyAlbumFromTopReleases = spotifyBase.registerSubcommand('album', asyn
 	spotify.albumDetail(msg, args, bot)
 }, {
 	aliases: ['-a'],
+	cooldown: 5000,
 	description: reply.album.description,
 	fullDescription: reply.album.fullDescription,
 	usage: reply.album.usage
@@ -763,6 +782,7 @@ const spotifyPlaylists = spotifyBase.registerSubcommand('playlist', async (msg, 
 	spotify.getPlaylists(msg, args, bot)
 }, {
 	aliases: ['-p'],
+	cooldown: 5000,
 	description: reply.playlist.description,
 	fullDescription: reply.playlist.fullDescription,
 	usage: reply.playlist.usage
@@ -892,7 +912,7 @@ const remindMe = bot.registerCommand('remindme', async (msg, args) => {
 })
 
 /////////////////////////////////////////////////////////////////////
-//REMINDER SCHEDULER                                              //
+//REMINDER + SUBSCRIPTION SCHEDULER                               //
 ///////////////////////////////////////////////////////////////////
 
 //check for reminders inside a minute of expiry
@@ -927,6 +947,18 @@ const checkReminders = async () => {
 						weather.dailyForecast(reminders[r].sendTo, client, q, bot)
 
 						date = new Date(Date.parse(reminders[r].due) + 24*60*60*1000)
+						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {$set: {due:date}})
+						if (updateDue.ok !== 1)
+							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))
+					} else if (reminders[r].type === 'spotify') {
+						let packet = {
+							content: 'Check out Spotify\'s new releases using `b.spotify top`',
+							destination: reminders[r].sendTo,
+	    					type: 'system',
+						}
+						q.push(packet)
+
+						date = new Date(Date.parse(reminders[r].due) + 7*24*60*60*1000)
 						let updateDue = await remCol.findOneAndUpdate({_id: reminders[r]._id}, {$set: {due:date}})
 						if (updateDue.ok !== 1)
 							console.log((f('An error occurred updating subscription: %s', reminders[r]._id)))

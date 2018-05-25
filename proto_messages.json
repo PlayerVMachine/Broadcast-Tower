@@ -267,6 +267,13 @@
 		"fullDescription":"Unsubscribe from daily forecast updates.",
 		"usage":"`b.funsub`"
 	},
+	"sSub" : {
+		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
+		"wrongTime":"%s, you need to enter the time you want to receive the forecast at in the 24 hour clock format: `HH:MM`.",
+		"description":"Subscribe to weekly Spotify new release reminders at your preferred time on Fridays",
+		"fullDescription":"Once you've set your timezone prefence in your profile you can subscribe to weekly Spotify new release reminders at any time on Fridays, the format is `HH:MM`, where HH is in 24-hour format.",
+		"usage":"`b.spotify -sub <HH:MM>`"
+	},
 	"note" : {
 		"description":"Make a note to yourself!",
 		"fullDescription":"Make a note to yourself, can include links and file uploads, gets pinned in your DMs with the Tower",

@@ -120,7 +120,7 @@ exports.getPlaylists = async (msg, args, bot) => {
 }
 
 
-getAlbum = async (position) => {
+const getAlbum = async (position) => {
 	try {
 		let client = await MongoClient.connect(url)
 		const spotifyCol = client.db(config.db).collection('SpotifyNewReleases')
@@ -200,4 +200,65 @@ exports.tenList = async (msg, args, bot) => {
 
 		bot.createMessage(msg.channel.id, embed)
 	})
+}
+
+exports.weeklyNotif = async (msg, args, bot, client) => {
+	try {
+    const remCol = client.db(config.db).collection('Reminders')
+    const userCol = client.db(config.db).collection('Users')
+
+    let usee = await userCol.findOne({user: msg.author.id})
+
+    if (usee.tz === undefined) {
+      bot.createMessage(msg.channel.id, f(reply.sSub.noTZ, msg.author.username))
+      return
+    }
+
+    if (!timeFormat.test(args[0])) {
+      bot.createMessage(msg.channel.id, f(reply.sSub.wrongTime, msg.author.username))
+      return
+    }
+
+    let now = new Date()
+    let date = now.toISOString().slice(0,11)
+    let postTime = new Date([date, args[0]].join('') + ':00Z')
+    // now post time is today's date plus the time the user wants to be notified at
+    // next we get the user's timezone offset
+    let offset = moment.tz.zone(usee.tz).utcOffset(postTime)
+    //we make a new date object that's in UTC thanks to the correction
+    let scheduledTime = new Date(Date.parse(postTime) + offset*60*1000)
+
+    //enusre it will be scheduled for the next friday
+    if (Date.parse(scheduledTime) < Date.parse(now))
+    	scheduledTime = new Date(Date.parse(scheduledTime) + 24*60*60*1000)
+
+    let day = scheduledTime.getDay()
+
+    if (day !== 5) {
+    	let days = 6
+
+    	if (day < 5)
+    		days = 5 - day
+
+    	scheduledTime = new Date(Date.parse(scheduledTime) + days*24*60*60*1000)
+    }
+
+    let spotifySub = {
+      user: usee.user,
+      sendTo: usee.sendTo,
+      due: scheduledTime,
+      type: 'spotify'
+    }
+
+    let addWeather = await remCol.replaceOne({$and: [{user: usee.user}, {type:'spotify'}]}, spotifySub, {upsert: true})
+    if (addWeather.result.ok === 1)
+      bot.createMessage(msg.channel.id, f('%s, successfully subcribed to weekly spotify updates!', msg.author.username))
+    else
+      bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+  }
 }
