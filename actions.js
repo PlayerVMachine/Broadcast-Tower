@@ -412,7 +412,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 		//store the updated message in the db
 		let storeReply = await postCol.replaceOne({msgid: postid}, message)
 		if (storeReply.modifiedCount !== 1) {
-			bot.createMessage(msg.channel.id f(reply.generic.error, msg.author.username))
+			bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 			return
 		}
 
