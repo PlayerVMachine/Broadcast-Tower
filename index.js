@@ -804,7 +804,7 @@ const dailySub = bot.registerCommand('fsub', async (msg, args) => {
 const dailyUnsub = bot.registerCommand('funsub', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
-		weather.dailyunSub(msg, args, bot, client)
+		weather.dailyUnsub(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
