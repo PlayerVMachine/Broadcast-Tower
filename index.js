@@ -115,7 +115,7 @@ const q = new Queue(async function (data, cb) {
 			bot.createMessage(data.destination, data.content)
 			user = null
 			cb(null)
-		} else if (data.type === 'post') {
+		} else if (data.type === 'post' || data.type === 'reply') {
 			//respect DND and put in long queue to try again 30mins later if in DND
 			if (user.dnd) {
 				longQ.push(data)
@@ -130,38 +130,6 @@ const q = new Queue(async function (data, cb) {
 				user = null
 				cb(null)
 			}
-		} else if (data.type === 'reply') {
-			if (user.blocked.length > 0) {
-				for (i in user.blocked) {
-					let discUser = bot.users.get(user.blocked[i])
-					//if one of the participants is a user the recipient has blocked
-					if (data.participants.includes(discUser.username)) {
-						let lines = data.content.embed.description.split('\n')
-						//check each line for the participant
-						for (j = 0; j < lines.length; j++) {
-							if (lines[j].startsWith('**' + discUser.username))
-								lines[j] = '_<Reply from a blocked user>_'
-						}
-						data.content.embed.description = lines.join('\n')
-					}
-				}
-			}
-
-			//carry on with normal reply sending
-			if (user.dnd) {
-				longQ.push(data)
-				user = null
-				cb(null)
-			} else {
-				//Censor profanity if user has their mature preferences set to false
-				if (!user.mature) {
-					data.content.embed.description = pc.censor(data.content.embed.description)
-				}
-				bot.createMessage(data.destination, data.content)
-				user = null
-				cb(null)
-			}
-
 		} else if (data.type === 'subscription') {
 			if (user.dnd) {
 				longQ.push(data)

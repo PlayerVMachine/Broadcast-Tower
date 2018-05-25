@@ -296,8 +296,8 @@ exports.post = async (msg, args, bot, q, client) => {
 
 		let embed = {
     		embed: {
-    			title: 'New broadcast from: ' + msg.author.username, // Title of the embed
-      			description: message,
+    			title: 'New broadcast recieved! ',
+      			description: f('**%s**: %s', msg.author.username, message),
       			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
       			color: color,
       			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + msgid}
@@ -325,11 +325,14 @@ exports.post = async (msg, args, bot, q, client) => {
 			bot.removeListener('messageReactionAdd', callback)
 			bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
 
+			let recipients = usee.followers
+			recipients.push(msg.author.id)
+
 			let recordPost = await postCol.insertOne({
 					source: msg.author.id,
     				content: embed,
     				msgid: msgid,
-    				recipients: usee.followers,
+    				recipients: recipients,
     				lastUpdated: new Date()
     			})
 
@@ -367,99 +370,93 @@ exports.post = async (msg, args, bot, q, client) => {
 exports.reply = async (msg, args, bot, q, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
+		const postCol = client.db(config.db).collection('Posts')
 		
 		let usee = await col.findOne({user: msg.author.id})
 
 		//get a message
-		let message = undefined
-		let messages = await msg.channel.getMessages(50, msg.id)
-		for (i in messages) {
-			if (messages[i].embeds.length > 0) {
-				if (messages[i].embeds[0].footer !== undefined) {
-					let foot = messages[i].embeds[0].footer.text.split(' ')
-					if(foot.includes(args[0])) {
-						message = messages[i]
-						break
-					}
-				}
-			}
-		}
-
-		if (message === undefined) {
-			bot.createMessage(msg.channel.id, reply.reply.notMsg)
+		let postid = args.shift()
+		let message = await postCol.findOne({msgid: postid})
+		if(message === undefined){
+			//wrong post id
+			bot.createMessage(msg.channel.id, f('Sorry %s, I couldn\'t find a post with that ID!', msg.author.username))
 			return
-		}
-
-		let foot = messages[i].embeds[0].footer.text.split(' ')
-		let senderid = foot[2]
-		let sender = await col.findOne({user:senderid})
-
-		if (sender.blocked.includes(usee.user)) {
-			bot.createMessage(msg.channel.id, reply.reply.theyBlocked)
+		} else if (!message.recipients.includes(msg.author.id)) {
+			//entered a post id that they didn't recieve
+			bot.createMessage(msg.channel.id, f('Sorry %s, you cannot reply to a post that was not sent to you!', msg.author.username))
 			return
-		}
+		} //found post and they recieved it
 
-		if (usee.blocked.includes(sender.user)) {
-			bot.createMessage(msg.channel.id, reply.reply.youBlocked)
-			return
-		}
-
-		if (!sender.followers.includes(usee.user)) {
-			bot.createMessage(msg.channel.id, reply.reply.notFollowed)
+		//get the author of the post
+		let poster = await col.findOne({user: message.source})
+		if (poster === undefined) {
+			//poster has since closed account
+			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who no longer has an account!', msg.author.username))
 			return			
 		}
-		
-		let replyFollowers = sender.followers
-		replyFollowers.push(senderid)
 
-		let replyMsg = args.shift()
-		let color = parseInt(config.color, 16)
-		if (usee.premium < 0) {
-			color = parseInt(usee.eColor, 16)
+		//check that neither party has blocked each other since message was sent
+		if (poster.blocked.includes(usee.user)) {
+			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who has blocked you!', msg.author.username))
+			return	
+		} else if (usee.blocked.includes(poster.user)) {
+			bot.createMessage(msg.channel.id, f('Sorry %s, cannot reply to a user who you have blocked!', msg.author.username))
+			return	
+		} //neither orignal author nor replier has blocked each other
+
+		//update the embedded message
+		message.content.embed.title = 'New reply to post!'
+		message.content.embed.description = message.content.embed.description + f('\n **%s**: %s', msg.author.username, args.join(' '))
+		message.lastUpdated = new Date()
+
+		//store the updated message in the db
+		let storeReply = await postCol.replaceOne({msgid: postid}, message)
+		if (storeReply.modifiedCount !== 1) {
+			bot.createMessage(msg.channel.id f(reply.generic.error, msg.author.username))
+			return
 		}
 
-		if (message.embeds[0].description.indexOf(message.embeds[0].author.name) !== -1) {
-			replyMessage = f('%s\n', message.embeds[0].description) +
-				f('**%s**: %s', msg.author.username, args.join(' '))
-		} else if (message.embeds[0].description.indexOf(msg.author.username) !== -1) {
-			replyMessage = f('%s\n', message.embeds[0].description) +
-				f('**%s**: %s', msg.author.username, args.join(' '))
-		} else {
-			replyMessage = f('**%s**: %s\n', message.embeds[0].author.name, message.embeds[0].description) +
-				f('**%s**: %s', msg.author.username, args.join(' '))
-		}
+		//check for redactions that need to be made if any of the post recipients have blocked usee or vice versa
+		for (r in message.recipients) {
+			msgCopy = message
+			descCopy = message.content.embed.description.split('\n')
 
-		let lines = replyMessage.split('\n')
-		let replyNames = []
-		for (i = 0; i < lines.length; i++) {
-			let name = lines[i].split(' ')[0]
-			if (!replyNames.includes(name))
-				replyNames.push(name.slice(2, name.length-3))
-		}
+			//skip this recpient as they no longer have an account			
+			let recipient = await col.findOne({user:recipients[r]})
+			if (recipient === undefined) {
+				message.recipients[r]
+				continue
+			}
 
-		let embed = {
-    		embed: {
-    			title: 'New reply from: ' + msg.author.username,
-      			description: replyMessage,
-      			author: { name: msg.author.username, icon_url: msg.author.avatarURL },
-      			color: color,
-      			footer: { text: 'Author id: ' + msg.author.id + ' message id: ' + foot[foot.length -1]}
-    		}
-    	}
-
-    	for (i = 0; i < replyFollowers.length; i++) {
-				let recipient = await col.findOne({user: replyFollowers[i]})
-
-				let packet = {
-				    content: embed,
-				    destination: recipient.sendTo,
-				    source: msg.author.id,
-				    type: 'reply',
-				    participants: replyNames
+			//redact message copy
+			if (usee.blocked.includes(recipient.user)) {
+	
+				for (l in descCopy) {
+					if (msgCopy[l].startsWith('**'+ msg.author.username))
+						msgCopy[l] = '_Reply from user who has blocked you_'
 				}
 
-				q.push(packet)
+			} else if (recipient.blocked.includes(usee.user)) {
+				for (l in descCopy) {
+					if (msgCopy[l].startsWith('**'+ msg.author.username))
+						msgCopy[l] = '_Reply from user who you have blocked_'
+				}
 			}
+
+			msgCopy.content.embed.description = descCopy.join('\n')
+
+			//schedule post in queue
+			let packet = {
+    			content: msgCopy,
+    			destination: recipient.sendTo,
+    			source: msg.author.id,
+    			type: 'post',
+			}
+
+			q.push(packet)
+
+		}
+
 
 	} catch (err) {
 		console.log(err)
