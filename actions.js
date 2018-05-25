@@ -447,7 +447,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 			//schedule post in queue
 			let packet = {
-    			content: msgCopy,
+    			content: msgCopy.content,
     			destination: recipient.sendTo,
     			source: msg.author.id,
     			type: 'post',

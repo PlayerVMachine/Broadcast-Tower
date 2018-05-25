@@ -145,7 +145,6 @@ const q = new Queue(async function (data, cb) {
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
-		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
 	afterProcessDelay:1000
