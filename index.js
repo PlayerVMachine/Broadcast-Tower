@@ -954,7 +954,7 @@ const checkReminders = async () => {
 						let packet = {
 							content: 'Check out Spotify\'s new releases using `b.spotify top`',
 							destination: reminders[r].sendTo,
-	    					type: 'system',
+	    					type: 'subscription',
 						}
 						q.push(packet)
 

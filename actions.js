@@ -263,6 +263,7 @@ exports.unblock = async(msg, args, bot, client) => {
 exports.post = async (msg, args, bot, q, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
+		const postCol = client.db(config).collection('Posts')
 		var medit
 
 		let usee = await col.findOne({user: msg.author.id})
@@ -323,6 +324,14 @@ exports.post = async (msg, args, bot, q, client) => {
 			//remove ability to cancel
 			bot.removeListener('messageReactionAdd', callback)
 			bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
+
+			let recordPost = await postCol.insertOne({
+					source: msg.author.id,
+    				content: embed,
+    				msgid: msgid
+    				recipients: usee.followers,
+    				lastUpdated: new Date()
+    			})
 
 			for (i = 0; i < followers.length; i++) {
 				let recipient = await col.findOne({user: followers[i]})

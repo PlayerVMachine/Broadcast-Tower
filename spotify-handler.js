@@ -262,3 +262,5 @@ exports.weeklyNotif = async (msg, args, bot, client) => {
     bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
   }
 }
+
+//to do: add unsub
