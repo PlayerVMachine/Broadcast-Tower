@@ -406,7 +406,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 		//update the embedded message
 		message.content.embed.title = 'New reply to post!'
-		message.content.embed.description = message.content.embed.description + f('\n **%s**: %s', msg.author.username, args.join(' '))
+		message.content.embed.description = message.content.embed.description + f('\n**%s**: %s', msg.author.username, args.join(' '))
 		message.lastUpdated = new Date()
 
 		//store the updated message in the db
@@ -432,14 +432,14 @@ exports.reply = async (msg, args, bot, q, client) => {
 			if (usee.blocked.includes(recipient.user)) {
 	
 				for (l in descCopy) {
-					if (msgCopy[l].startsWith('**'+ msg.author.username))
-						msgCopy[l] = '_Reply from user who has blocked you_'
+					if (descCopy[l].startsWith('**'+ msg.author.username))
+						descCopy[l] = '_Reply from user who has blocked you_'
 				}
 
 			} else if (recipient.blocked.includes(usee.user)) {
 				for (l in descCopy) {
-					if (msgCopy[l].startsWith('**'+ msg.author.username))
-						msgCopy[l] = '_Reply from user who you have blocked_'
+					if (descCopy[l].startsWith('**'+ msg.author.username))
+						descCopy[l] = '_Reply from user who you have blocked_'
 				}
 			}
 
