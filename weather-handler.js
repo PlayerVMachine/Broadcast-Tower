@@ -1,4 +1,4 @@
-const weather = require('weather-js');
+const weather = require('weather-js')
 const moment = require('moment-timezone')
 const f = require('util').format
 
