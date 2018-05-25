@@ -186,7 +186,7 @@ exports.dailyUnsub = async (msg, args, bot, client) => {
   try {
     const remCol = client.db(config.db).collection('Reminders')
 
-    let remWeather = await remCol.deleteOne({$and: [{user: usee.user}, {type:'forecast'}]})
+    let remWeather = await remCol.deleteOne({$and: [{user: msg.author.id}, {type:'forecast'}]})
     if (remWeather.deletedCount === 1) 
       bot.createMessage(msg.channel.id, f('%s, successfully unsubcribed from daily forecast updates!', msg.author.username))
     else
