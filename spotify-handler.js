@@ -14,7 +14,7 @@ const password = encodeURIComponent(config.pass)
 const authMechanism = 'DEFAULT'
 const url = f('mongodb://%s:%s@127.0.0.1:36505/broadcast_tower?authMechanism=%s', user, password, authMechanism)
 
-
+const timeFormat = new RegExp(/^[0-2][0-9]:[0-6][0-9]\b/)
 
 exports.getReleases = async () => {
 	let data = config.spotifyID + ':' + config.spotifySecret;  
