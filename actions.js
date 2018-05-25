@@ -377,8 +377,6 @@ exports.reply = async (msg, args, bot, q, client) => {
 		//get a message
 		let postid = args.shift()
 		let message = await postCol.findOne({msgid: postid})
-		console.log(message.source)
-		console.log(message.recipients)
 		if(message === null){
 			//wrong post id
 			bot.createMessage(msg.channel.id, f('Sorry %s, I couldn\'t find a post with that ID!', msg.author.username))
@@ -424,7 +422,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 			descCopy = message.content.embed.description.split('\n')
 
 			//skip this recpient as they no longer have an account			
-			let recipient = await col.findOne({user:recipients[r]})
+			let recipient = await col.findOne({user:message.recipients[r]})
 			if (recipient === undefined) {
 				message.recipients[r]
 				continue
