@@ -741,7 +741,7 @@ const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription
 	usage: reply.spotify.usage
 })
 
-const spotifyTopReleases = spotifyBase.registerSubcommand('sub', async (msg, args) => {
+const spotifyWeekly = spotifyBase.registerSubcommand('sub', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
 		spotify.weeklyNotif(msg, args, bot, client)
