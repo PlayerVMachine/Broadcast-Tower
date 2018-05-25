@@ -801,6 +801,22 @@ const dailySub = bot.registerCommand('fsub', async (msg, args) => {
 	usage: reply.fsub.usage
 })
 
+const dailyUnsub = bot.registerCommand('funsub', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		weather.dailyunSub(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['fus'],
+	description: reply.funsub.description,
+	fullDescription: reply.funsub.fullDescription,
+	usage: reply.funsub.usage
+})
+
 const forecastCmd = bot.registerCommand('forecast', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)

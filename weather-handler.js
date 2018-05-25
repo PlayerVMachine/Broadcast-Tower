@@ -171,9 +171,26 @@ exports.dailySub = async (msg, args, bot, client) => {
 
     let addWeather = await remCol.replaceOne({$and: [{user: usee.user}, {type:'forecast'}]}, weatherSub, {upsert: true})
     if (addWeather.result.ok === 1)
-      bot.createMessage(msg.channel.id, 'Successfully subcribed to daily forecast updates!')
+      bot.createMessage(msg.channel.id, f('%s, successfully subcribed to daily forecast updates!', msg.author.username))
     else
-      bot.createMessage(msg.channel.id, 'Could not subscibe to daily forecast updates sorry!')
+      bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+  }
+}
+
+exports dailyUnsub = async (msg, args, bot, client) => {
+  try {
+    const remCol = client.db(config.db).collection('Reminders')
+
+    let remWeather = await remCol.deleteOne({$and: [{user: usee.user}, {type:'forecast'}]})
+    if (remWeather.deletedCount === 1) 
+      bot.createMessage(msg.channel.id, f('%s, successfully unsubcribed from daily forecast updates!', msg.author.username))
+    else
+      bot.createMessage(msg.channel.id, f('%, you were not subcribed to daily forecast updates!', msg.author.username))
 
   } catch (err) {
     console.log(err)

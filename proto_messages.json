@@ -259,8 +259,13 @@
 		"noWeather":"%s, you need to set your weather location using `b.edit -w <location -C|F>` first!",
 		"wrongTime":"%s, you need to enter the time you want to receive the forecast at in the 24 hour clock format: `HH:MM`.",
 		"description":"Subscribe to daily forecast updates at your preferred time",
-		"fullDescription":"Once you've set your timezone and weather prefences in your profile you can subscribe to daily forecast notifications at any time, the format is `HH:MM`, where HH is in 24-huor format.",
+		"fullDescription":"Once you've set your timezone and weather prefences in your profile you can subscribe to daily forecast notifications at any time, the format is `HH:MM`, where HH is in 24-hour format.",
 		"usage":"`b.fsub <HH:MM>`"
+	},
+	"funsub" : {
+		"description":"Unsubscribe from daily forecast updates.",
+		"fullDescription":"Unsubscribe from daily forecast updates.",
+		"usage":"`b.funsub`"
 	},
 	"note" : {
 		"description":"Make a note to yourself!",
