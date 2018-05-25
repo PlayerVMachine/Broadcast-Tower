@@ -377,7 +377,8 @@ exports.reply = async (msg, args, bot, q, client) => {
 		//get a message
 		let postid = args.shift()
 		let message = await postCol.findOne({msgid: postid})
-		console.log(message)
+		console.log(message.source)
+		console.log(message.recipients)
 		if(message === null){
 			//wrong post id
 			bot.createMessage(msg.channel.id, f('Sorry %s, I couldn\'t find a post with that ID!', msg.author.username))
