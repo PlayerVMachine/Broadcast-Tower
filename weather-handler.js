@@ -182,7 +182,7 @@ exports.dailySub = async (msg, args, bot, client) => {
   }
 }
 
-exports dailyUnsub = async (msg, args, bot, client) => {
+exports.dailyUnsub = async (msg, args, bot, client) => {
   try {
     const remCol = client.db(config.db).collection('Reminders')
 
