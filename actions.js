@@ -328,7 +328,7 @@ exports.post = async (msg, args, bot, q, client) => {
 			let recordPost = await postCol.insertOne({
 					source: msg.author.id,
     				content: embed,
-    				msgid: msgid
+    				msgid: msgid,
     				recipients: usee.followers,
     				lastUpdated: new Date()
     			})
