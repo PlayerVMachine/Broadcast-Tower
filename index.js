@@ -782,7 +782,11 @@ const weatherCmd = bot.registerCommand('weather', async (msg, args) => {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }, {
-	aliases: ['w']
+	aliases: ['w'],
+	cooldown: 5000,
+	description: reply.weather.description,
+	fullDescription: reply.weather.fullDescription,
+	usage: reply.weather.usage
 })
 
 const dailySub = bot.registerCommand('fsub', async (msg, args) => {
@@ -796,6 +800,7 @@ const dailySub = bot.registerCommand('fsub', async (msg, args) => {
 	}
 }, {
 	aliases: ['fs'],
+	cooldown: 5000,
 	description: reply.fsub.description,
 	fullDescription: reply.fsub.fullDescription,
 	usage: reply.fsub.usage
@@ -812,6 +817,7 @@ const dailyUnsub = bot.registerCommand('funsub', async (msg, args) => {
 	}
 }, {
 	aliases: ['fus'],
+	cooldown: 5000,
 	description: reply.funsub.description,
 	fullDescription: reply.funsub.fullDescription,
 	usage: reply.funsub.usage
@@ -828,6 +834,7 @@ const forecastCmd = bot.registerCommand('forecast', async (msg, args) => {
 	}
 }, {
 	aliases: ['f'],
+	cooldown: 5000,
 	description: reply.weather.description,
 	fullDescription: reply.weather.fullDescription,
 	usage: reply.weather.usage
