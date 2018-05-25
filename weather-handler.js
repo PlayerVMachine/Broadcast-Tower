@@ -190,7 +190,7 @@ exports.dailyUnsub = async (msg, args, bot, client) => {
     if (remWeather.deletedCount === 1) 
       bot.createMessage(msg.channel.id, f('%s, successfully unsubcribed from daily forecast updates!', msg.author.username))
     else
-      bot.createMessage(msg.channel.id, f('%, you were not subcribed to daily forecast updates!', msg.author.username))
+      bot.createMessage(msg.channel.id, f('%s, you were not subcribed to daily forecast updates!', msg.author.username))
 
   } catch (err) {
     console.log(err)
