@@ -263,7 +263,7 @@ exports.unblock = async(msg, args, bot, client) => {
 exports.post = async (msg, args, bot, q, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
-		const postCol = client.db(config).collection('Posts')
+		const postCol = client.db(config.db).collection('Posts')
 		var medit
 
 		let usee = await col.findOne({user: msg.author.id})
