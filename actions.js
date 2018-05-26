@@ -450,6 +450,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 			}
 
 			msgCopy.content.embed.description = descCopy.join('\n')
+			console.log(JSON.stringify(msgCopy.content))
 
 			//schedule post in queue
 			let packet = {
