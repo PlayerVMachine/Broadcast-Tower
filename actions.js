@@ -419,34 +419,28 @@ exports.reply = async (msg, args, bot, q, client) => {
 		//check for redactions that need to be made if any of the post recipients have blocked usee or vice versa
 		for (r in message.recipients) {
 			let msgCopy = JSON.parse(JSON.stringify(message))
-			let descCopy = JSON.parse(JSON.stringify(msgCopy.content.embed.description.split('\n')))
-			console.log(descCopy)
+			let descCopy = msgCopy.content.embed.description.split('\n')
+
+			//skip this recpient as they no longer have an account			
 			let recipient = await col.findOne({user:message.recipients[r]})
+			if (recipient === undefined) {
+				message.recipients[r]
+				continue
+			}
 
-			for (s in message.recipients) {
-
-				//skip this recpient as they no longer have an account			
-				let recipient = await col.findOne({user:message.recipients[s]})
-				if (recipient === undefined) {
-					message.recipients[r]
-					continue
+			//redact message copy
+			if (usee.blocked.includes(recipient.user)) {
+	
+				for (l in descCopy) {
+					if (descCopy[l].startsWith('**'+ msg.author.username))
+						descCopy[l] = '_Reply from user who has blocked you_'
 				}
 
-				//redact message copy
-				if (usee.blocked.includes(recipient.user)) {
-		
-					for (l in descCopy) {
-						if (descCopy[l].startsWith('**'+ msg.author.username))
-							descCopy[l] = '_Reply from user who has blocked you_'
-					}
-
-				} else if (recipient.blocked.includes(usee.user)) {
-					for (l in descCopy) {
-						if (descCopy[l].startsWith('**'+ msg.author.username))
-							descCopy[l] = '_Reply from user who you have blocked_'
-					}
+			} else if (recipient.blocked.includes(usee.user)) {
+				for (l in descCopy) {
+					if (descCopy[l].startsWith('**'+ msg.author.username))
+						descCopy[l] = '_Reply from user who you have blocked_'
 				}
-
 			}
 
 			msgCopy.content.embed.description = descCopy.join('\n')
