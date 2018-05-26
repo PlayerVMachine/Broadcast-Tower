@@ -60,7 +60,7 @@ exports.close = async (msg, bot, client) => {
 		if (response.author.id === msg.author.id && res === confirm.toString()) {
         	//confirmation code entered correctly
         	let marked = await col.findOneAndUpdate({user: msg.author.id}, {$set: {status:'closed'}})
-        	if (marked.updatedCount === 1) {
+        	if (marked.ok === 1) {
         		bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
 			} else {
 				bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
@@ -80,21 +80,16 @@ exports.close = async (msg, bot, client) => {
         }
     }
 
-    let found = await col.findOne({user: msg.author.id})
-    if (found === null) {
-    	bot.createMessage(msg.channel.id, f(reply.generic.useeNoAccount, msg.author.username))
-    } else {
-    	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
+	let delMessage = await bot.createMessage(msg.channel.id, f(reply.close.confirmation, msg.author.username, confirm))
 
-    	//edit message if no reply in 10s and close listener
-    	medit = setTimeout((msgid) => {
-    		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
-    		bot.removeListener('messageCreate', confirmation)
-    	}, 10000, delMessage.id)
+	//edit message if no reply in 10s and close listener
+	medit = setTimeout((msgid) => {
+		bot.editMessage(msg.channel.id, msgid, f(reply.close.timeout, msg.author.username))
+		bot.removeListener('messageCreate', confirmation)
+	}, 10000, delMessage.id)
 
-    	//register event listener for close confirmation/cancel
-    	bot.on('messageCreate', confirmation)
-    }
+	//register event listener for close confirmation/cancel
+	bot.on('messageCreate', confirmation)
 }
 
 exports.heckingBan = async (msg, args, bot, client) => {
