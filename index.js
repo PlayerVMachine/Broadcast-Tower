@@ -1028,7 +1028,26 @@ app.post('/twitch', jsonParser, async (req, res) => {
 	}
 })
 
-//////////////TWITCH//////////////
+////////////////////////////////////////////////////////////////////
+//GARBAGE COLLECTOR                                              //
+//////////////////////////////////////////////////////////////////
+
+
+const collector = async () => {
+	let client = await MongoClient.connect(url)
+	const twitchCol = client.db(config.db).collection('TwitchStream')
+	const userCol = client.db(config.db).collection('Users')
+	const remCol = client.db(config.db).collection('Reminders')
+	const postCol = client.db(config.db).collection('Posts')
+
+	let closedAccounts = await userCol.find({status: 'closed'}).toArray()
+
+	for (i in closedAccounts) {
+		
+	}
+}
+
+
 
 //listen for requests
 app.listen(3000, () => console.log('Webhook handler listening on :3000!'))

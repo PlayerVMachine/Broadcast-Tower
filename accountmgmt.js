@@ -39,6 +39,14 @@ exports.create = async (msg, bot, client) => {
 		} else { 
 			bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
 		}
+	} else if (found.status === 'closed'){
+		let unClose = await col.updateOne({user: usee.user}, {$set: {status: 'active'}})
+
+		if (unban.result.ok === 1) {
+			bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', usee.user))
+		} else {
+			bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', usee.user))
+		}
 	} else {
 		bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
 	}
