@@ -418,8 +418,8 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 		//check for redactions that need to be made if any of the post recipients have blocked usee or vice versa
 		for (r in message.recipients) {
-			msgCopy = message
-			descCopy = message.content.embed.description.split('\n')
+			let msgCopy = message
+			let descCopy = message.content.embed.description.split('\n')
 			let recipient = await col.findOne({user:message.recipients[r]})
 
 			for (s in message.recipients) {
