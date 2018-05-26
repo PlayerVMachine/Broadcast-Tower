@@ -44,23 +44,7 @@ exports.create = async (msg, bot, client) => {
 	}
 }
 
-const del = async (msg, bot, col) => {
-	//delete user from the followers list of people they're following
-	let rem = await col.updateMany({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
-
-	if (rem.result.ok === 1) {
-
-		let del = await col.findOneAndDelete({user: msg.author.id})
-
-		if (del.ok === 1) {
-			bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
-		} else {
-			bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
-		}
-	} else {
-		bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
-	}
-}
+//let rem = await col.updateMany({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
 
 exports.close = async (msg, bot, client) => {
 	const col = client.db(config.db).collection('Users')
@@ -75,7 +59,12 @@ exports.close = async (msg, bot, client) => {
 		res = response.content.split(' ')[0];
 		if (response.author.id === msg.author.id && res === confirm.toString()) {
         	//confirmation code entered correctly
-        	del(msg, bot, col)
+        	let marked = await col.findOneAndUpdate({user: msg.author.id}, {$set: {status:'closed'}})
+        	if (marked.updatedCount === 1) {
+        		bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
+			} else {
+				bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
+			}
         	bot.removeListener('messageCreate', confirmation)
         	clearTimeout(medit)
         } else if (response.author.id === msg.author.id && response.content === 'cancel') {
