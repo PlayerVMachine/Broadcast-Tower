@@ -460,6 +460,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 
 			q.push(packet)
 			msgCopy = null
+			descCopy = null
 		}
 
 
