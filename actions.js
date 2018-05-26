@@ -420,11 +420,12 @@ exports.reply = async (msg, args, bot, q, client) => {
 		for (r in message.recipients) {
 			msgCopy = message
 			descCopy = message.content.embed.description.split('\n')
+			let recipient = await col.findOne({user:message.recipients[r]})
 
-			for (r in message.recipients) {
+			for (s in message.recipients) {
 
 				//skip this recpient as they no longer have an account			
-				let recipient = await col.findOne({user:message.recipients[r]})
+				let recipient = await col.findOne({user:message.recipients[s]})
 				if (recipient === undefined) {
 					message.recipients[r]
 					continue
