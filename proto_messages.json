@@ -274,6 +274,11 @@
 		"fullDescription":"Once you've set your timezone prefence in your profile you can subscribe to weekly Spotify new release reminders at any time on Fridays, the format is `HH:MM`, where HH is in 24-hour format.",
 		"usage":"`b.spotify -sub <HH:MM>`"
 	},
+	"sUnsub": {
+		"description":"Unsubscribe from weekly Spotify new release reminders.",
+		"fullDescription":"Unsubscribe from weekly Spotify new release reminders.",
+		"usage":"`b.spotify -unsub`"
+	},
 	"note" : {
 		"description":"Make a note to yourself!",
 		"fullDescription":"Make a note to yourself, can include links and file uploads, gets pinned in your DMs with the Tower",

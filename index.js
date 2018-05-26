@@ -725,6 +725,23 @@ const spotifyWeekly = spotifyBase.registerSubcommand('sub', async (msg, args) =>
 	usage: reply.sSub.usage
 })
 
+const spotifyUnweekly = spotifyBase.registerSubcommand('unsub', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		spotify.unNotif(msg, args, bot, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	aliases: ['-u'],
+	cooldown: 5000,
+	description: reply.sUnsub.description,
+	fullDescription: reply.sUnsub.fullDescription,
+	usage: reply.sUnsub.usage
+})
+
 const spotifyTopReleases = spotifyBase.registerSubcommand('top', async (msg, args) => {
 	spotify.tenList(msg, args, bot)
 }, {

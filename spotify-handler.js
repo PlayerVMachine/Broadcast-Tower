@@ -263,4 +263,19 @@ exports.weeklyNotif = async (msg, args, bot, client) => {
   }
 }
 
-//to do: add unsub
+exports.unNotif = async (msg, args, bot, client) => {
+  try {
+    const remCol = client.db(config.db).collection('Reminders')
+
+    let remSpotify = await remCol.deleteOne({$and: [{user: msg.author.id}, {type:'spotify'}]})
+    if (remSpotify.deletedCount === 1) 
+      bot.createMessage(msg.channel.id, f('%s, successfully unsubcribed from weekly Spotify updates!', msg.author.username))
+    else
+      bot.createMessage(msg.channel.id, f('%s, you were not subcribed to weekly Spotify updates!', msg.author.username))
+
+  } catch (err) {
+    console.log(err)
+    bot.createMessage(config.logChannelID, err.message)
+    bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+  }
+}
