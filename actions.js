@@ -420,6 +420,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 		for (r in message.recipients) {
 			let msgCopy = message
 			let descCopy = message.content.embed.description.split('\n')
+			console.log(descCopy)
 			let recipient = await col.findOne({user:message.recipients[r]})
 
 			for (s in message.recipients) {
@@ -461,6 +462,7 @@ exports.reply = async (msg, args, bot, q, client) => {
 			q.push(packet)
 			msgCopy = null
 			descCopy = null
+			console.log(descCopy + ' after null')
 		}
 
 
