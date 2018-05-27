@@ -18,11 +18,11 @@ const isID = (arg, msg) => {
 		return arg 
 	} else if (matchUserMention.test(arg)) { 
 		return arg.substr(2, 18)
-	} else if (msg.channel.guild.members.find(m => m.username == args[0])) {
-        let member = msg.channel.guild.members.find(m => m.username == args[0]);
+	} else if (msg.channel.guild.members.find(m => m.username == arg)) {
+        let member = msg.channel.guild.members.find(m => m.username == arg);
         return member.id
-    } else if (msg.channel.guild.members.find(m => m.nickname == args[0])) {
-        let member = msg.channel.guild.members.find(m => m.nickname == args[0]);
+    } else if (msg.channel.guild.members.find(m => m.nickname == arg)) {
+        let member = msg.channel.guild.members.find(m => m.nickname == arg);
         return member.id 
 	} else { 
 		return -1 
