@@ -247,6 +247,9 @@ const hello = bot.registerCommand('hello', async(msg, args) => {
 }, {
 	aliases: ['hi', 'hey', 'bonjour'],
 	cooldown: 10000,
+	description: reply.hello.description,
+	fullDescription: reply.hello.fullDescription,
+	usage: reply.hello.usage
 })
 
 const start = bot.registerCommand('start', (msg, args) => {
@@ -256,7 +259,10 @@ const start = bot.registerCommand('start', (msg, args) => {
 	}})
 }, {
 	cooldown: 10000,
-	dmOnly: true
+	dmOnly: true,
+	description: reply.start.description,
+	fullDescription: reply.start.fullDescription,
+	usage: reply.start.usage
 })
 
 const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/NNFnjFA`, {
