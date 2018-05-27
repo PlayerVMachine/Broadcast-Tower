@@ -266,7 +266,7 @@ exports.post = async (msg, args, bot, q, client) => {
 		const postCol = client.db(config.db).collection('Posts')
 		var medit
 
-		let usee = await col.findOne({user: msg.author.id})
+		let sender = await col.findOne({user: msg.author.id})
 
 		//no blank posts
 		if(args.length === 0) {
@@ -281,7 +281,6 @@ exports.post = async (msg, args, bot, q, client) => {
 			return
 		}
 
-		let sender = await col.findOne({user: msg.author.id})
 		let followers = sender.followers
 		let resChannel = sender.sendTo
 

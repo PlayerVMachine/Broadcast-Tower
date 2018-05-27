@@ -111,7 +111,7 @@ exports.getPlaylists = async (msg, args, bot) => {
 
 			bot.createMessage(msg.channel.id, embed)
 		} else if (parseInt(args[0]) >= 1 || parseInt(args[0]) <= 5){
-			bot.createMessage(msg.channel.id, info[parseInt(args[0])].external_urls.spotify)
+			bot.createMessage(msg.channel.id, info[parseInt(args[0]) - 1].external_urls.spotify)
 		}
 
 	} catch (e) {
