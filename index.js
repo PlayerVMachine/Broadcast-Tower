@@ -1051,7 +1051,7 @@ const collector = async () => {
 
 			if (remFF.result.ok === 1 && remT.result.ok === 1 && remR.result.ok === 1 && postCol.result.ok === 1) {
 				//bot.createMessage(logChannelID, '')
-				let delUser await userCol.deleteOne({user: closedAccounts[i].user})
+				let delUser = await userCol.deleteOne({user: closedAccounts[i].user})
 			}
 		}
 	} catch (err) {
