@@ -13,15 +13,17 @@ const matchUserMention = new RegExp('<@[0-9]{18}>')
 const matchUserString = new RegExp('^[0-9]{18}')
 
 //check if input is a user id or mention
-const isID = (arg) => {
+const isID = (arg, msg) => {
 	if (matchUserString.test(arg)) { 
 		return arg 
 	} else if (matchUserMention.test(arg)) { 
 		return arg.substr(2, 18)
-//	} else if (msg.channel.guild.members.find(m => m.username == args[0])) {
-//        member = msg.channel.guild.members.find(m => m.username == args[0]);
-//    } else if (msg.channel.guild.members.find(m => m.nickname == args[0])) {
-//        member = msg.channel.guild.members.find(m => m.nickname == args[0]); 
+	} else if (msg.channel.guild.members.find(m => m.username == args[0])) {
+        member = msg.channel.guild.members.find(m => m.username == args[0]);
+        retrun member.id
+    } else if (msg.channel.guild.members.find(m => m.nickname == args[0])) {
+        member = msg.channel.guild.members.find(m => m.nickname == args[0]);
+        return member.id 
 	} else { 
 		return -1 
 	}
@@ -67,7 +69,7 @@ exports.follow = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 		
 		//check for undesirable conditions
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -150,7 +152,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 		
 		//check for undesirable conditions
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -195,7 +197,7 @@ exports.block = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 
 		//check for undesirable conditions
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -235,7 +237,7 @@ exports.unblock = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 
 		//check for undesirable conditions
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told

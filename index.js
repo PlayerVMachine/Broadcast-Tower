@@ -75,7 +75,8 @@ const hasUnbannedAccount = async (msg) => {
 ///////////////////////////////////////////////////////////////////
 
 const bot = new Eris.CommandClient(config.BOT_TOKEN, {
-	defaultImageSize:256
+	defaultImageSize:256,
+	getAllUsers:true
 }, {
 	defaultHelpCommand: false,
 	description:'Discord bot providing social media functions',
@@ -167,11 +168,6 @@ bot.on("ready", () => { // When the bot is ready
 /////////////////////////////////////////////////////////////////////
 //ADMIN COMMANDS                                                  //
 ///////////////////////////////////////////////////////////////////
-const addToGroup = bot.registerCommand('atg', async (msg, args) => {
-	let addUser = await bot.addGroupRecipient(args[0], args[1])
-	console.log(addUser)
-})
-
 
 const ban = bot.registerCommand('ban', async (msg, args) => {
 	try{
