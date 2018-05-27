@@ -136,7 +136,7 @@
 		"usage":"`b.edit color #ff0000`"
 	},
 	"timezone" : {
-		"notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'",
+		"notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'","notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'",
 		"current":"%s, your timezone is set to `%s`.",
 		"success":"%s, your timezone is now set to `%s`.",
 		"error":"%s, there was an error setting your timezone preference.",
