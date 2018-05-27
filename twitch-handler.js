@@ -101,7 +101,7 @@ exports.streamList = async (msg, args, bot, client) => {
 			list.push(reply.list.empty)
 		} else {
 			for (s in streamers)
-				list.push(streamers[s].display_name)
+				list.push(streamers[s].Streamer)
 		}
 
 		let embed = {
