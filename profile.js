@@ -55,7 +55,7 @@ const editView = (btUser, discUser) => {
 			{name: 'Do Not Disturb: ', value:dnd, inline: true},
 			{name: 'Color', value: color, inline: true},
 			{name: 'Weather:', value: weather, inline: true},
-			{name: 'Timezone:', value:timezone, inline: true},
+			//{name: 'Timezone:', value:timezone, inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			{name: 'Blocked: ', value:btUser.blocked.length, inline: true}

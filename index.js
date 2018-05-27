@@ -438,7 +438,7 @@ const unBlockUser = bot.registerCommand('unblock', async (msg, args) => {
 const edit = bot.registerCommand('edit', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
-		prof.edit(msg, edit, bot, client)
+		prof.edit(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
