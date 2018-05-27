@@ -285,8 +285,8 @@ exports.post = async (msg, args, bot, q, client) => {
 		let resChannel = sender.sendTo
 
 		let color = parseInt(config.color, 16)
-		if (usee.premium < 0) {
-			color = parseInt(usee.eColor, 16)
+		if (sender.premium > 0) {
+			color = parseInt(sender.eColor, 16)
 		}
 
 		//msg id for searching
@@ -324,7 +324,7 @@ exports.post = async (msg, args, bot, q, client) => {
 			bot.removeListener('messageReactionAdd', callback)
 			bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
 
-			let recipients = usee.followers
+			let recipients = sender.followers
 			recipients.push(msg.author.id)
 
 			let recordPost = await postCol.insertOne({
@@ -351,7 +351,7 @@ exports.post = async (msg, args, bot, q, client) => {
 
 				let packet = {
     				content: f(reply.post.sentConfirm, message),
-    				destination: usee.sendTo,
+    				destination: sender.sendTo,
     				type: 'system',
 				}				
 
