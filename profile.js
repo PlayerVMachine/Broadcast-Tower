@@ -29,7 +29,7 @@ const editView = (btUser, discUser) => {
 	let dnd = 'Do not disturb set to **off**'
 	let color = 'Embed color: #' + btUser.eColor.slice(2)
 	let weather = f('%s in degrees %s', btUser.weather.location, btUser.weather.deg)
-	let timezone = 'not set'
+	let tzone = 'not set'
 
 	if (btUser.tagline.length !== 0)
 		tagline = btUser.tagline
@@ -40,7 +40,7 @@ const editView = (btUser, discUser) => {
 	if (btUser.dnd)
 		dnd = 'Do Not disturb set to **on**'
 	if (btUser.tz !== undefined)
-		timezone = btUser.tz
+		tzone = btUser.tz
 
 	var embed = {
 		embed: {
@@ -55,7 +55,7 @@ const editView = (btUser, discUser) => {
 			{name: 'Do Not Disturb: ', value:dnd, inline: true},
 			{name: 'Color', value: color, inline: true},
 			{name: 'Weather:', value: weather, inline: true},
-			//{name: 'Timezone:', value:timezone, inline: true},
+			{name: 'Timezone:', value: tzone, inline: true},
 			{name: 'Following: ', value:btUser.following.length, inline: true},
 			{name: 'Followers: ', value:btUser.followers.length, inline: true},
 			{name: 'Blocked: ', value:btUser.blocked.length, inline: true}
