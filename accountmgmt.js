@@ -43,9 +43,9 @@ exports.create = async (msg, bot, client) => {
 		let unClose = await col.updateOne({user: msg.author.id}, {$set: {status: 'active'}})
 
 		if (unClose.result.ok === 1) {
-			bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', usee.user))
+			bot.createMessage(msg.channel.id, f('%s, your account has been reopened with all your settings where they last were.', msg.author.username))
 		} else {
-			bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', usee.user))
+			bot.createMessage(msg.channel.id, f('%s, sorry an error ocurred reopening your account.', msg.author.username))
 		}
 	} else {
 		bot.createMessage(msg.channel.id, f(reply.create.alreadyHasAccount, msg.author.username))
