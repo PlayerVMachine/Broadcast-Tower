@@ -17,7 +17,11 @@ const isID = (arg) => {
 	if (matchUserString.test(arg)) { 
 		return arg 
 	} else if (matchUserMention.test(arg)) { 
-		return arg.substr(2, 18) 
+		return arg.substr(2, 18)
+//	} else if (msg.channel.guild.members.find(m => m.username == args[0])) {
+//        member = msg.channel.guild.members.find(m => m.username == args[0]);
+//    } else if (msg.channel.guild.members.find(m => m.nickname == args[0])) {
+//        member = msg.channel.guild.members.find(m => m.nickname == args[0]); 
 	} else { 
 		return -1 
 	}
@@ -324,7 +328,7 @@ exports.post = async (msg, args, bot, q, client) => {
 			bot.removeListener('messageReactionAdd', callback)
 			bot.deleteMessage(msg.channel.id, remID, 'Timeout expired')
 
-			let recipients = sender.followers
+			let recipients = sender.followers.map(x => x)
 			recipients.push(msg.author.id)
 
 			let recordPost = await postCol.insertOne({

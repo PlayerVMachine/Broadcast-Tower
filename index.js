@@ -167,6 +167,11 @@ bot.on("ready", () => { // When the bot is ready
 /////////////////////////////////////////////////////////////////////
 //ADMIN COMMANDS                                                  //
 ///////////////////////////////////////////////////////////////////
+const addToGroup = bot.registerCommand('atg', async (msg, args) => {
+	let addUser = await bot.addGroupRecipient(args[0], args[1])
+	console.log(addUser)
+}
+
 
 const ban = bot.registerCommand('ban', async (msg, args) => {
 	try{
