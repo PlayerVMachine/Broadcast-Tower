@@ -36,6 +36,7 @@ exports.create = async (msg, bot, client) => {
 		let created = await col.insertOne(userdata)
 		if (created.insertedCount === 1) { 
 			bot.createMessage(msg.channel.id, f(reply.create.success, msg.author.username))
+			bot.createMessage(config.logChannelID, msg.author.mention + ' has created an account')
 		} else { 
 			bot.createMessage(msg.channel.id, f(reply.create.error, msg.author.username))
 		}
@@ -68,6 +69,7 @@ exports.close = async (msg, bot, client) => {
         	let marked = await col.findOneAndUpdate({user: msg.author.id}, {$set: {status:'closed'}})
         	if (marked.ok === 1) {
         		bot.createMessage(msg.channel.id, f(reply.close.success, msg.author.username))
+        		bot.createMessage(config.logChannelID, msg.author.mention + ' has marked their account for closure')
 			} else {
 				bot.createMessage(msg.channel.id, f(reply.close.error, msg.author.username))
 			}

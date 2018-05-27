@@ -39,7 +39,7 @@ const editView = (btUser, discUser) => {
 		mature = 'Profanity **is** allowed'
 	if (btUser.dnd)
 		dnd = 'Do Not disturb set to **on**'
-	if (btUser.tz !== undefined)
+	if (btUser.tz !== null)
 		tzone = btUser.tz
 
 	var embed = {
