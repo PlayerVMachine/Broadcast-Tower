@@ -669,7 +669,7 @@ const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 
 const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
 	let client = await MongoClient.connect(url)
-	twitch.twitchStreamSub(msg, args, bot)
+	twitch.twitchStreamSub(msg, args, bot, client)
 }, {
 	aliases: ['-s'],
 	cooldown: 5000,
