@@ -62,6 +62,7 @@ exports.twitchStreamSub = async (msg, args, bot, client) => {
 exports.twitchStreamUnSub = async (msg, args, bot, client) => {
 	try {
 		const usersCol = client.db(config.db).collection('Users')
+		const twitchCol = client.db(config.db).collection('TwitchStream')
 
 		let usee = await usersCol.findOne({user: msg.author.id})
 		if (usee === null) {
@@ -89,11 +90,11 @@ exports.twitchStreamUnSub = async (msg, args, bot, client) => {
 exports.streamList = async (msg, args, bot, client) => {
 	try {
 		const usersCol = client.db(config.db).collection('Users')
-		const streamCol = client.db(config.db).collection('TwitchStream')
+		const twitchCol = client.db(config.db).collection('TwitchStream')
 
 		let usee = await usersCol.findOne({user: msg.author.id})
 
-		let streamers = await streamCol.find({followers:usee._id}).toArray()
+		let streamers = await twitchCol.find({followers:usee._id}).toArray()
 
 		let list = []
 		if (streamers.length === 0) {
