@@ -209,7 +209,7 @@ exports.weeklyNotif = async (msg, args, bot, client) => {
 
     let usee = await userCol.findOne({user: msg.author.id})
 
-    if (usee.tz === undefined) {
+    if (usee.tz === null) {
       bot.createMessage(msg.channel.id, f(reply.sSub.noTZ, msg.author.username))
       return
     }

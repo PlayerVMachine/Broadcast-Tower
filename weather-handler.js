@@ -133,12 +133,12 @@ exports.dailySub = async (msg, args, bot, client) => {
 
     let usee = await userCol.findOne({user: msg.author.id})
 
-    if (usee.tz === undefined) {
+    if (usee.tz === null) {
       bot.createMessage(msg.channel.id, f(reply.fsub.noTZ, msg.author.username))
       return
     }
 
-    if (usee.weather === undefined || usee.weather === {location: '', deg: ''}) {
+    if (usee.weather === {location: '', deg: ''}) {
       bot.createMessage(msg.channel.id, f(reply.fsub.noWeather, msg.author.username))
       return
     }
