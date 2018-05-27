@@ -268,6 +268,7 @@
 		"usage":"`b.funsub`"
 	},
 	"sSub" : {
+		"notATZ":"'%s, please enter a valid timezone! Use <https://timezonedb.com/time-zones> for reference.'",
 		"noTZ":"%s, you need to set your timezone using `b.edit -tz <country/major city>` first!\n Use <https://timezonedb.com/time-zones> if you need help finding the right timezone.",
 		"wrongTime":"%s, you need to enter the time you want to receive weekly Spotify new release reminders on Fridays at in the 24 hour clock format: `HH:MM`.",
 		"description":"Subscribe to weekly Spotify new release reminders at your preferred time on Fridays",

@@ -467,6 +467,7 @@ exports.list = async (msg, args, bot, client) => {
 exports.setTimezone = async (msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
+		const timezones = client.db(config.db).collection('Timezones')
 
 		let usee = await col.findOne({user: msg.author.id})
 		if (args.length === 0) {
@@ -474,11 +475,14 @@ exports.setTimezone = async (msg, args, bot, client) => {
 			return
 		}
 
-		let timezone = args.join(' ')
-		let zones = []
-		if ()
+		let timezone = args.join('_')
+		let found = await timezones.findOne({zone_name:timezone})
+		if (found === null) {
+			bot.createMessage(msg.channel.id, f(reply.timezone.notATZ, msg.author.username))
+			return
+		}
 
-		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tz:args.join(' ')}})
+		let update = await col.findOneAndUpdate({user:msg.author.id}, {$set: {tz:timezone}})
 		if (update.ok === 1) {
 			bot.createMessage(msg.channel.id, f(reply.timezone.success, msg.author.username, args.join(' ')))
 		} else {

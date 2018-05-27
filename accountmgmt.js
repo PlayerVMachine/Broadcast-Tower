@@ -52,8 +52,6 @@ exports.create = async (msg, bot, client) => {
 	}
 }
 
-//let rem = await col.updateMany({following: msg.author.id}, {$pull: {following: msg.author.id, followers: msg.author.id}})
-
 exports.close = async (msg, bot, client) => {
 	const col = client.db(config.db).collection('Users')
 

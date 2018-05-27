@@ -1034,19 +1034,32 @@ app.post('/twitch', jsonParser, async (req, res) => {
 
 
 const collector = async () => {
-	let client = await MongoClient.connect(url)
-	const twitchCol = client.db(config.db).collection('TwitchStream')
-	const userCol = client.db(config.db).collection('Users')
-	const remCol = client.db(config.db).collection('Reminders')
-	const postCol = client.db(config.db).collection('Posts')
+	try {
+		let client = await MongoClient.connect(url)
+		const twitchCol = client.db(config.db).collection('TwitchStream')
+		const userCol = client.db(config.db).collection('Users')
+		const remCol = client.db(config.db).collection('Reminders')
+		const postCol = client.db(config.db).collection('Posts')
 
-	let closedAccounts = await userCol.find({status: 'closed'}).toArray()
+		let closedAccounts = await userCol.find({status: 'closed'}).toArray()
 
-	for (i in closedAccounts) {
-		
+		for (i in closedAccounts) {
+			let remFF = await userCol.updateMany({$or: [{following: closedAccounts[i].user}, {followers: closedAccounts[i].user}]}, {$pull: {following: closedAccounts[i].user, followers: closedAccounts[i].user}})
+			let remT = await twitchCol.updateMany({usersSubbed: closedAccounts[i]._id}, {$pull: {usersSubbed: closedAccounts[i]._id}})
+			let remR = await remCol.deleteMany({destination: closedAccounts[i].sendTo})
+			let postCol = await postCol.deleteMany({source: closedAccounts[i].sendTo})
+
+			if (remFF.result.ok === 1 && remT.result.ok === 1 && remR.result.ok === 1 && postCol.result.ok === 1) {
+				//bot.createMessage(logChannelID, '')
+				let delUser await userCol.deleteOne({user: closedAccounts[i].user})
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
 	}
 }
-
+setInterval(collector, 60*60*1000)
 
 
 //listen for requests
