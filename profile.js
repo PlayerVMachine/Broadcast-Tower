@@ -19,14 +19,14 @@ const isID = (arg, msg) => {
 	} else if (msg.channel.guild.members.find(m => m.username == arg)) {
         let member = msg.channel.guild.members.find(m => m.username == arg);
         return member.id
-    } else if (msg.channel.guild.members.find(m => m.nickname == arg)) {
-        let member = msg.channel.guild.members.find(m => m.nickname == arg);
+    } else if (msg.channel.guild.members.find(m => m.nick == arg)) {
+        let member = msg.channel.guild.members.find(m => m.nick == arg);
         return member.id 
     } else if (msg.channel.guild.members.find(m => m.username.startsWith(arg))) {
         let member = msg.channel.guild.members.find(m => m.username.startsWith(arg));
         return member.id
-    } else if (msg.channel.guild.members.find(m => m.nickname.startsWith(arg))) {
-        let member = msg.channel.guild.members.find(m => m.nickname.startsWith(arg));
+    } else if (msg.channel.guild.members.find(m => m.nick.startsWith(arg))) {
+        let member = msg.channel.guild.members.find(m => m.nick.startsWith(arg));
         return member.id 
 	} else { 
 		return -1 
