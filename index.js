@@ -658,7 +658,8 @@ const help = bot.registerCommand('help', (msg, args) => {
 ///////////////////////////////////////////////////////////////////
 
 const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
-	//twitch.showSubs(msg, args, bot)
+	let client = await MongoClient.connect(url)
+	twitch.listSubs(msg, args, bot, client)
 }, {
 	cooldown: 5000,
 	description: reply.twitch.description,
@@ -667,6 +668,7 @@ const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 })
 
 const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
+	let client = await MongoClient.connect(url)
 	twitch.twitchStreamSub(msg, args, bot)
 }, {
 	aliases: ['-s'],
@@ -678,7 +680,8 @@ const twitchSub = twitchBase.registerSubcommand('sub', async (msg, args) => {
 })
 
 const twitchUnSub = twitchBase.registerSubcommand('unsub', async (msg, args) => {
-	twitch.twitchStreamUnSub(msg, args, bot)
+	let client = await MongoClient.connect(url)
+	twitch.twitchStreamUnSub(msg, args, bot, client)
 }, {
 	aliases: ['-u'],
 	cooldown: 5000,
@@ -1029,7 +1032,7 @@ app.post('/twitch', jsonParser, async (req, res) => {
 })
 
 ////////////////////////////////////////////////////////////////////
-//GARBAGE COLLECTOR                                              //
+//GARBAGE COLLECTORS                                             //
 //////////////////////////////////////////////////////////////////
 
 
@@ -1047,9 +1050,9 @@ const collector = async () => {
 			let remFF = await userCol.updateMany({$or: [{following: closedAccounts[i].user}, {followers: closedAccounts[i].user}]}, {$pull: {following: closedAccounts[i].user, followers: closedAccounts[i].user}})
 			let remT = await twitchCol.updateMany({usersSubbed: closedAccounts[i]._id}, {$pull: {usersSubbed: closedAccounts[i]._id}})
 			let remR = await remCol.deleteMany({destination: closedAccounts[i].sendTo})
-			let postCol = await postCol.deleteMany({source: closedAccounts[i].sendTo})
+			let remP = await postCol.deleteMany({source: closedAccounts[i].sendTo})
 
-			if (remFF.result.ok === 1 && remT.result.ok === 1 && remR.result.ok === 1 && postCol.result.ok === 1) {
+			if (remFF.result.ok === 1 && remT.result.ok === 1 && remR.result.ok === 1 && remP.result.ok === 1) {
 				//bot.createMessage(logChannelID, '')
 				let delUser = await userCol.deleteOne({user: closedAccounts[i].user})
 			}
@@ -1061,6 +1064,16 @@ const collector = async () => {
 }
 setInterval(collector, 60*60*1000)
 
+const oldPostRemover = async () => {
+	try {
+		let threeDaysOld = new Date(Date.now() - 3*24*60*60*1000)
+		let postCol = await postCol.deleteMany({lastUpdated: {$lte : threeDaysOld}})
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+	}
+}
+setInterval(oldPostRemover, 24*60*60*1000)
 
 //listen for requests
 app.listen(3000, () => console.log('Webhook handler listening on :3000!'))

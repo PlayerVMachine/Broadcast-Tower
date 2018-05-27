@@ -166,6 +166,7 @@
 		"followers":"List of users following %s",
 		"following":"List of users %s is following",
 		"blocked":"List of users blocked by %s",
+		"twitch":"List of Twitch streamers followed by %s",
 		"empty":"List is empty!",
 		"description":"Displays a list of the users you are following, are following you, or you have blocked.",
 		"fullDescription":"Displays a list of the users you are following, are following you, or you have blocked.",
