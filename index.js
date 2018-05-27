@@ -738,8 +738,6 @@ const spotifyRefresh = () => {
 setInterval(spotifyRefresh, 12*60*60*1000)
 
 const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription, {
-
-}, {
 	cooldown: 5000,
 	description: reply.spotify.description,
 	fullDescription: reply.spotify.fullDescription,
