@@ -659,7 +659,7 @@ const help = bot.registerCommand('help', (msg, args) => {
 
 const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 	let client = await MongoClient.connect(url)
-	twitch.listSubs(msg, args, bot, client)
+	twitch.streamList(msg, args, bot, client)
 }, {
 	cooldown: 5000,
 	description: reply.twitch.description,
