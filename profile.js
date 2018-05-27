@@ -11,11 +11,23 @@ const isHex = new RegExp(/^#[0-9A-F]{6}$/, 'i')
 const matchUserMention = new RegExp('<@[0-9]{18}>')
 const matchUserString = new RegExp('^[0-9]{18}')
 
-const isID = (arg) => {
+const isID = (arg, msg) => {
 	if (matchUserString.test(arg)) { 
 		return arg 
 	} else if (matchUserMention.test(arg)) { 
-		return arg.substr(2, 18) 
+		return arg.substr(2, 18)
+	} else if (msg.channel.guild.members.find(m => m.username == arg)) {
+        let member = msg.channel.guild.members.find(m => m.username == arg);
+        return member.id
+    } else if (msg.channel.guild.members.find(m => m.nickname == arg)) {
+        let member = msg.channel.guild.members.find(m => m.nickname == arg);
+        return member.id 
+    } else if (msg.channel.guild.members.find(m => m.username.startsWith(arg))) {
+        let member = msg.channel.guild.members.find(m => m.username.startsWith(arg));
+        return member.id
+    } else if (msg.channel.guild.members.find(m => m.nickname.startsWith(arg))) {
+        let member = msg.channel.guild.members.find(m => m.nickname.startsWith(arg));
+        return member.id 
 	} else { 
 		return -1 
 	}
@@ -141,7 +153,7 @@ exports.view = async (msg, args, bot, client) => {
 			return
 		}
 
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		if (secondID === -1) {
 			bot.createMessage(msg.channel.id, f(reply.view.unexpected, msg.author.id, args[0]))
 			return
@@ -499,7 +511,7 @@ exports.setPremium = async (msg, args, bot, client) => {
 	try {
 		const col = client.db(config.db).collection('Users')
 
-		let secondID = isID(args[0])
+		let secondID = isID(args[0], msg)
 		if (secondID === -1) {
 			bot.createMessage(msg.channel.id, f(reply.view.unexpected, msg.author.id, args[0]))
 			return

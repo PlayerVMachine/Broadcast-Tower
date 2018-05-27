@@ -26,6 +26,9 @@ const isID = (arg, msg) => {
         return member.id 
     } else if (msg.channel.guild.members.find(m => m.username.startsWith(arg))) {
         let member = msg.channel.guild.members.find(m => m.username.startsWith(arg));
+        return member.id
+    } else if (msg.channel.guild.members.find(m => m.nickname.startsWith(arg))) {
+        let member = msg.channel.guild.members.find(m => m.nickname.startsWith(arg));
         return member.id 
 	} else { 
 		return -1 
