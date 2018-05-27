@@ -13,6 +13,13 @@ const matchUserMention = new RegExp('<@[0-9]{18}>')
 const matchUserString = new RegExp('^[0-9]{18}')
 
 //check if input is a user id or mention
+const partNick (m) => {
+	if (m !== null) {
+		m.nickname.startsWith(arg)
+		return m
+	}
+}
+
 const isID = (arg, msg) => {
 	if (matchUserString.test(arg)) { 
 		return arg 
@@ -27,8 +34,8 @@ const isID = (arg, msg) => {
     } else if (msg.channel.guild.members.find(m => m.username.startsWith(arg))) {
         let member = msg.channel.guild.members.find(m => m.username.startsWith(arg));
         return member.id
-    } else if (msg.channel.guild.members.find(m => if (m !== null) m.nickname.startsWith(arg))) {
-        let member = msg.channel.guild.members.find(m => if (m !== null) m.nickname.startsWith(arg));
+    } else if (msg.channel.guild.members.find(partNick)) {
+        let member = msg.channel.guild.members.find(partNick);
         return member.id 
 	} else { 
 		return -1 
