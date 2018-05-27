@@ -514,3 +514,20 @@ exports.report = async (msg, args, bot, client) => {
 		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
 	}
 }
+
+exports.leaveThread = async (msg, args, bot, client) => {
+	try {
+		const postCol = client.db(config.db).collection('Posts')
+
+		let left = await postCol.updateOne({msgid:args[0]}, {$pull: {recipients:msg.author.id}})
+		if(left.modifiedCount === 0) {
+			bot.createMessage(msg.channel.id, f('%s, sorry that doesn\'t seem to be a post id or you aren\'t in that thread.', msg.author.username))
+		} else {
+			bot.createMessage(msg.channel.id, f('%s, you will no longer recieve updates from this thread! This action is permanent.', msg.author.username))
+		}
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}

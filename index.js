@@ -253,19 +253,6 @@ const hello = bot.registerCommand('hello', async(msg, args) => {
 	usage: reply.hello.usage
 })
 
-const start = bot.registerCommand('start', (msg, args) => {
-	bot.createMessage(msg.channel.id, {embed: {
-		color: parseInt(config.color, 16),
-		description:f(reply.generic.start, msg.author.username)
-	}})
-}, {
-	cooldown: 10000,
-	dmOnly: true,
-	description: reply.start.description,
-	fullDescription: reply.start.fullDescription,
-	usage: reply.start.usage
-})
-
 const invite = bot.registerCommand('invite', `Invite your friends here so they can use the Broadcast Tower too!\nhttps://discord.gg/NNFnjFA`, {
 	cooldown: 5000,
 	description: `Invite link to the Tower's server`,
@@ -384,6 +371,24 @@ const postReply = bot.registerCommand('reply', async (msg, args) => {
 	description: reply.reply.description,
 	fullDescription: reply.reply.fullDescription,
 	usage: reply.reply.usage
+})
+
+const postLeave = bot.registerCommand('leave', async (msg, args) => {
+	try {
+		let client = await MongoClient.connect(url)
+		act.leaveThread(msg, args, bot, q, client)
+	} catch (err) {
+		console.log(err)
+		bot.createMessage(config.logChannelID, err.message)
+		bot.createMessage(msg.channel.id, f(reply.generic.error, msg.author.username))
+	}
+}, {
+	cooldown: 5000,
+	dmOnly: true,
+	requirements: {custom: hasUnbannedAccount},
+	description: reply.leave.description,
+	fullDescription: reply.leave.fullDescription,
+	usage: reply.leave.usage
 })
 
 const report = bot.registerCommand('report', async (msg, args) => {

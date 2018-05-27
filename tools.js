@@ -31,7 +31,7 @@ exports.help = async (msg, args, bot) => {
 
 		
 		let basic = ['ping', 'hello', 'start', 'invite', 'clean', 'help', 'create', 'close']
-		let social = ['follow', 'unfollow', 'post', 'reply', 'report', 'block', 'unblock']
+		let social = ['follow', 'unfollow', 'post', 'reply', 'leave', 'report', 'block', 'unblock']
 		let profile = ['edit', 'view', 'list']
 		let integrations = ['twitch', 'spotify', 'weather', 'forecast']
 		let reminders = ['nts', 'notes', 'unnote', 'remindme']
