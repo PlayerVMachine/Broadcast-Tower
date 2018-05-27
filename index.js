@@ -608,6 +608,7 @@ const view = bot.registerCommand('view', async (msg, args) => {
 }, {
 	aliases: ['profile'],
 	cooldown: 5000,
+	requirements: {custom: hasUnbannedAccount},
 	description: reply.view.description,
 	fullDescription: reply.view.fullDescription,
 	usage: reply.view.usage
@@ -733,6 +734,7 @@ setInterval(spotifyRefresh, 12*60*60*1000)
 const spotifyBase = bot.registerCommand('spotify', reply.spotify.fullDescription, {
 
 }, {
+	cooldown: 5000,
 	description: reply.spotify.description,
 	fullDescription: reply.spotify.fullDescription,
 	usage: reply.spotify.usage

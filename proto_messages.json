@@ -18,6 +18,16 @@
 		"fullDescription":"Ask the bot to reply with 'Pong!'",
 		"usage":"`b.ping`"
 	},
+	"hello" : {
+		"description":"Introduces the bot!",
+		"fullDescription":"Sends a DM introducing the bot",
+		"usage":"`b.hello`"
+	},
+	"start" : {
+		"description":"Provides info on how to get started (DM Only)",
+		"fullDescription":"Provides info on how to get started (DM Only)",
+		"usage":"`b.start`"
+	},
 	"create" : {
 		"success":"%s, your account has been created! You are ready to broadcast!",
 		"error":"%s, there was an error creating your account, please try again later. If this message persists contact Hal.",
