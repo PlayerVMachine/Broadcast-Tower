@@ -376,7 +376,7 @@ const postReply = bot.registerCommand('reply', async (msg, args) => {
 const postLeave = bot.registerCommand('leave', async (msg, args) => {
 	try {
 		let client = await MongoClient.connect(url)
-		act.leaveThread(msg, args, bot, q, client)
+		act.leaveThread(msg, args, bot, client)
 	} catch (err) {
 		console.log(err)
 		bot.createMessage(config.logChannelID, err.message)
