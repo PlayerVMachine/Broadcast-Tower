@@ -47,7 +47,7 @@ const safetyChecks = async (msg, secondID, col, bot) => {
 
 	if (followeeHasAccount === null) {
 		let second = await bot.users.get(secondID)
-		bot.createMessage(msg.channel.id, f(reply.generic.UserNoAccount, msg.author.username, second.username))
+		bot.createMessage(msg.channel.id, f(reply.generic.userNoAccount, msg.author.username, second.username))
 		return false
 	}
 
