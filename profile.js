@@ -153,7 +153,7 @@ exports.view = async (msg, args, bot, client) => {
 			return
 		}
 
-		let secondID = isID(args[0], msg)
+		let secondID = isID(args.join(' '), msg)
 		if (secondID === -1) {
 			bot.createMessage(msg.channel.id, f(reply.view.unexpected, msg.author.id, args[0]))
 			return

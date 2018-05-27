@@ -75,7 +75,7 @@ exports.follow = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 		
 		//check for undesirable conditions
-		let secondID = isID(args[0], msg)
+		let secondID = isID(args.join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -158,7 +158,7 @@ exports.unfollow = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 		
 		//check for undesirable conditions
-		let secondID = isID(args[0], msg)
+		let secondID = isID(args[0].join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -203,7 +203,7 @@ exports.block = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 
 		//check for undesirable conditions
-		let secondID = isID(args[0], msg)
+		let secondID = isID(args.join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
@@ -243,7 +243,7 @@ exports.unblock = async(msg, args, bot, client) => {
 		let usee = await col.findOne({user: msg.author.id})
 
 		//check for undesirable conditions
-		let secondID = isID(args[0], msg)
+		let secondID = isID(args.join(' '), msg)
 		let safe = await safetyChecks(msg, secondID, col, bot)
 		if (!safe)
 			return	//something was wrong with the input and the user was told
