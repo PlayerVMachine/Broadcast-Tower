@@ -13,7 +13,7 @@ const matchUserMention = new RegExp('<@[0-9]{18}>')
 const matchUserString = new RegExp('^[0-9]{18}')
 
 //check if input is a user id or mention
-const partNick (m) => {
+const partNick = (m) => {
 	if (m !== null) {
 		m.nickname.startsWith(arg)
 		return m
