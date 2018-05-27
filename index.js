@@ -8,6 +8,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const TwitchHelix = require('twitch-helix')
 const pc = require('swearjar')
+const request = require('superagent')
 
 //project module imports
 const config = require('./config.json')
@@ -657,6 +658,32 @@ const help = bot.registerCommand('help', (msg, args) => {
 //TWITCH                                                          //
 ///////////////////////////////////////////////////////////////////
 
+const twitchResub = async () => {
+	let client = await MongoClient.connect(url)
+	const twitchCol = client.db(config.db).collection('TwitchStream') //DB in form of twitch streamid, usersSubbed
+
+	let streams = await twitchCol.find().toArray
+
+	for (s in streams) {
+		if (streams[s].followers.length === 0) {
+			let remStreamer = await twitchCol.deleteOne({StreamerID:streams[s].StreamerID})
+			if (remStreamer.result.ok)
+				bot.createMessage(config.logChannelID, f('Streamer %s unfollowed', streams[s].Streamer))
+		} else {
+			let topic = 'https://api.twitch.tv/helix/streams?user_id=' + streams[s].StreamerID
+
+			request.post('https://api.twitch.tv/helix/webhooks/hub')
+			.send({"hub.mode":"subscribe","hub.topic":topic,"hub.callback":"http://208.113.133.141/twitch","hub.lease_seconds":"864000","hub.secret":config.twitchSecret})
+			.set('Client-ID', config.twitchID).set('Content-Type', 'application/json').end( (err, res) => {
+				if(err !== null)
+					console.log('Error following sreamer' + err)
+			})
+		}
+	}
+}
+setInterval(twitchResub, 24*60*60*1000)
+
+
 const twitchBase = bot.registerCommand('twitch', async (msg, args) => {
 	let client = await MongoClient.connect(url)
 	twitch.streamList(msg, args, bot, client)
@@ -921,10 +948,10 @@ const checkReminders = async () => {
 						let packet = {
 							content: reminders[r].content,
 							destination: reminders[r].sendTo,
-	    					type: 'system',
+							type: 'system',
 						}
 						q.push(packet)
-					
+
 						let delRem = await remCol.deleteOne({_id: reminders[r]._id})
 						if (delRem.deletedCount !== 1)
 							console.log(f('An error occurred removing reminder: %s', reminders[r]._id))
@@ -941,7 +968,7 @@ const checkReminders = async () => {
 						let packet = {
 							content: 'Check out Spotify\'s new releases using `b.spotify top`',
 							destination: reminders[r].sendTo,
-	    					type: 'subscription',
+							type: 'subscription',
 						}
 						q.push(packet)
 
